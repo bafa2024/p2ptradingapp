@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KOXX - Trade Chat</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Design System Variables */
+        :root {
+            /* Colors */
+            --bg-primary: #0B0E11;
+            --bg-secondary: #1A1D21;
+            --bg-card: #242530;
+            --bg-elevated: #2B2F36;
+            --border-color: #2B2F36;
+            
+            --text-primary: #FFFFFF;
+            --text-secondary: #B7BDC6;
+            --text-muted: #848E9C;
+            
+            --color-buy: #00D395;
+            --color-sell: #F6465D;
+            --color-warning: #FFA500;
+            --color-info: #3861FB;
+        }
+        
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Header */
+        .chat-header {
+            background: var(--bg-secondary);
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .back-btn {
+            color: var(--text-primary);
+            font-size: 20px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        
+        .back-btn:hover {
+            color: var(--color-buy);
+        }
+        
+        .trade-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        
+        .trade-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .trade-status {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .header-btn {
+            color: var(--text-muted);
+            font-size: 18px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        
+        .header-btn:hover {
+            color: var(--color-buy);
+        }
+        
+        /* Trade Details Bar */
+        .trade-details {
+            background: var(--bg-card);
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .trade-summary {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .trade-amount {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--color-buy);
+        }
+        
+        .trade-crypto {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        .trade-progress {
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            height: 6px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(135deg, var(--color-buy) 0%, #00B583 100%);
+            width: 60%;
+            transition: width 0.3s ease;
+        }
+        
+        /* Chat Container */
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        /* Message Styles */
+        .message {
+            display: flex;
+            gap: 12px;
+            max-width: 80%;
+        }
+        
+        .message.sent {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+        
+        .message.received {
+            align-self: flex-start;
+        }
+        
+        .message-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--color-buy) 0%, #00B583 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+            flex-shrink: 0;
+        }
+        
+        .message-content {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 12px 16px;
+            position: relative;
+        }
+        
+        .message.sent .message-content {
+            background: var(--color-buy);
+            border-color: var(--color-buy);
+        }
+        
+        .message-text {
+            font-size: 14px;
+            line-height: 1.4;
+            margin-bottom: 4px;
+        }
+        
+        .message-time {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-align: right;
+        }
+        
+        .message.sent .message-time {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        /* System Messages */
+        .system-message {
+            text-align: center;
+            margin: 16px 0;
+        }
+        
+        .system-badge {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 12px;
+            color: var(--text-muted);
+            display: inline-block;
+        }
+        
+        /* Payment Proof */
+        .payment-proof {
+            background: rgba(56, 97, 251, 0.1);
+            border: 1px solid rgba(56, 97, 251, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 8px;
+        }
+        
+        .proof-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .proof-icon {
+            color: var(--color-info);
+            font-size: 16px;
+        }
+        
+        .proof-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--color-info);
+        }
+        
+        .proof-details {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+        
+        /* Chat Input */
+        .chat-input {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 16px;
+        }
+        
+        .input-container {
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+        }
+        
+        .input-field {
+            flex: 1;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 12px 16px;
+            color: var(--text-primary);
+            font-size: 14px;
+            resize: none;
+            min-height: 44px;
+            max-height: 120px;
+            transition: all 0.3s ease;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: var(--color-buy);
+            box-shadow: 0 0 0 3px rgba(0, 211, 149, 0.1);
+        }
+        
+        .input-field::placeholder {
+            color: var(--text-muted);
+        }
+        
+        .send-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--color-buy);
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .send-btn:hover {
+            background: #00B583;
+            transform: scale(1.05);
+        }
+        
+        .send-btn:disabled {
+            background: var(--bg-elevated);
+            color: var(--text-muted);
+            cursor: not-allowed;
+        }
+        
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        
+        .action-btn {
+            flex: 1;
+            padding: 10px 16px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        
+        .action-btn:hover {
+            background: var(--bg-elevated);
+            border-color: var(--color-buy);
+        }
+        
+        .action-btn.primary {
+            background: var(--color-buy);
+            border-color: var(--color-buy);
+            color: white;
+        }
+        
+        .action-btn.primary:hover {
+            background: #00B583;
+        }
+        
+        .action-btn.danger {
+            background: var(--color-sell);
+            border-color: var(--color-sell);
+            color: white;
+        }
+        
+        .action-btn.danger:hover {
+            background: #E63946;
+        }
+        
+        /* Typing Indicator */
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+        
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+        }
+        
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--text-muted);
+            animation: typing 1.4s infinite ease-in-out;
+        }
+        
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        
+        @keyframes typing {
+            0%, 80%, 100% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            40% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        /* Responsive Design */
+        @media (min-width: 576px) {
+            .container-custom {
+                max-width: 540px;
+                margin: 0 auto;
+            }
+        }
+        
+        @media (min-width: 768px) {
+            .container-custom {
+                max-width: 600px;
+                margin: 0 auto;
+            }
+            
+            .chat-header {
+                padding: 20px 24px;
+            }
+            
+            .trade-details {
+                padding-left: 24px;
+                padding-right: 24px;
+            }
+            
+            .chat-messages {
+                padding-left: 24px;
+                padding-right: 24px;
+            }
+            
+            .chat-input {
+                padding-left: 24px;
+                padding-right: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-custom">
+        <!-- Header -->
+        <header class="chat-header">
+            <div class="header-left">
+                <i class="fas fa-arrow-left back-btn" onclick="history.back()"></i>
+                <div class="trade-info">
+                    <div class="trade-title">BTC Trade #12345</div>
+                    <div class="trade-status">Payment Pending</div>
+                </div>
+            </div>
+            <div class="header-actions">
+                <i class="fas fa-phone header-btn" onclick="startCall()"></i>
+                <i class="fas fa-ellipsis-v header-btn" onclick="showOptions()"></i>
+            </div>
+        </header>
+        
+        <!-- Trade Details -->
+        <div class="trade-details">
+            <div class="trade-summary">
+                <div>
+                    <div class="trade-amount">$1,250.00</div>
+                    <div class="trade-crypto">0.029 BTC</div>
+                </div>
+                <div style="text-align: right;">
+                    <div style="font-size: 14px; color: var(--text-secondary);">Progress</div>
+                    <div style="font-size: 12px; color: var(--text-muted);">60% Complete</div>
+                </div>
+            </div>
+            <div class="trade-progress">
+                <div class="progress-bar"></div>
+            </div>
+        </div>
+        
+        <!-- Chat Container -->
+        <div class="chat-container">
+            <div class="chat-messages" id="chatMessages">
+                <!-- System Message -->
+                <div class="system-message">
+                    <div class="system-badge">
+                        <i class="fas fa-info-circle"></i>
+                        Trade started • 2 minutes ago
+                    </div>
+                </div>
+                
+                <!-- Received Message -->
+                <div class="message received">
+                    <div class="message-avatar">JD</div>
+                    <div class="message-content">
+                        <div class="message-text">Hi! I'm ready to proceed with the trade. Please send the payment to my bank account.</div>
+                        <div class="message-time">2:30 PM</div>
+                    </div>
+                </div>
+                
+                <!-- Sent Message -->
+                <div class="message sent">
+                    <div class="message-avatar">Me</div>
+                    <div class="message-content">
+                        <div class="message-text">Perfect! I'll send the payment now. Please confirm once you receive it.</div>
+                        <div class="message-time">2:32 PM</div>
+                    </div>
+                </div>
+                
+                <!-- Payment Proof -->
+                <div class="message received">
+                    <div class="message-avatar">JD</div>
+                    <div class="message-content">
+                        <div class="message-text">I've sent the payment proof:</div>
+                        <div class="payment-proof">
+                            <div class="proof-header">
+                                <i class="fas fa-receipt proof-icon"></i>
+                                <span class="proof-title">Payment Receipt</span>
+                            </div>
+                            <div class="proof-details">
+                                Bank: National Bank of Iraq<br>
+                                Amount: $1,250.00<br>
+                                Reference: TRX-2024-001<br>
+                                Date: Dec 15, 2024 2:35 PM
+                            </div>
+                        </div>
+                        <div class="message-time">2:35 PM</div>
+                    </div>
+                </div>
+                
+                <!-- Sent Message -->
+                <div class="message sent">
+                    <div class="message-avatar">Me</div>
+                    <div class="message-content">
+                        <div class="message-text">Payment received! I'll release the Bitcoin now. Thank you for the smooth trade.</div>
+                        <div class="message-time">2:37 PM</div>
+                    </div>
+                </div>
+                
+                <!-- System Message -->
+                <div class="system-message">
+                    <div class="system-badge">
+                        <i class="fas fa-check-circle"></i>
+                        Bitcoin released to buyer
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Typing Indicator -->
+            <div class="typing-indicator" id="typingIndicator" style="display: none;">
+                <span>John Doe is typing</span>
+                <div class="typing-dots">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            </div>
+            
+            <!-- Chat Input -->
+            <div class="chat-input">
+                <div class="input-container">
+                    <textarea 
+                        class="input-field" 
+                        placeholder="Type your message..." 
+                        id="messageInput"
+                        onkeydown="handleKeyDown(event)"
+                        oninput="handleInput()"
+                    ></textarea>
+                    <button class="send-btn" onclick="sendMessage()" id="sendBtn">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="action-btn" onclick="uploadProof()">
+                        <i class="fas fa-upload"></i>
+                        Upload Proof
+                    </button>
+                    <button class="action-btn" onclick="disputeTrade()">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Dispute
+                    </button>
+                    <button class="action-btn primary" onclick="completeTrade()">
+                        <i class="fas fa-check"></i>
+                        Complete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        let isTyping = false;
+        let typingTimeout;
+        
+        // Handle key down events
+        function handleKeyDown(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        }
+        
+        // Handle input changes
+        function handleInput() {
+            const input = document.getElementById('messageInput');
+            const sendBtn = document.getElementById('sendBtn');
+            
+            // Enable/disable send button
+            sendBtn.disabled = !input.value.trim();
+            
+            // Auto-resize textarea
+            input.style.height = 'auto';
+            input.style.height = Math.min(input.scrollHeight, 120) + 'px';
+        }
+        
+        // Send message
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            // Add message to chat
+            addMessage(message, 'sent');
+            
+            // Clear input
+            input.value = '';
+            input.style.height = 'auto';
+            handleInput();
+            
+            // Scroll to bottom
+            scrollToBottom();
+            
+            // Simulate response
+            setTimeout(() => {
+                showTypingIndicator();
+                setTimeout(() => {
+                    hideTypingIndicator();
+                    addMessage('Thanks for the payment proof! I\'ll release the Bitcoin shortly.', 'received');
+                }, 2000);
+            }, 1000);
+        }
+        
+        // Add message to chat
+        function addMessage(text, type) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            
+            const time = new Date().toLocaleTimeString('en-US', { 
+                hour: 'numeric', 
+                minute: '2-digit',
+                hour12: true 
+            });
+            
+            messageDiv.innerHTML = `
+                <div class="message-avatar">${type === 'sent' ? 'Me' : 'JD'}</div>
+                <div class="message-content">
+                    <div class="message-text">${text}</div>
+                    <div class="message-time">${time}</div>
+                </div>
+            `;
+            
+            chatMessages.appendChild(messageDiv);
+            scrollToBottom();
+        }
+        
+        // Show typing indicator
+        function showTypingIndicator() {
+            const indicator = document.getElementById('typingIndicator');
+            indicator.style.display = 'flex';
+            scrollToBottom();
+        }
+        
+        // Hide typing indicator
+        function hideTypingIndicator() {
+            const indicator = document.getElementById('typingIndicator');
+            indicator.style.display = 'none';
+        }
+        
+        // Scroll to bottom
+        function scrollToBottom() {
+            const chatMessages = document.getElementById('chatMessages');
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        // Upload proof
+        function uploadProof() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*,.pdf';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    // Simulate upload
+                    setTimeout(() => {
+                        addMessage(`Uploaded: ${file.name}`, 'sent');
+                        
+                        // Add proof message
+                        const proofMessage = document.createElement('div');
+                        proofMessage.className = 'message sent';
+                        proofMessage.innerHTML = `
+                            <div class="message-avatar">Me</div>
+                            <div class="message-content">
+                                <div class="message-text">Payment proof:</div>
+                                <div class="payment-proof">
+                                    <div class="proof-header">
+                                        <i class="fas fa-file-upload proof-icon"></i>
+                                        <span class="proof-title">${file.name}</span>
+                                    </div>
+                                    <div class="proof-details">
+                                        File uploaded successfully<br>
+                                        Size: ${(file.size / 1024).toFixed(1)} KB<br>
+                                        Type: ${file.type}
+                                    </div>
+                                </div>
+                                <div class="message-time">${new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}</div>
+                            </div>
+                        `;
+                        
+                        document.getElementById('chatMessages').appendChild(proofMessage);
+                        scrollToBottom();
+                    }, 1000);
+                }
+            };
+            input.click();
+        }
+        
+        // Dispute trade
+        function disputeTrade() {
+            if (confirm('Are you sure you want to open a dispute? This will pause the trade and involve our support team.')) {
+                addMessage('Dispute opened - Support team will review this trade.', 'system');
+                
+                // Add system message
+                const systemMessage = document.createElement('div');
+                systemMessage.className = 'system-message';
+                systemMessage.innerHTML = `
+                    <div class="system-badge">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Dispute opened • Support team notified
+                    </div>
+                `;
+                
+                document.getElementById('chatMessages').appendChild(systemMessage);
+                scrollToBottom();
+            }
+        }
+        
+        // Complete trade
+        function completeTrade() {
+            if (confirm('Are you sure you want to complete this trade? This action cannot be undone.')) {
+                addMessage('Trade completed successfully!', 'system');
+                
+                // Update progress bar
+                const progressBar = document.querySelector('.progress-bar');
+                progressBar.style.width = '100%';
+                
+                // Update status
+                document.querySelector('.trade-status').textContent = 'Completed';
+                
+                // Add system message
+                const systemMessage = document.createElement('div');
+                systemMessage.className = 'system-message';
+                systemMessage.innerHTML = `
+                    <div class="system-badge">
+                        <i class="fas fa-check-circle"></i>
+                        Trade completed successfully
+                    </div>
+                `;
+                
+                document.getElementById('chatMessages').appendChild(systemMessage);
+                scrollToBottom();
+                
+                // Disable action buttons
+                document.querySelectorAll('.action-btn').forEach(btn => {
+                    btn.disabled = true;
+                    btn.style.opacity = '0.5';
+                });
+            }
+        }
+        
+        // Start call
+        function startCall() {
+            alert('Voice call functionality will be implemented');
+        }
+        
+        // Show options
+        function showOptions() {
+            const options = [
+                'View Trade Details',
+                'Report User',
+                'Block User',
+                'Share Chat',
+                'Export Chat'
+            ];
+            
+            const selected = prompt('Select an option:\n' + options.map((opt, i) => `${i + 1}. ${opt}`).join('\n'));
+            
+            if (selected) {
+                alert(`Option ${selected} will be implemented`);
+            }
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Focus on input
+            document.getElementById('messageInput').focus();
+            
+            // Scroll to bottom initially
+            scrollToBottom();
+            
+            // Simulate incoming message
+            setTimeout(() => {
+                addMessage('Please send the payment proof when you\'re ready.', 'received');
+            }, 3000);
+        });
+    </script>
+</body>
+</html>

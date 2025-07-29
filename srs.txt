@@ -1,0 +1,86 @@
+Complete Feature Requirements for the P2P Crypto Trading App (User Side + System Side)
+
+⸻
+
+1. User-Side Features
+
+1.1 Personal Account & Verification:
+• Secure login (Email or Phone Number).
+• User verification (OTP or basic KYC).
+• Ability to edit personal information.
+
+1.2 Centralized Dynamic Wallet:
+• Unique TRC20 deposit address per user (linked to a master wallet).
+• Automatic detection of deposits via TronGrid or TronWeb.
+• Withdrawals to external addresses (requires admin approval).
+• Off-chain internal transfers between users.
+• Support for internal balance in local currency.
+
+1.3 P2P Trading System:
+• Browse and execute buy/sell trades.
+• Create offers (buy/sell) with custom price and amount.
+• Secure Escrow system.
+• Cancel / Confirm / Dispute trades.
+• Rate the counterparty after the trade.
+
+1.4 Referral System:
+• Each user has a unique referral link.
+• Reward is one free trade for the referrer only.
+• No fee on the first trade for the referred user.
+• Track number of referrals and completed trades.
+
+1.5 Membership System:
+• Optional membership subscription via app.
+• Membership benefits: lower fees / additional features.
+• Manual renewal only, with user consent.
+• Ability to cancel or upgrade membership.
+
+1.6 Notifications & Alerts:
+• Real-time notifications (new trade, confirmation, withdrawal, dispute).
+• Use of Firebase / OneSignal for push notifications.
+• Support for in-app messaging.
+
+1.7 Support & Help:
+• In-app ticketing system for user support.
+• Notifications when a ticket is answered.
+
+1.8 User Interface:
+• Simple, user-friendly UI (Arabic + English).
+• Optional dark mode support.
+• Currency switch (IQD, USD, USDT).
+
+1.9 Additional Features:
+• QR Code scanner to display deposit or transfer address.
+• Live market rates (TRX and USDT vs IQD/USD).
+• Ability to set custom pricing independent of market rate.
+• Transaction history (deposit, withdrawal, trading).
+• In-app pop-up messaging system for alerts and notes.
+
+⸻
+
+2. Admin Panel Features
+1. Manage users (view, ban, edit).
+2. Monitor deposits and withdrawals.
+3. Control offers and trades.
+4. Dispute management system.
+5. Activate/deactivate memberships.
+6. Dashboard with platform statistics and fee profit tracking.
+7. Control over trading fees and limits.
+8. Toggle features on/off per user or globally.
+9. Ticket support system to answer user inquiries.
+10. Ability to modify messages and notes shown in the user interface (e.g., warnings, alerts via popups).
+11. Ability to pin paid promotional offers in the top 5 positions (with a fee).
+
+⸻
+
+3. Infrastructure (Backend & Services)
+• Backend: Node.js + Firebase.
+• Hosting: External (e.g., Render, Vercel, or DigitalOcean).
+• Firebase used only for:
+• Authentication.
+• Notifications.
+• Caching and simple data.
+• Integration with TRON blockchain via:
+• TronWeb / TronGrid (for monitoring deposits and withdrawals).
+• Centralized master wallet managed by the platform.
+• Optional support for Redis (for caching and performance).

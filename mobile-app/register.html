@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KOXX - Register</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Design System Variables */
+        :root {
+            /* Colors */
+            --bg-primary: #0B0E11;
+            --bg-secondary: #1A1D21;
+            --bg-card: #242530;
+            --bg-elevated: #2B2F36;
+            --border-color: #2B2F36;
+            
+            --text-primary: #FFFFFF;
+            --text-secondary: #B7BDC6;
+            --text-muted: #848E9C;
+            
+            --color-buy: #00D395;
+            --color-sell: #F6465D;
+            --color-warning: #FFA500;
+            --color-info: #3861FB;
+        }
+        
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        /* Container */
+        .register-container {
+            max-width: 500px;
+            margin: 0 auto;
+            animation: slideUp 0.5s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Header */
+        .header-section {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        
+        .back-btn {
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: var(--text-primary);
+            font-size: 20px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        
+        .back-btn:hover {
+            color: var(--color-buy);
+        }
+        
+        .logo {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--color-buy) 0%, #00B583 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 28px;
+            color: white;
+            box-shadow: 0 6px 20px rgba(0, 211, 149, 0.3);
+        }
+        
+        .app-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .app-subtitle {
+            font-size: 16px;
+            color: var(--text-secondary);
+        }
+        
+        /* Progress Bar */
+        .progress-section {
+            margin-bottom: 32px;
+        }
+        
+        .progress-bar {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-bottom: 24px;
+        }
+        
+        .progress-line {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--border-color);
+            z-index: 0;
+        }
+        
+        .progress-line-active {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            height: 2px;
+            background: var(--color-buy);
+            z-index: 1;
+            transition: width 0.3s ease;
+        }
+        
+        .step {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            flex: 1;
+        }
+        
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .step.active .step-circle {
+            background: var(--color-buy);
+            border-color: var(--color-buy);
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 211, 149, 0.3);
+        }
+        
+        .step.completed .step-circle {
+            background: var(--color-buy);
+            border-color: var(--color-buy);
+            color: white;
+        }
+        
+        .step-label {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .step.active .step-label,
+        .step.completed .step-label {
+            color: var(--text-primary);
+        }
+        
+        /* Form Card */
+        .form-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 32px 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        .form-title {
+            font-size: 20px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        
+        .form-subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        
+        /* Form Groups */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+        
+        .form-control-custom {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px 20px;
+            color: var(--text-primary);
+            font-size: 16px;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control-custom:focus {
+            outline: none;
+            border-color: var(--color-buy);
+            box-shadow: 0 0 0 3px rgba(0, 211, 149, 0.1);
+            background: var(--bg-secondary);
+        }
+        
+        .form-control-custom::placeholder {
+            color: var(--text-muted);
+        }
+        
+        /* Input Icons */
+        .input-group-custom {
+            position: relative;
+        }
+        
+        .input-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 18px;
+        }
+        
+        .input-group-custom .form-control-custom {
+            padding-left: 56px;
+        }
+        
+        /* Password Toggle */
+        .password-toggle {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 18px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        
+        .password-toggle:hover {
+            color: var(--text-primary);
+        }
+        
+        /* Terms Checkbox */
+        .terms-section {
+            margin-bottom: 24px;
+        }
+        
+        .checkbox-custom {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            cursor: pointer;
+        }
+        
+        .checkbox-custom input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--color-buy);
+            margin-top: 2px;
+        }
+        
+        .checkbox-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        .checkbox-label a {
+            color: var(--color-buy);
+            text-decoration: none;
+        }
+        
+        .checkbox-label a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Buttons */
+        .btn-primary-custom {
+            background: linear-gradient(135deg, var(--color-buy) 0%, #00B583 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 16px 24px;
+            font-weight: 600;
+            font-size: 16px;
+            color: white;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 211, 149, 0.3);
+            margin-bottom: 16px;
+        }
+        
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 211, 149, 0.4);
+        }
+        
+        .btn-primary-custom:active {
+            transform: scale(0.98);
+        }
+        
+        .btn-secondary-custom {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px 24px;
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--text-primary);
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary-custom:hover {
+            background: var(--bg-elevated);
+            transform: translateY(-2px);
+        }
+        
+        /* Referral Section */
+        .referral-section {
+            background: rgba(56, 97, 251, 0.1);
+            border: 1px solid rgba(56, 97, 251, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .referral-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        
+        .referral-icon {
+            color: var(--color-info);
+            font-size: 18px;
+        }
+        
+        .referral-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .referral-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        /* Loading State */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Success State */
+        .success-container {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(0, 211, 149, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 40px;
+            color: var(--color-buy);
+            animation: scaleIn 0.5s ease-out;
+        }
+        
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        .success-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        
+        .success-message {
+            font-size: 16px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        /* Responsive Design */
+        @media (min-width: 768px) {
+            .register-container {
+                max-width: 600px;
+            }
+            
+            .form-card {
+                padding: 40px 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <!-- Header -->
+        <div class="header-section">
+            <i class="fas fa-arrow-left back-btn" onclick="history.back()"></i>
+            <div class="logo">
+                <i class="fas fa-coins"></i>
+            </div>
+            <h1 class="app-title">Create Account</h1>
+            <p class="app-subtitle">Join KOXX and start trading securely</p>
+        </div>
+        
+        <!-- Progress Bar -->
+        <div class="progress-section">
+            <div class="progress-bar">
+                <div class="progress-line"></div>
+                <div class="progress-line-active" style="width: 33%;"></div>
+                
+                <div class="step active">
+                    <div class="step-circle">1</div>
+                    <div class="step-label">Account</div>
+                </div>
+                <div class="step">
+                    <div class="step-circle">2</div>
+                    <div class="step-label">Verify</div>
+                </div>
+                <div class="step">
+                    <div class="step-circle">3</div>
+                    <div class="step-label">Complete</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Registration Form -->
+        <div class="form-card">
+            <!-- Step 1: Account Information -->
+            <div id="step1" class="register-step">
+                <h2 class="form-title">Create Your Account</h2>
+                <p class="form-subtitle">Enter your details to get started</p>
+                
+                <form id="accountForm">
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">First Name</label>
+                                <input type="text" class="form-control-custom" placeholder="Enter first name" required>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Last Name</label>
+                                <input type="text" class="form-control-custom" placeholder="Enter last name" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <div class="input-group-custom">
+                            <i class="fas fa-envelope input-icon"></i>
+                            <input type="email" class="form-control-custom" placeholder="Enter your email" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Phone Number</label>
+                        <div class="input-group-custom">
+                            <i class="fas fa-phone input-icon"></i>
+                            <input type="tel" class="form-control-custom" placeholder="Enter phone number" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <div class="input-group-custom">
+                            <i class="fas fa-lock input-icon"></i>
+                            <input type="password" class="form-control-custom" placeholder="Create a strong password" required id="passwordInput">
+                            <button type="button" class="password-toggle" onclick="togglePassword()">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Confirm Password</label>
+                        <div class="input-group-custom">
+                            <i class="fas fa-lock input-icon"></i>
+                            <input type="password" class="form-control-custom" placeholder="Confirm your password" required>
+                        </div>
+                    </div>
+                    
+                    <!-- Referral Code -->
+                    <div class="referral-section">
+                        <div class="referral-header">
+                            <i class="fas fa-gift referral-icon"></i>
+                            <span class="referral-title">Have a referral code?</span>
+                        </div>
+                        <p class="referral-desc">Enter a friend's referral code to get your first trade fee-free and earn them a free trade!</p>
+                        <input type="text" class="form-control-custom" placeholder="Enter referral code (optional)" style="margin-top: 12px;">
+                    </div>
+                    
+                    <div class="terms-section">
+                        <label class="checkbox-custom">
+                            <input type="checkbox" required>
+                            <span class="checkbox-label">
+                                I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                            </span>
+                        </label>
+                    </div>
+                    
+                    <div class="terms-section">
+                        <label class="checkbox-custom">
+                            <input type="checkbox" required>
+                            <span class="checkbox-label">
+                                I want to receive updates about new features and promotions
+                            </span>
+                        </label>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Step 2: Verification -->
+            <div id="step2" class="register-step" style="display: none;">
+                <h2 class="form-title">Verify Your Account</h2>
+                <p class="form-subtitle">We've sent a verification code to your email/phone</p>
+                
+                <div class="otp-container">
+                    <input type="text" class="otp-input" maxlength="1" onkeyup="moveToNext(this, 1)">
+                    <input type="text" class="otp-input" maxlength="1" onkeyup="moveToNext(this, 2)">
+                    <input type="text" class="otp-input" maxlength="1" onkeyup="moveToNext(this, 3)">
+                    <input type="text" class="otp-input" maxlength="1" onkeyup="moveToNext(this, 4)">
+                    <input type="text" class="otp-input" maxlength="1" onkeyup="moveToNext(this, 5)">
+                    <input type="text" class="otp-input" maxlength="1" onkeyup="moveToNext(this, 6)">
+                </div>
+                
+                <div class="resend-section">
+                    <span class="resend-text">Didn't receive the code? </span>
+                    <a href="#" class="resend-link" id="resendLink" onclick="resendOTP()">Resend</a>
+                    <span class="resend-text" id="resendTimer" style="display: none;"> in <span id="timer">30</span>s</span>
+                </div>
+            </div>
+            
+            <!-- Step 3: Success -->
+            <div id="step3" class="register-step" style="display: none;">
+                <div class="success-container">
+                    <div class="success-icon">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <h2 class="success-title">Welcome to KOXX!</h2>
+                    <p class="success-message">
+                        Your account has been created successfully. You can now start trading and earning rewards.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div id="actionButtons">
+                <button class="btn-secondary-custom" onclick="previousStep()" id="backBtn" style="display: none;">Back</button>
+                <button class="btn-primary-custom" onclick="nextStep()" id="nextBtn">
+                    <span class="btn-text">Continue</span>
+                    <span class="loading-spinner" style="display: none;"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        let currentStep = 1;
+        const totalSteps = 3;
+        
+        // Update progress
+        function updateProgress() {
+            const progressLine = document.querySelector('.progress-line-active');
+            const progressWidth = (currentStep / totalSteps) * 100;
+            progressLine.style.width = progressWidth + '%';
+            
+            // Update step circles
+            document.querySelectorAll('.step').forEach((step, index) => {
+                if (index < currentStep) {
+                    step.classList.add('completed');
+                } else if (index === currentStep - 1) {
+                    step.classList.add('active');
+                    step.classList.remove('completed');
+                } else {
+                    step.classList.remove('active', 'completed');
+                }
+            });
+        }
+        
+        // Next step
+        function nextStep() {
+            if (currentStep === totalSteps) {
+                // Registration complete
+                completeRegistration();
+                return;
+            }
+            
+            // Validate current step
+            if (!validateCurrentStep()) {
+                return;
+            }
+            
+            // Hide current step
+            document.getElementById(`step${currentStep}`).style.display = 'none';
+            
+            // Increment step
+            currentStep++;
+            
+            // Show next step
+            document.getElementById(`step${currentStep}`).style.display = 'block';
+            
+            // Update progress
+            updateProgress();
+            
+            // Update buttons
+            updateButtons();
+            
+            // Start OTP timer if on verification step
+            if (currentStep === 2) {
+                startResendTimer();
+            }
+        }
+        
+        // Previous step
+        function previousStep() {
+            if (currentStep === 1) {
+                history.back();
+                return;
+            }
+            
+            // Hide current step
+            document.getElementById(`step${currentStep}`).style.display = 'none';
+            
+            // Decrement step
+            currentStep--;
+            
+            // Show previous step
+            document.getElementById(`step${currentStep}`).style.display = 'block';
+            
+            // Update progress
+            updateProgress();
+            
+            // Update buttons
+            updateButtons();
+        }
+        
+        // Validate current step
+        function validateCurrentStep() {
+            if (currentStep === 1) {
+                // Validate account form
+                const form = document.getElementById('accountForm');
+                const requiredFields = form.querySelectorAll('[required]');
+                let isValid = true;
+                
+                requiredFields.forEach(field => {
+                    if (!field.value.trim()) {
+                        field.style.borderColor = 'var(--color-sell)';
+                        isValid = false;
+                    } else {
+                        field.style.borderColor = '';
+                    }
+                });
+                
+                // Check password match
+                const password = document.getElementById('passwordInput').value;
+                const confirmPassword = document.querySelector('input[type="password"]:not(#passwordInput)').value;
+                
+                if (password !== confirmPassword) {
+                    alert('Passwords do not match');
+                    isValid = false;
+                }
+                
+                return isValid;
+            } else if (currentStep === 2) {
+                // Validate OTP
+                const inputs = document.querySelectorAll('.otp-input');
+                const otp = Array.from(inputs).map(input => input.value).join('');
+                
+                if (otp.length !== 6) {
+                    alert('Please enter the complete 6-digit code');
+                    return false;
+                }
+                
+                return true;
+            }
+            
+            return true;
+        }
+        
+        // Update buttons
+        function updateButtons() {
+            const backBtn = document.getElementById('backBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const btnText = nextBtn.querySelector('.btn-text');
+            
+            if (currentStep === 1) {
+                backBtn.style.display = 'none';
+                btnText.textContent = 'Continue';
+            } else if (currentStep === 2) {
+                backBtn.style.display = 'inline-block';
+                btnText.textContent = 'Verify';
+            } else if (currentStep === 3) {
+                backBtn.style.display = 'none';
+                btnText.textContent = 'Get Started';
+            }
+        }
+        
+        // Complete registration
+        function completeRegistration() {
+            const nextBtn = document.getElementById('nextBtn');
+            const btnText = nextBtn.querySelector('.btn-text');
+            const spinner = nextBtn.querySelector('.loading-spinner');
+            
+            btnText.style.display = 'none';
+            spinner.style.display = 'inline-block';
+            nextBtn.disabled = true;
+            
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 2000);
+        }
+        
+        // Toggle password visibility
+        function togglePassword() {
+            const input = document.getElementById('passwordInput');
+            const toggle = document.querySelector('.password-toggle i');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                toggle.className = 'fas fa-eye-slash';
+            } else {
+                input.type = 'password';
+                toggle.className = 'fas fa-eye';
+            }
+        }
+        
+        // Move to next OTP input
+        function moveToNext(input, nextIndex) {
+            if (input.value.length === 1) {
+                const inputs = document.querySelectorAll('.otp-input');
+                if (nextIndex < inputs.length) {
+                    inputs[nextIndex].focus();
+                }
+            }
+        }
+        
+        // Resend OTP
+        function resendOTP() {
+            const resendLink = document.getElementById('resendLink');
+            const resendTimer = document.getElementById('resendTimer');
+            const timer = document.getElementById('timer');
+            
+            resendLink.style.display = 'none';
+            resendTimer.style.display = 'inline';
+            
+            let countdown = 30;
+            const interval = setInterval(() => {
+                countdown--;
+                timer.textContent = countdown;
+                
+                if (countdown <= 0) {
+                    clearInterval(interval);
+                    resendLink.style.display = 'inline';
+                    resendTimer.style.display = 'none';
+                }
+            }, 1000);
+        }
+        
+        // Start resend timer
+        function startResendTimer() {
+            const resendLink = document.getElementById('resendLink');
+            const resendTimer = document.getElementById('resendTimer');
+            const timer = document.getElementById('timer');
+            
+            resendLink.style.display = 'none';
+            resendTimer.style.display = 'inline';
+            
+            let countdown = 30;
+            const interval = setInterval(() => {
+                countdown--;
+                timer.textContent = countdown;
+                
+                if (countdown <= 0) {
+                    clearInterval(interval);
+                    resendLink.style.display = 'inline';
+                    resendTimer.style.display = 'none';
+                }
+            }, 1000);
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateButtons();
+        });
+    </script>
+</body>
+</html>

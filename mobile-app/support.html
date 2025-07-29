@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KOXX - Support & Help</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Design System Variables */
+        :root {
+            /* Colors */
+            --bg-primary: #0B0E11;
+            --bg-secondary: #1A1D21;
+            --bg-card: #242530;
+            --bg-elevated: #2B2F36;
+            --border-color: #2B2F36;
+            
+            --text-primary: #FFFFFF;
+            --text-secondary: #B7BDC6;
+            --text-muted: #848E9C;
+            
+            --color-buy: #00D395;
+            --color-sell: #F6465D;
+            --color-warning: #FFA500;
+            --color-info: #3861FB;
+        }
+        
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
+        
+        /* Header */
+        .app-header {
+            background: var(--bg-secondary);
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .back-btn {
+            color: var(--text-primary);
+            font-size: 20px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        
+        .back-btn:hover {
+            color: var(--color-buy);
+        }
+        
+        .header-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .search-btn {
+            color: var(--text-muted);
+            font-size: 18px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        
+        .search-btn:hover {
+            color: var(--color-buy);
+        }
+        
+        /* Search Section */
+        .search-section {
+            padding: 20px 16px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .search-container {
+            position: relative;
+        }
+        
+        .search-input {
+            width: 100%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 12px 16px 12px 44px;
+            color: var(--text-primary);
+            font-size: 16px;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--color-buy);
+            box-shadow: 0 0 0 3px rgba(0, 211, 149, 0.1);
+        }
+        
+        .search-input::placeholder {
+            color: var(--text-muted);
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+        
+        /* Quick Help */
+        .quick-help {
+            padding: 16px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            padding: 0 4px;
+        }
+        
+        .help-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        
+        .help-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .help-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            border-color: var(--color-buy);
+        }
+        
+        .help-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            font-size: 20px;
+            color: white;
+        }
+        
+        .help-icon.account {
+            background: linear-gradient(135deg, var(--color-buy) 0%, #00B583 100%);
+        }
+        
+        .help-icon.trading {
+            background: linear-gradient(135deg, var(--color-info) 0%, #2952E3 100%);
+        }
+        
+        .help-icon.payment {
+            background: linear-gradient(135deg, var(--color-warning) 0%, #FF8C00 100%);
+        }
+        
+        .help-icon.security {
+            background: linear-gradient(135deg, var(--color-sell) 0%, #E63946 100%);
+        }
+        
+        .help-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .help-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+        
+        /* FAQ Section */
+        .faq-section {
+            padding: 16px;
+        }
+        
+        .faq-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+        
+        .faq-question {
+            padding: 16px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s ease;
+        }
+        
+        .faq-question:hover {
+            background: var(--bg-elevated);
+        }
+        
+        .faq-question.active {
+            background: var(--bg-elevated);
+        }
+        
+        .faq-text {
+            font-size: 14px;
+            font-weight: 500;
+            flex: 1;
+        }
+        
+        .faq-icon {
+            color: var(--text-muted);
+            font-size: 16px;
+            transition: transform 0.3s ease;
+        }
+        
+        .faq-question.active .faq-icon {
+            transform: rotate(180deg);
+        }
+        
+        .faq-answer {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .faq-answer.show {
+            padding: 0 20px 20px;
+            max-height: 200px;
+        }
+        
+        .faq-content {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        /* Contact Section */
+        .contact-section {
+            padding: 16px;
+        }
+        
+        .contact-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px;
+        }
+        
+        .contact-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .contact-title i {
+            color: var(--color-buy);
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .contact-item:last-child {
+            border-bottom: none;
+        }
+        
+        .contact-item:hover {
+            background: var(--bg-elevated);
+            border-radius: 8px;
+            padding-left: 12px;
+            padding-right: 12px;
+        }
+        
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: white;
+        }
+        
+        .contact-icon.email {
+            background: linear-gradient(135deg, var(--color-buy) 0%, #00B583 100%);
+        }
+        
+        .contact-icon.chat {
+            background: linear-gradient(135deg, var(--color-info) 0%, #2952E3 100%);
+        }
+        
+        .contact-icon.phone {
+            background: linear-gradient(135deg, var(--color-warning) 0%, #FF8C00 100%);
+        }
+        
+        .contact-icon.telegram {
+            background: linear-gradient(135deg, #0088cc 0%, #006699 100%);
+        }
+        
+        .contact-info {
+            flex: 1;
+        }
+        
+        .contact-label {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+        
+        .contact-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .contact-arrow {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        
+        /* Live Chat Button */
+        .live-chat-section {
+            padding: 16px;
+        }
+        
+        .chat-button {
+            background: linear-gradient(135deg, var(--color-buy) 0%, #00B583 100%);
+            border: none;
+            border-radius: 16px;
+            padding: 16px 24px;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 211, 149, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .chat-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 211, 149, 0.4);
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 8px 0;
+            z-index: 100;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        
+        .nav-item.active {
+            color: var(--color-buy);
+        }
+        
+        .nav-item i {
+            font-size: 22px;
+            margin-bottom: 4px;
+        }
+        
+        .nav-item span {
+            font-size: 11px;
+            font-weight: 500;
+        }
+        
+        /* Responsive Design */
+        @media (min-width: 576px) {
+            .container-custom {
+                max-width: 540px;
+                margin: 0 auto;
+            }
+        }
+        
+        @media (min-width: 768px) {
+            .container-custom {
+                max-width: 600px;
+                margin: 0 auto;
+            }
+            
+            .app-header {
+                padding: 20px 24px;
+            }
+            
+            .search-section,
+            .quick-help,
+            .faq-section,
+            .contact-section,
+            .live-chat-section {
+                padding-left: 24px;
+                padding-right: 24px;
+            }
+            
+            .bottom-nav {
+                display: none;
+            }
+            
+            body {
+                padding-bottom: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-custom">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <i class="fas fa-arrow-left back-btn" onclick="history.back()"></i>
+                    <h1 class="header-title">Support & Help</h1>
+                </div>
+                <i class="fas fa-search search-btn" onclick="showSearch()"></i>
+            </div>
+        </header>
+        
+        <!-- Search Section -->
+        <div class="search-section">
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" placeholder="Search for help topics..." onkeyup="searchHelp(this.value)">
+            </div>
+        </div>
+        
+        <!-- Quick Help -->
+        <div class="quick-help">
+            <h3 class="section-title">Quick Help</h3>
+            
+            <div class="help-grid">
+                <div class="help-card" onclick="showHelpCategory('account')">
+                    <div class="help-icon account">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="help-title">Account</div>
+                    <div class="help-desc">Registration, KYC, settings</div>
+                </div>
+                
+                <div class="help-card" onclick="showHelpCategory('trading')">
+                    <div class="help-icon trading">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <div class="help-title">Trading</div>
+                    <div class="help-desc">Buy, sell, post ads</div>
+                </div>
+                
+                <div class="help-card" onclick="showHelpCategory('payment')">
+                    <div class="help-icon payment">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <div class="help-title">Payments</div>
+                    <div class="help-desc">Deposits, withdrawals</div>
+                </div>
+                
+                <div class="help-card" onclick="showHelpCategory('security')">
+                    <div class="help-icon security">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="help-title">Security</div>
+                    <div class="help-desc">2FA, password, safety</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- FAQ Section -->
+        <div class="faq-section">
+            <h3 class="section-title">Frequently Asked Questions</h3>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <div class="faq-text">How do I complete KYC verification?</div>
+                    <i class="fas fa-chevron-down faq-icon"></i>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-content">
+                        To complete KYC verification, go to your profile and select "KYC Verification". 
+                        You'll need to upload a government-issued ID and take a selfie. 
+                        The process typically takes 24-48 hours for approval.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <div class="faq-text">What payment methods are accepted?</div>
+                    <i class="fas fa-chevron-down faq-icon"></i>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-content">
+                        We accept bank transfers, PayPal, credit/debit cards, and various local payment methods. 
+                        The available options depend on your location. Check the payment methods section 
+                        when posting or responding to ads.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <div class="faq-text">How long does a trade take to complete?</div>
+                    <i class="fas fa-chevron-down faq-icon"></i>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-content">
+                        Most trades are completed within 15-30 minutes. The time depends on payment method, 
+                        bank processing times, and how quickly both parties respond. 
+                        Escrow protection ensures your funds are safe during the process.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <div class="faq-text">What are the trading fees?</div>
+                    <i class="fas fa-chevron-down faq-icon"></i>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-content">
+                        Trading fees are 0.5% for takers and 0.3% for makers. 
+                        There are no fees for deposits or withdrawals. 
+                        Premium members get reduced fees and additional benefits.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <div class="faq-text">How do I dispute a trade?</div>
+                    <i class="fas fa-chevron-down faq-icon"></i>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-content">
+                        If you encounter issues during a trade, click the "Dispute" button in the chat. 
+                        Our support team will review the case within 24 hours. 
+                        Provide screenshots and evidence to help resolve the dispute quickly.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Contact Section -->
+        <div class="contact-section">
+            <div class="contact-card">
+                <div class="contact-title">
+                    <i class="fas fa-headset"></i>
+                    <span>Contact Support</span>
+                </div>
+                
+                <div class="contact-item" onclick="contactSupport('email')">
+                    <div class="contact-icon email">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="contact-info">
+                        <div class="contact-label">Email Support</div>
+                        <div class="contact-desc">Get response within 24 hours</div>
+                    </div>
+                    <i class="fas fa-chevron-right contact-arrow"></i>
+                </div>
+                
+                <div class="contact-item" onclick="contactSupport('chat')">
+                    <div class="contact-icon chat">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <div class="contact-info">
+                        <div class="contact-label">Live Chat</div>
+                        <div class="contact-desc">Available 24/7</div>
+                    </div>
+                    <i class="fas fa-chevron-right contact-arrow"></i>
+                </div>
+                
+                <div class="contact-item" onclick="contactSupport('phone')">
+                    <div class="contact-icon phone">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <div class="contact-info">
+                        <div class="contact-label">Phone Support</div>
+                        <div class="contact-desc">Mon-Fri 9AM-6PM UTC</div>
+                    </div>
+                    <i class="fas fa-chevron-right contact-arrow"></i>
+                </div>
+                
+                <div class="contact-item" onclick="contactSupport('telegram')">
+                    <div class="contact-icon telegram">
+                        <i class="fab fa-telegram"></i>
+                    </div>
+                    <div class="contact-info">
+                        <div class="contact-label">Telegram</div>
+                        <div class="contact-desc">Quick responses</div>
+                    </div>
+                    <i class="fas fa-chevron-right contact-arrow"></i>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Live Chat Button -->
+        <div class="live-chat-section">
+            <button class="chat-button" onclick="startLiveChat()">
+                <i class="fas fa-comments"></i>
+                <span>Start Live Chat</span>
+            </button>
+        </div>
+    </div>
+    
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <div class="nav-container">
+            <a href="index.html" class="nav-item">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="markets.html" class="nav-item">
+                <i class="fas fa-chart-line"></i>
+                <span>Markets</span>
+            </a>
+            <a href="post-ad.html" class="nav-item">
+                <i class="fas fa-plus-circle"></i>
+                <span>Post</span>
+            </a>
+            <a href="wallet.html" class="nav-item">
+                <i class="fas fa-wallet"></i>
+                <span>Wallet</span>
+            </a>
+            <a href="profile.html" class="nav-item active">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </a>
+        </div>
+    </nav>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Toggle FAQ
+        function toggleFAQ(element) {
+            const answer = element.nextElementSibling;
+            const isActive = element.classList.contains('active');
+            
+            // Close all other FAQs
+            document.querySelectorAll('.faq-question').forEach(q => {
+                q.classList.remove('active');
+                q.nextElementSibling.classList.remove('show');
+            });
+            
+            // Toggle current FAQ
+            if (!isActive) {
+                element.classList.add('active');
+                answer.classList.add('show');
+            }
+        }
+        
+        // Search help
+        function searchHelp(query) {
+            const faqItems = document.querySelectorAll('.faq-item');
+            const helpCards = document.querySelectorAll('.help-card');
+            
+            if (query.length === 0) {
+                // Show all items
+                faqItems.forEach(item => item.style.display = 'block');
+                helpCards.forEach(card => card.style.display = 'block');
+                return;
+            }
+            
+            const searchTerm = query.toLowerCase();
+            
+            // Search in FAQ
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-text').textContent.toLowerCase();
+                const answer = item.querySelector('.faq-content').textContent.toLowerCase();
+                
+                if (question.includes(searchTerm) || answer.includes(searchTerm)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+            
+            // Search in help cards
+            helpCards.forEach(card => {
+                const title = card.querySelector('.help-title').textContent.toLowerCase();
+                const desc = card.querySelector('.help-desc').textContent.toLowerCase();
+                
+                if (title.includes(searchTerm) || desc.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+        
+        // Show help category
+        function showHelpCategory(category) {
+            const categories = {
+                account: {
+                    title: 'Account Help',
+                    content: `
+                        <h4>Account Management</h4>
+                        <ul>
+                            <li>How to register and verify your account</li>
+                            <li>KYC verification process</li>
+                            <li>Updating personal information</li>
+                            <li>Account security settings</li>
+                        </ul>
+                    `
+                },
+                trading: {
+                    title: 'Trading Help',
+                    content: `
+                        <h4>Trading Guide</h4>
+                        <ul>
+                            <li>How to post buy/sell advertisements</li>
+                            <li>Responding to trade requests</li>
+                            <li>Payment methods and verification</li>
+                            <li>Trade completion process</li>
+                        </ul>
+                    `
+                },
+                payment: {
+                    title: 'Payment Help',
+                    content: `
+                        <h4>Payment Methods</h4>
+                        <ul>
+                            <li>Supported payment methods</li>
+                            <li>Deposit and withdrawal process</li>
+                            <li>Payment verification</li>
+                            <li>Transaction fees</li>
+                        </ul>
+                    `
+                },
+                security: {
+                    title: 'Security Help',
+                    content: `
+                        <h4>Security Features</h4>
+                        <ul>
+                            <li>Two-factor authentication setup</li>
+                            <li>Password security</li>
+                            <li>Account recovery</li>
+                            <li>Fraud prevention tips</li>
+                        </ul>
+                    `
+                }
+            };
+            
+            const categoryInfo = categories[category];
+            if (categoryInfo) {
+                alert(`${categoryInfo.title}\n\n${categoryInfo.content}`);
+            }
+        }
+        
+        // Contact support
+        function contactSupport(method) {
+            const methods = {
+                email: {
+                    action: () => window.open('mailto:support@koxx.com?subject=Support Request'),
+                    message: 'Opening email client...'
+                },
+                chat: {
+                    action: () => startLiveChat(),
+                    message: 'Starting live chat...'
+                },
+                phone: {
+                    action: () => window.open('tel:+1234567890'),
+                    message: 'Calling support...'
+                },
+                telegram: {
+                    action: () => window.open('https://t.me/koxxsupport'),
+                    message: 'Opening Telegram...'
+                }
+            };
+            
+            const methodInfo = methods[method];
+            if (methodInfo) {
+                showNotification(methodInfo.message);
+                methodInfo.action();
+            }
+        }
+        
+        // Start live chat
+        function startLiveChat() {
+            // Simulate chat window
+            const chatWindow = document.createElement('div');
+            chatWindow.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                width: 300px;
+                height: 400px;
+                background: var(--bg-card);
+                border: 1px solid var(--border-color);
+                border-radius: 16px;
+                z-index: 1000;
+                display: flex;
+                flex-direction: column;
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            `;
+            
+            chatWindow.innerHTML = `
+                <div style="padding: 16px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+                    <div style="font-weight: 600;">Live Chat</div>
+                    <i class="fas fa-times" style="cursor: pointer;" onclick="this.closest('div').remove()"></i>
+                </div>
+                <div style="flex: 1; padding: 16px; overflow-y: auto;">
+                    <div style="background: var(--color-buy); color: white; padding: 8px 12px; border-radius: 8px; margin-bottom: 8px; font-size: 12px;">
+                        Support Agent: Hello! How can I help you today?
+                    </div>
+                </div>
+                <div style="padding: 16px; border-top: 1px solid var(--border-color);">
+                    <input type="text" placeholder="Type your message..." style="width: 100%; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-secondary); color: var(--text-primary);">
+                </div>
+            `;
+            
+            document.body.appendChild(chatWindow);
+        }
+        
+        // Show search
+        function showSearch() {
+            const searchSection = document.querySelector('.search-section');
+            const searchInput = document.querySelector('.search-input');
+            
+            searchSection.style.display = searchSection.style.display === 'none' ? 'block' : 'none';
+            
+            if (searchSection.style.display !== 'none') {
+                searchInput.focus();
+            }
+        }
+        
+        // Show notification
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: var(--color-buy);
+                color: white;
+                padding: 12px 24px;
+                border-radius: 8px;
+                font-weight: 600;
+                z-index: 1000;
+                animation: slideDown 0.3s ease-out;
+            `;
+            notification.textContent = message;
+            
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideDown {
+                    from {
+                        transform: translateX(-50%) translateY(-100%);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateX(-50%) translateY(0);
+                        opacity: 1;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+                style.remove();
+            }, 3000);
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click effects to help cards
+            const helpCards = document.querySelectorAll('.help-card');
+            helpCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.98)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 150);
+                });
+            });
+            
+            // Add click effects to contact items
+            const contactItems = document.querySelectorAll('.contact-item');
+            contactItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.98)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 150);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

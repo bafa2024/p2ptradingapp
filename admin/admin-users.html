@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KOXX Admin - User Management</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Design System Variables */
+        :root {
+            /* Colors */
+            --bg-primary: #0B0E11;
+            --bg-secondary: #1A1D21;
+            --bg-card: #242530;
+            --bg-elevated: #2B2F36;
+            --border-color: #2B2F36;
+            
+            --text-primary: #FFFFFF;
+            --text-secondary: #B7BDC6;
+            --text-muted: #848E9C;
+            
+            --color-buy: #00D395;
+            --color-sell: #F6465D;
+            --color-warning: #FFA500;
+            --color-info: #3861FB;
+            --color-success: #00D395;
+            --color-danger: #F6465D;
+        }
+        
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 280px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        
+        .sidebar-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-buy);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .admin-info {
+            margin-top: 16px;
+            padding: 16px;
+            background: var(--bg-card);
+            border-radius: 12px;
+        }
+        
+        .admin-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--color-buy) 0%, #00B583 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+            margin-bottom: 12px;
+        }
+        
+        .admin-name {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .admin-role {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .nav-menu {
+            padding: 16px 0;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 24px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+        
+        .nav-item:hover {
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+        }
+        
+        .nav-item.active {
+            background: rgba(0, 211, 149, 0.1);
+            color: var(--color-buy);
+            border-left-color: var(--color-buy);
+        }
+        
+        .nav-item i {
+            width: 20px;
+            font-size: 16px;
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            padding: 24px;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+        
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .header-btn {
+            padding: 8px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .header-btn:hover {
+            border-color: var(--color-buy);
+            color: var(--color-buy);
+        }
+        
+        .header-btn.primary {
+            background: var(--color-buy);
+            border-color: var(--color-buy);
+            color: white;
+        }
+        
+        .header-btn.primary:hover {
+            background: #00B583;
+        }
+        
+        /* Filters */
+        .filters-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        
+        .filters-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .filters-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .filter-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+        
+        .filter-input {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+        
+        .filter-input:focus {
+            outline: none;
+            border-color: var(--color-buy);
+        }
+        
+        .filter-select {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            color: var(--text-primary);
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--color-buy);
+        }
+        
+        /* Users Table */
+        .users-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        
+        .table-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .table-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .table-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .table-btn {
+            padding: 6px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .table-btn:hover {
+            border-color: var(--color-buy);
+            color: var(--color-buy);
+        }
+        
+        .table-btn.active {
+            background: var(--color-buy);
+            border-color: var(--color-buy);
+            color: white;
+        }
+        
+        .users-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .users-table th {
+            background: var(--bg-elevated);
+            padding: 16px 24px;
+            text-align: left;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .users-table td {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 14px;
+        }
+        
+        .users-table tr:hover {
+            background: var(--bg-elevated);
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--color-info) 0%, #2952E3 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: white;
+        }
+        
+        .user-details {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        
+        .user-name {
+            font-weight: 600;
+        }
+        
+        .user-email {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        
+        .status-badge.verified {
+            background: rgba(0, 211, 149, 0.2);
+            color: var(--color-success);
+        }
+        
+        .status-badge.pending {
+            background: rgba(255, 165, 0, 0.2);
+            color: var(--color-warning);
+        }
+        
+        .status-badge.suspended {
+            background: rgba(246, 70, 93, 0.2);
+            color: var(--color-danger);
+        }
+        
+        .status-badge.rejected {
+            background: rgba(246, 70, 93, 0.2);
+            color: var(--color-danger);
+        }
+        
+        .user-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .action-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .action-btn.view {
+            background: var(--color-info);
+            color: white;
+        }
+        
+        .action-btn.edit {
+            background: var(--color-warning);
+            color: white;
+        }
+        
+        .action-btn.ban {
+            background: var(--color-danger);
+            color: white;
+        }
+        
+        .action-btn.unban {
+            background: var(--color-success);
+            color: white;
+        }
+        
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .pagination-info {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+        
+        .pagination-controls {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .page-btn {
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .page-btn:hover {
+            border-color: var(--color-buy);
+            color: var(--color-buy);
+        }
+        
+        .page-btn.active {
+            background: var(--color-buy);
+            border-color: var(--color-buy);
+            color: white;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .filters-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .users-table {
+                font-size: 12px;
+            }
+            
+            .users-table th,
+            .users-table td {
+                padding: 12px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-cube"></i>
+                <span>KOXX Admin</span>
+            </div>
+        </div>
+        
+        <div class="admin-info">
+            <div class="admin-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="admin-name">Admin User</div>
+            <div class="admin-role">Super Administrator</div>
+        </div>
+        
+        <nav class="nav-menu">
+            <a href="admin-dashboard.html" class="nav-item">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="admin-users.html" class="nav-item active">
+                <i class="fas fa-users"></i>
+                <span>Users</span>
+            </a>
+            <a href="admin-trades.html" class="nav-item">
+                <i class="fas fa-exchange-alt"></i>
+                <span>Trades</span>
+            </a>
+            <a href="admin-disputes.html" class="nav-item">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>Disputes</span>
+            </a>
+            <a href="admin-wallet.html" class="nav-item">
+                <i class="fas fa-wallet"></i>
+                <span>Wallet</span>
+            </a>
+            <a href="admin-settings.html" class="nav-item">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+            <a href="admin-support.html" class="nav-item">
+                <i class="fas fa-headset"></i>
+                <span>Support</span>
+            </a>
+            <a href="admin-reports.html" class="nav-item">
+                <i class="fas fa-chart-bar"></i>
+                <span>Reports</span>
+            </a>
+        </nav>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">User Management</h1>
+                <p style="color: var(--text-muted); margin-top: 4px;">Manage platform users and their accounts</p>
+            </div>
+            <div class="header-actions">
+                <button class="header-btn" onclick="exportUsers()">
+                    <i class="fas fa-download"></i>
+                    <span>Export</span>
+                </button>
+                <button class="header-btn primary" onclick="addUser()">
+                    <i class="fas fa-plus"></i>
+                    <span>Add User</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Filters -->
+        <div class="filters-section">
+            <div class="filters-header">
+                <div class="filters-title">Filters</div>
+                <button class="header-btn" onclick="clearFilters()">Clear All</button>
+            </div>
+            
+            <div class="filters-grid">
+                <div class="filter-group">
+                    <label class="filter-label">Search</label>
+                    <input type="text" class="filter-input" placeholder="Search by name, email, or ID" id="searchInput">
+                </div>
+                
+                <div class="filter-group">
+                    <label class="filter-label">Status</label>
+                    <select class="filter-select" id="statusFilter">
+                        <option value="">All Status</option>
+                        <option value="verified">Verified</option>
+                        <option value="pending">Pending</option>
+                        <option value="suspended">Suspended</option>
+                        <option value="rejected">Rejected</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label class="filter-label">KYC Level</label>
+                    <select class="filter-select" id="kycFilter">
+                        <option value="">All Levels</option>
+                        <option value="basic">Basic</option>
+                        <option value="advanced">Advanced</option>
+                        <option value="pro">Pro</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label class="filter-label">Membership</label>
+                    <select class="filter-select" id="membershipFilter">
+                        <option value="">All Memberships</option>
+                        <option value="free">Free</option>
+                        <option value="premium">Premium</option>
+                        <option value="pro">Pro</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label class="filter-label">Date Range</label>
+                    <input type="date" class="filter-input" id="dateFrom">
+                </div>
+                
+                <div class="filter-group">
+                    <label class="filter-label">To</label>
+                    <input type="date" class="filter-input" id="dateTo">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Users Table -->
+        <div class="users-section">
+            <div class="table-header">
+                <div class="table-title">Users (1,247 total)</div>
+                <div class="table-actions">
+                    <button class="table-btn" onclick="bulkAction('verify')">Verify Selected</button>
+                    <button class="table-btn" onclick="bulkAction('suspend')">Suspend Selected</button>
+                    <button class="table-btn" onclick="bulkAction('delete')">Delete Selected</button>
+                </div>
+            </div>
+            
+            <table class="users-table">
+                <thead>
+                    <tr>
+                        <th>
+                            <input type="checkbox" id="selectAll" onchange="toggleSelectAll()">
+                        </th>
+                        <th>User</th>
+                        <th>Status</th>
+                        <th>KYC Level</th>
+                        <th>Membership</th>
+                        <th>Joined</th>
+                        <th>Last Active</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="checkbox" class="user-select" value="1"></td>
+                        <td>
+                            <div class="user-info">
+                                <div class="user-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="user-details">
+                                    <div class="user-name">John Doe</div>
+                                    <div class="user-email">john.doe@email.com</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td><span class="status-badge verified">Verified</span></td>
+                        <td>Pro</td>
+                        <td>Premium</td>
+                        <td>Dec 1, 2024</td>
+                        <td>2 minutes ago</td>
+                        <td>
+                            <div class="user-actions">
+                                <button class="action-btn view" onclick="viewUser(1)">View</button>
+                                <button class="action-btn edit" onclick="editUser(1)">Edit</button>
+                                <button class="action-btn ban" onclick="suspendUser(1)">Suspend</button>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td><input type="checkbox" class="user-select" value="2"></td>
+                        <td>
+                            <div class="user-info">
+                                <div class="user-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="user-details">
+                                    <div class="user-name">Sarah Smith</div>
+                                    <div class="user-email">sarah.smith@email.com</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td><span class="status-badge pending">Pending</span></td>
+                        <td>Basic</td>
+                        <td>Free</td>
+                        <td>Dec 5, 2024</td>
+                        <td>1 hour ago</td>
+                        <td>
+                            <div class="user-actions">
+                                <button class="action-btn view" onclick="viewUser(2)">View</button>
+                                <button class="action-btn edit" onclick="editUser(2)">Edit</button>
+                                <button class="action-btn ban" onclick="suspendUser(2)">Suspend</button>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td><input type="checkbox" class="user-select" value="3"></td>
+                        <td>
+                            <div class="user-info">
+                                <div class="user-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="user-details">
+                                    <div class="user-name">Mike Johnson</div>
+                                    <div class="user-email">mike.johnson@email.com</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td><span class="status-badge suspended">Suspended</span></td>
+                        <td>Advanced</td>
+                        <td>Premium</td>
+                        <td>Nov 20, 2024</td>
+                        <td>3 days ago</td>
+                        <td>
+                            <div class="user-actions">
+                                <button class="action-btn view" onclick="viewUser(3)">View</button>
+                                <button class="action-btn edit" onclick="editUser(3)">Edit</button>
+                                <button class="action-btn unban" onclick="unsuspendUser(3)">Unsuspend</button>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td><input type="checkbox" class="user-select" value="4"></td>
+                        <td>
+                            <div class="user-info">
+                                <div class="user-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="user-details">
+                                    <div class="user-name">Emily Davis</div>
+                                    <div class="user-email">emily.davis@email.com</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td><span class="status-badge verified">Verified</span></td>
+                        <td>Pro</td>
+                        <td>Pro</td>
+                        <td>Nov 15, 2024</td>
+                        <td>5 minutes ago</td>
+                        <td>
+                            <div class="user-actions">
+                                <button class="action-btn view" onclick="viewUser(4)">View</button>
+                                <button class="action-btn edit" onclick="editUser(4)">Edit</button>
+                                <button class="action-btn ban" onclick="suspendUser(4)">Suspend</button>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td><input type="checkbox" class="user-select" value="5"></td>
+                        <td>
+                            <div class="user-info">
+                                <div class="user-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="user-details">
+                                    <div class="user-name">David Wilson</div>
+                                    <div class="user-email">david.wilson@email.com</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td><span class="status-badge rejected">Rejected</span></td>
+                        <td>Basic</td>
+                        <td>Free</td>
+                        <td>Dec 3, 2024</td>
+                        <td>1 day ago</td>
+                        <td>
+                            <div class="user-actions">
+                                <button class="action-btn view" onclick="viewUser(5)">View</button>
+                                <button class="action-btn edit" onclick="editUser(5)">Edit</button>
+                                <button class="action-btn ban" onclick="suspendUser(5)">Suspend</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <!-- Pagination -->
+            <div class="pagination">
+                <div class="pagination-info">
+                    Showing 1-5 of 1,247 users
+                </div>
+                <div class="pagination-controls">
+                    <button class="page-btn" onclick="changePage('prev')">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="page-btn active">1</button>
+                    <button class="page-btn" onclick="changePage(2)">2</button>
+                    <button class="page-btn" onclick="changePage(3)">3</button>
+                    <button class="page-btn" onclick="changePage('next')">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Toggle select all
+        function toggleSelectAll() {
+            const selectAll = document.getElementById('selectAll');
+            const userSelects = document.querySelectorAll('.user-select');
+            
+            userSelects.forEach(select => {
+                select.checked = selectAll.checked;
+            });
+        }
+        
+        // View user
+        function viewUser(userId) {
+            showNotification(`Viewing user ${userId}`);
+            // In real app, this would open a modal or navigate to user details
+        }
+        
+        // Edit user
+        function editUser(userId) {
+            showNotification(`Editing user ${userId}`);
+            // In real app, this would open an edit modal
+        }
+        
+        // Suspend user
+        function suspendUser(userId) {
+            const confirmSuspend = confirm('Are you sure you want to suspend this user?');
+            if (confirmSuspend) {
+                showNotification(`User ${userId} suspended successfully`);
+                // Update UI to show suspended status
+                const row = event.target.closest('tr');
+                const statusCell = row.querySelector('.status-badge');
+                statusCell.textContent = 'Suspended';
+                statusCell.className = 'status-badge suspended';
+                
+                // Change button to unsuspend
+                const actionBtn = event.target;
+                actionBtn.textContent = 'Unsuspend';
+                actionBtn.className = 'action-btn unban';
+                actionBtn.onclick = () => unsuspendUser(userId);
+            }
+        }
+        
+        // Unsuspend user
+        function unsuspendUser(userId) {
+            const confirmUnsuspend = confirm('Are you sure you want to unsuspend this user?');
+            if (confirmUnsuspend) {
+                showNotification(`User ${userId} unsuspended successfully`);
+                // Update UI to show verified status
+                const row = event.target.closest('tr');
+                const statusCell = row.querySelector('.status-badge');
+                statusCell.textContent = 'Verified';
+                statusCell.className = 'status-badge verified';
+                
+                // Change button to suspend
+                const actionBtn = event.target;
+                actionBtn.textContent = 'Suspend';
+                actionBtn.className = 'action-btn ban';
+                actionBtn.onclick = () => suspendUser(userId);
+            }
+        }
+        
+        // Bulk actions
+        function bulkAction(action) {
+            const selectedUsers = document.querySelectorAll('.user-select:checked');
+            
+            if (selectedUsers.length === 0) {
+                showNotification('Please select users first');
+                return;
+            }
+            
+            const userIds = Array.from(selectedUsers).map(select => select.value);
+            
+            switch (action) {
+                case 'verify':
+                    if (confirm(`Verify ${userIds.length} selected users?`)) {
+                        showNotification(`${userIds.length} users verified successfully`);
+                    }
+                    break;
+                case 'suspend':
+                    if (confirm(`Suspend ${userIds.length} selected users?`)) {
+                        showNotification(`${userIds.length} users suspended successfully`);
+                    }
+                    break;
+                case 'delete':
+                    if (confirm(`Delete ${userIds.length} selected users? This action cannot be undone.`)) {
+                        showNotification(`${userIds.length} users deleted successfully`);
+                    }
+                    break;
+            }
+        }
+        
+        // Add user
+        function addUser() {
+            showNotification('Opening add user form...');
+            // In real app, this would open a modal or navigate to add user page
+        }
+        
+        // Export users
+        function exportUsers() {
+            showNotification('Exporting user data...');
+            setTimeout(() => {
+                showNotification('User data exported successfully');
+            }, 2000);
+        }
+        
+        // Clear filters
+        function clearFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('statusFilter').value = '';
+            document.getElementById('kycFilter').value = '';
+            document.getElementById('membershipFilter').value = '';
+            document.getElementById('dateFrom').value = '';
+            document.getElementById('dateTo').value = '';
+            
+            showNotification('Filters cleared');
+        }
+        
+        // Change page
+        function changePage(page) {
+            showNotification(`Loading page ${page}...`);
+            // In real app, this would load new data
+        }
+        
+        // Show notification
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--color-buy);
+                color: white;
+                padding: 12px 24px;
+                border-radius: 8px;
+                font-weight: 600;
+                z-index: 1000;
+                animation: slideIn 0.3s ease-out;
+            `;
+            notification.textContent = message;
+            
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideIn {
+                    from {
+                        transform: translateX(100%);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+                style.remove();
+            }, 3000);
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add search functionality
+            document.getElementById('searchInput').addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const rows = document.querySelectorAll('.users-table tbody tr');
+                
+                rows.forEach(row => {
+                    const text = row.textContent.toLowerCase();
+                    row.style.display = text.includes(searchTerm) ? '' : 'none';
+                });
+            });
+            
+            // Add filter functionality
+            document.getElementById('statusFilter').addEventListener('change', function() {
+                filterUsers();
+            });
+            
+            document.getElementById('kycFilter').addEventListener('change', function() {
+                filterUsers();
+            });
+            
+            document.getElementById('membershipFilter').addEventListener('change', function() {
+                filterUsers();
+            });
+        });
+        
+        // Filter users
+        function filterUsers() {
+            const statusFilter = document.getElementById('statusFilter').value;
+            const kycFilter = document.getElementById('kycFilter').value;
+            const membershipFilter = document.getElementById('membershipFilter').value;
+            
+            const rows = document.querySelectorAll('.users-table tbody tr');
+            
+            rows.forEach(row => {
+                const status = row.querySelector('.status-badge').textContent.toLowerCase();
+                const kycLevel = row.cells[3].textContent.toLowerCase();
+                const membership = row.cells[4].textContent.toLowerCase();
+                
+                const statusMatch = !statusFilter || status === statusFilter;
+                const kycMatch = !kycFilter || kycLevel === kycFilter;
+                const membershipMatch = !membershipFilter || membership === membershipFilter;
+                
+                row.style.display = (statusMatch && kycMatch && membershipMatch) ? '' : 'none';
+            });
+        }
+    </script>
+</body>
+</html>

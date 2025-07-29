@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KOXX Admin - Dashboard</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        /* Design System Variables */
+        :root {
+            /* Colors */
+            --bg-primary: #0B0E11;
+            --bg-secondary: #1A1D21;
+            --bg-card: #242530;
+            --bg-elevated: #2B2F36;
+            --border-color: #2B2F36;
+            
+            --text-primary: #FFFFFF;
+            --text-secondary: #B7BDC6;
+            --text-muted: #848E9C;
+            
+            --color-buy: #00D395;
+            --color-sell: #F6465D;
+            --color-warning: #FFA500;
+            --color-info: #3861FB;
+            --color-success: #00D395;
+            --color-danger: #F6465D;
+        }
+        
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 280px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        
+        .sidebar-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-buy);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .admin-info {
+            margin-top: 16px;
+            padding: 16px;
+            background: var(--bg-card);
+            border-radius: 12px;
+        }
+        
+        .admin-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--color-buy) 0%, #00B583 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+            margin-bottom: 12px;
+        }
+        
+        .admin-name {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .admin-role {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .nav-menu {
+            padding: 16px 0;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 24px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+        
+        .nav-item:hover {
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+        }
+        
+        .nav-item.active {
+            background: rgba(0, 211, 149, 0.1);
+            color: var(--color-buy);
+            border-left-color: var(--color-buy);
+        }
+        
+        .nav-item i {
+            width: 20px;
+            font-size: 16px;
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            padding: 24px;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+        
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .header-btn {
+            padding: 8px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .header-btn:hover {
+            border-color: var(--color-buy);
+            color: var(--color-buy);
+        }
+        
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+        
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--color-buy), var(--color-info));
+        }
+        
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .stat-title {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: white;
+        }
+        
+        .stat-icon.users {
+            background: linear-gradient(135deg, var(--color-info) 0%, #2952E3 100%);
+        }
+        
+        .stat-icon.trades {
+            background: linear-gradient(135deg, var(--color-buy) 0%, #00B583 100%);
+        }
+        
+        .stat-icon.volume {
+            background: linear-gradient(135deg, var(--color-warning) 0%, #FF8C00 100%);
+        }
+        
+        .stat-icon.revenue {
+            background: linear-gradient(135deg, var(--color-success) 0%, #00B583 100%);
+        }
+        
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .stat-change {
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .stat-change.positive {
+            color: var(--color-success);
+        }
+        
+        .stat-change.negative {
+            color: var(--color-danger);
+        }
+        
+        /* Charts Section */
+        .charts-section {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+        
+        .chart-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+        }
+        
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .chart-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .chart-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .chart-btn {
+            padding: 6px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .chart-btn.active {
+            background: var(--color-buy);
+            border-color: var(--color-buy);
+            color: white;
+        }
+        
+        .chart-container {
+            height: 300px;
+            position: relative;
+        }
+        
+        /* Recent Activity */
+        .activity-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+        }
+        
+        .activity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .activity-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 8px;
+            transition: background 0.2s ease;
+        }
+        
+        .activity-item:hover {
+            background: var(--bg-elevated);
+        }
+        
+        .activity-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: white;
+        }
+        
+        .activity-icon.trade {
+            background: var(--color-buy);
+        }
+        
+        .activity-icon.user {
+            background: var(--color-info);
+        }
+        
+        .activity-icon.warning {
+            background: var(--color-warning);
+        }
+        
+        .activity-icon.danger {
+            background: var(--color-danger);
+        }
+        
+        .activity-content {
+            flex: 1;
+        }
+        
+        .activity-text {
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+        
+        .activity-time {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .activity-status {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        
+        .activity-status.success {
+            background: rgba(0, 211, 149, 0.2);
+            color: var(--color-success);
+        }
+        
+        .activity-status.pending {
+            background: rgba(255, 165, 0, 0.2);
+            color: var(--color-warning);
+        }
+        
+        .activity-status.danger {
+            background: rgba(246, 70, 93, 0.2);
+            color: var(--color-danger);
+        }
+        
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+        
+        .action-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .action-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            border-color: var(--color-buy);
+        }
+        
+        .action-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            font-size: 20px;
+            color: white;
+        }
+        
+        .action-icon.users {
+            background: linear-gradient(135deg, var(--color-info) 0%, #2952E3 100%);
+        }
+        
+        .action-icon.trades {
+            background: linear-gradient(135deg, var(--color-buy) 0%, #00B583 100%);
+        }
+        
+        .action-icon.disputes {
+            background: linear-gradient(135deg, var(--color-warning) 0%, #FF8C00 100%);
+        }
+        
+        .action-icon.settings {
+            background: linear-gradient(135deg, var(--color-danger) 0%, #E63946 100%);
+        }
+        
+        .action-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .action-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .charts-section {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-cube"></i>
+                <span>KOXX Admin</span>
+            </div>
+        </div>
+        
+        <div class="admin-info">
+            <div class="admin-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="admin-name">Admin User</div>
+            <div class="admin-role">Super Administrator</div>
+        </div>
+        
+        <nav class="nav-menu">
+            <a href="admin-dashboard.html" class="nav-item active">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="admin-users.html" class="nav-item">
+                <i class="fas fa-users"></i>
+                <span>Users</span>
+            </a>
+            <a href="admin-trades.html" class="nav-item">
+                <i class="fas fa-exchange-alt"></i>
+                <span>Trades</span>
+            </a>
+            <a href="admin-disputes.html" class="nav-item">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>Disputes</span>
+            </a>
+            <a href="admin-wallet.html" class="nav-item">
+                <i class="fas fa-wallet"></i>
+                <span>Wallet</span>
+            </a>
+            <a href="admin-settings.html" class="nav-item">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+            <a href="admin-support.html" class="nav-item">
+                <i class="fas fa-headset"></i>
+                <span>Support</span>
+            </a>
+            <a href="admin-reports.html" class="nav-item">
+                <i class="fas fa-chart-bar"></i>
+                <span>Reports</span>
+            </a>
+        </nav>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">Dashboard</h1>
+                <p style="color: var(--text-muted); margin-top: 4px;">Platform overview and statistics</p>
+            </div>
+            <div class="header-actions">
+                <button class="header-btn" onclick="refreshData()">
+                    <i class="fas fa-sync-alt"></i>
+                    <span>Refresh</span>
+                </button>
+                <button class="header-btn" onclick="exportData()">
+                    <i class="fas fa-download"></i>
+                    <span>Export</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-title">Total Users</div>
+                    <div class="stat-icon users">
+                        <i class="fas fa-users"></i>
+                    </div>
+                </div>
+                <div class="stat-value">12,847</div>
+                <div class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>+12.5% from last month</span>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-title">Active Trades</div>
+                    <div class="stat-icon trades">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                </div>
+                <div class="stat-value">1,234</div>
+                <div class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>+8.3% from last week</span>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-title">Trading Volume</div>
+                    <div class="stat-icon volume">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                </div>
+                <div class="stat-value">$2.4M</div>
+                <div class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>+15.2% from last month</span>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-title">Platform Revenue</div>
+                    <div class="stat-icon revenue">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                </div>
+                <div class="stat-value">$45,230</div>
+                <div class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>+22.1% from last month</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Charts Section -->
+        <div class="charts-section">
+            <div class="chart-card">
+                <div class="chart-header">
+                    <div class="chart-title">Trading Activity</div>
+                    <div class="chart-actions">
+                        <button class="chart-btn active" onclick="changeChartPeriod('7d')">7D</button>
+                        <button class="chart-btn" onclick="changeChartPeriod('30d')">30D</button>
+                        <button class="chart-btn" onclick="changeChartPeriod('90d')">90D</button>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="tradingChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-card">
+                <div class="chart-header">
+                    <div class="chart-title">User Growth</div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="userChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <div class="action-card" onclick="navigateTo('admin-users.html')">
+                <div class="action-icon users">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="action-title">Manage Users</div>
+                <div class="action-desc">View, edit, and ban users</div>
+            </div>
+            
+            <div class="action-card" onclick="navigateTo('admin-trades.html')">
+                <div class="action-icon trades">
+                    <i class="fas fa-exchange-alt"></i>
+                </div>
+                <div class="action-title">Monitor Trades</div>
+                <div class="action-desc">Review and control trading activity</div>
+            </div>
+            
+            <div class="action-card" onclick="navigateTo('admin-disputes.html')">
+                <div class="action-icon disputes">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="action-title">Resolve Disputes</div>
+                <div class="action-desc">Handle trade disputes and conflicts</div>
+            </div>
+            
+            <div class="action-card" onclick="navigateTo('admin-settings.html')">
+                <div class="action-icon settings">
+                    <i class="fas fa-cog"></i>
+                </div>
+                <div class="action-title">Platform Settings</div>
+                <div class="action-desc">Configure fees, limits, and features</div>
+            </div>
+        </div>
+        
+        <!-- Recent Activity -->
+        <div class="activity-section">
+            <div class="activity-header">
+                <div class="activity-title">Recent Activity</div>
+                <button class="header-btn" onclick="viewAllActivity()">View All</button>
+            </div>
+            
+            <div class="activity-list">
+                <div class="activity-item">
+                    <div class="activity-icon trade">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-text">New trade completed: BTC/USDT - $1,250</div>
+                        <div class="activity-time">2 minutes ago</div>
+                    </div>
+                    <div class="activity-status success">Completed</div>
+                </div>
+                
+                <div class="activity-item">
+                    <div class="activity-icon user">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-text">New user registered: john.doe@email.com</div>
+                        <div class="activity-time">5 minutes ago</div>
+                    </div>
+                    <div class="activity-status success">Verified</div>
+                </div>
+                
+                <div class="activity-item">
+                    <div class="activity-icon warning">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-text">Dispute opened: Trade #12345</div>
+                        <div class="activity-time">15 minutes ago</div>
+                    </div>
+                    <div class="activity-status pending">Pending</div>
+                </div>
+                
+                <div class="activity-item">
+                    <div class="activity-icon danger">
+                        <i class="fas fa-ban"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-text">User suspended: spam@email.com</div>
+                        <div class="activity-time">1 hour ago</div>
+                    </div>
+                    <div class="activity-status danger">Suspended</div>
+                </div>
+                
+                <div class="activity-item">
+                    <div class="activity-icon trade">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-text">Large withdrawal request: $5,000</div>
+                        <div class="activity-time">2 hours ago</div>
+                    </div>
+                    <div class="activity-status pending">Pending Approval</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Initialize charts
+        function initializeCharts() {
+            // Trading Activity Chart
+            const tradingCtx = document.getElementById('tradingChart').getContext('2d');
+            const tradingChart = new Chart(tradingCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'Trading Volume',
+                        data: [1200, 1900, 3000, 5000, 2000, 3000, 4000],
+                        borderColor: '#00D395',
+                        backgroundColor: 'rgba(0, 211, 149, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#848E9C'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#848E9C'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // User Growth Chart
+            const userCtx = document.getElementById('userChart').getContext('2d');
+            const userChart = new Chart(userCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['New Users', 'Active Users', 'Inactive Users'],
+                    datasets: [{
+                        data: [300, 1200, 500],
+                        backgroundColor: [
+                            '#00D395',
+                            '#3861FB',
+                            '#848E9C'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#848E9C',
+                                padding: 20
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Store chart references
+            window.tradingChart = tradingChart;
+            window.userChart = userChart;
+        }
+        
+        // Change chart period
+        function changeChartPeriod(period) {
+            // Update active button
+            document.querySelectorAll('.chart-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Update chart data based on period
+            const periods = {
+                '7d': [1200, 1900, 3000, 5000, 2000, 3000, 4000],
+                '30d': [1000, 1500, 2000, 2500, 3000, 3500, 4000],
+                '90d': [800, 1200, 1600, 2000, 2400, 2800, 3200]
+            };
+            
+            if (window.tradingChart && periods[period]) {
+                window.tradingChart.data.datasets[0].data = periods[period];
+                window.tradingChart.update();
+            }
+        }
+        
+        // Navigation functions
+        function navigateTo(page) {
+            window.location.href = page;
+        }
+        
+        function refreshData() {
+            // Simulate data refresh
+            showNotification('Refreshing data...');
+            setTimeout(() => {
+                showNotification('Data updated successfully');
+            }, 1000);
+        }
+        
+        function exportData() {
+            // Simulate data export
+            showNotification('Exporting dashboard data...');
+            setTimeout(() => {
+                showNotification('Data exported successfully');
+            }, 2000);
+        }
+        
+        function viewAllActivity() {
+            navigateTo('admin-activity.html');
+        }
+        
+        // Show notification
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--color-buy);
+                color: white;
+                padding: 12px 24px;
+                border-radius: 8px;
+                font-weight: 600;
+                z-index: 1000;
+                animation: slideIn 0.3s ease-out;
+            `;
+            notification.textContent = message;
+            
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideIn {
+                    from {
+                        transform: translateX(100%);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+                style.remove();
+            }, 3000);
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCharts();
+            
+            // Auto-refresh stats every 30 seconds
+            setInterval(() => {
+                // Update random stats
+                const statValues = document.querySelectorAll('.stat-value');
+                statValues.forEach(stat => {
+                    const currentValue = parseInt(stat.textContent.replace(/[^\d]/g, ''));
+                    const newValue = currentValue + Math.floor(Math.random() * 10);
+                    stat.textContent = stat.textContent.replace(/\d+/, newValue);
+                });
+            }, 30000);
+        });
+    </script>
+</body>
+</html>
