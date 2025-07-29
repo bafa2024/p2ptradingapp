@@ -1,0 +1,1001 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P2Ptrading - P2P Crypto Trading</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Design System Variables */
+        :root {
+            /* Colors */
+            --bg-primary: #0B0E11;
+            --bg-secondary: #1A1D21;
+            --bg-card: #242530;
+            --bg-elevated: #2B2F36;
+            --border-color: #2B2F36;
+            
+            --text-primary: #FFFFFF;
+            --text-secondary: #B7BDC6;
+            --text-muted: #848E9C;
+            
+            --color-buy: #00D395;
+            --color-sell: #F6465D;
+            --color-warning: #FFA500;
+            --color-info: #3861FB;
+            
+            /* Spacing */
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-xxl: 48px;
+            
+            /* Border Radius */
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+        }
+        
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--bg-elevated);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3a3f4b;
+        }
+        
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 600;
+            margin-bottom: 0;
+        }
+        
+        .text-muted-custom {
+            color: var(--text-muted) !important;
+        }
+        
+        .text-secondary-custom {
+            color: var(--text-secondary) !important;
+        }
+        
+        /* Card Styles */
+        .custom-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: var(--space-md);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .custom-card:hover {
+            border-color: var(--color-buy);
+            box-shadow: 0 4px 12px rgba(0, 211, 149, 0.1);
+        }
+        
+        /* Button Styles */
+        .btn-primary-custom {
+            background: linear-gradient(135deg, var(--color-buy) 0%, #00B583 100%);
+            border: none;
+            border-radius: var(--radius-md);
+            padding: 12px 24px;
+            font-weight: 600;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 211, 149, 0.3);
+            transition: all 0.2s ease;
+        }
+        
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 211, 149, 0.4);
+        }
+        
+        .btn-primary-custom:active {
+            transform: scale(0.95);
+        }
+        
+        .btn-secondary-custom {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 12px 24px;
+            font-weight: 600;
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+        }
+        
+        .btn-secondary-custom:hover {
+            background: var(--bg-elevated);
+            border-color: var(--text-muted);
+        }
+        
+        .btn-sell {
+            background: linear-gradient(135deg, var(--color-sell) 0%, #E63946 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(246, 70, 93, 0.3);
+        }
+        
+        .btn-sell:hover {
+            box-shadow: 0 6px 20px rgba(246, 70, 93, 0.4);
+        }
+        
+        /* Input Styles */
+        .form-control-custom {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 12px 16px;
+            color: var(--text-primary);
+            font-size: 16px;
+            transition: all 0.2s ease;
+        }
+        
+        .form-control-custom:focus {
+            background: var(--bg-card);
+            border-color: var(--color-buy);
+            color: var(--text-primary);
+            box-shadow: 0 0 0 3px rgba(0, 211, 149, 0.1);
+            outline: none;
+        }
+        
+        .form-control-custom::placeholder {
+            color: var(--text-muted);
+        }
+        
+        /* Search Bar */
+        .search-bar {
+            position: relative;
+        }
+        
+        .search-bar input {
+            padding-left: 48px;
+        }
+        
+        .search-bar .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+        
+        /* Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: var(--space-sm) 0;
+            z-index: 1000;
+        }
+        
+        .nav-item-custom {
+            flex: 1;
+            text-align: center;
+            padding: var(--space-sm);
+            color: var(--text-muted);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .nav-item-custom:hover {
+            color: var(--text-primary);
+        }
+        
+        .nav-item-custom.active {
+            color: var(--color-buy);
+        }
+        
+        .nav-item-custom i {
+            font-size: 24px;
+            display: block;
+            margin-bottom: 4px;
+        }
+        
+        .nav-item-custom span {
+            font-size: 12px;
+        }
+        
+        /* Header */
+        .app-header {
+            background: var(--bg-secondary);
+            padding: var(--space-md);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        /* Balance Card */
+        .balance-card {
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-secondary) 100%);
+            border-radius: var(--radius-xl);
+            padding: var(--space-lg);
+            margin-bottom: var(--space-lg);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        }
+        
+        .balance-amount {
+            font-size: 36px;
+            font-weight: 700;
+            margin: var(--space-sm) 0;
+        }
+        
+        /* Transaction List */
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-md);
+            border-bottom: 1px solid var(--border-color);
+            transition: background 0.2s ease;
+        }
+        
+        .transaction-item:hover {
+            background: var(--bg-card);
+        }
+        
+        .transaction-item:last-child {
+            border-bottom: none;
+        }
+        
+        .transaction-amount {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .transaction-amount.positive {
+            color: var(--color-buy);
+        }
+        
+        .transaction-amount.negative {
+            color: var(--color-sell);
+        }
+        
+        /* Trade Cards */
+        .trade-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: var(--space-md);
+            margin-bottom: var(--space-md);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .trade-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        .trade-type {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .trade-type.buy {
+            background: rgba(0, 211, 149, 0.1);
+            color: var(--color-buy);
+        }
+        
+        .trade-type.sell {
+            background: rgba(246, 70, 93, 0.1);
+            color: var(--color-sell);
+        }
+        
+        /* Filter Modal */
+        .modal-content-custom {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+        }
+        
+        .modal-header-custom {
+            border-bottom: 1px solid var(--border-color);
+            padding: var(--space-lg);
+        }
+        
+        .modal-body-custom {
+            padding: var(--space-lg);
+        }
+        
+        /* Toggle Buttons */
+        .toggle-group {
+            display: flex;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            padding: 4px;
+            margin-bottom: var(--space-lg);
+        }
+        
+        .toggle-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-weight: 600;
+            border-radius: var(--radius-sm);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .toggle-btn.active {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Action Buttons Grid */
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--space-md);
+            margin: var(--space-lg) 0;
+        }
+        
+        .action-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-md);
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .action-btn:hover {
+            background: var(--bg-elevated);
+            transform: translateY(-2px);
+        }
+        
+        .action-btn i {
+            font-size: 24px;
+            margin-bottom: var(--space-sm);
+            color: var(--color-buy);
+        }
+        
+        .action-btn span {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        /* Chat Interface */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            max-height: 600px;
+        }
+        
+        .chat-header {
+            background: var(--bg-secondary);
+            padding: var(--space-md);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: var(--space-md);
+            background: var(--bg-primary);
+        }
+        
+        .message {
+            max-width: 75%;
+            margin-bottom: var(--space-md);
+            animation: messageSlide 0.3s ease-out;
+        }
+        
+        @keyframes messageSlide {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .message.sent {
+            margin-left: auto;
+        }
+        
+        .message-bubble {
+            padding: 12px 16px;
+            border-radius: var(--radius-xl);
+            word-wrap: break-word;
+        }
+        
+        .message.sent .message-bubble {
+            background: var(--color-buy);
+            color: white;
+        }
+        
+        .message.received .message-bubble {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+        
+        .chat-input {
+            background: var(--bg-secondary);
+            padding: var(--space-md);
+            border-top: 1px solid var(--border-color);
+        }
+        
+        /* Loading Animation */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid var(--bg-elevated);
+            border-radius: 50%;
+            border-top-color: var(--color-buy);
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Page Sections */
+        .page-section {
+            display: none;
+            padding-bottom: 80px; /* Space for bottom nav */
+        }
+        
+        .page-section.active {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .balance-amount {
+                font-size: 28px;
+            }
+            
+            .action-buttons {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (min-width: 768px) {
+            .container-custom {
+                max-width: 720px;
+                margin: 0 auto;
+            }
+            
+            .bottom-nav {
+                display: none;
+            }
+            
+            .page-section {
+                padding-bottom: var(--space-xl);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Home Section -->
+    <section id="home" class="page-section active">
+        <!-- Header -->
+        <div class="app-header">
+            <div class="container-fluid">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">P2Ptrading</h4>
+                    <div class="d-flex align-items-center gap-3">
+                        <span class="text-secondary-custom">Balance:</span>
+                        <span class="fw-bold">$120.50</span>
+                        <button class="btn btn-sm btn-outline-secondary" onclick="window.location.href='../admin/index.html'" style="font-size: 12px; padding: 4px 8px;">
+                            <i class="fas fa-cog"></i>
+                        </button>
+                        <i class="fas fa-bars text-secondary-custom"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Search Bar -->
+        <div class="container-fluid p-3">
+            <div class="search-bar">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="form-control form-control-custom" placeholder="Search crypto...">
+            </div>
+        </div>
+        
+        <!-- Quick Stats -->
+        <div class="container-fluid px-3">
+            <div class="row g-3 mb-3">
+                <div class="col-6">
+                    <div class="custom-card text-center">
+                        <p class="text-muted-custom mb-1">USDT/IQD</p>
+                        <h5 class="mb-0">1,480</h5>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="custom-card text-center">
+                        <p class="text-muted-custom mb-1">Your Trades</p>
+                        <h5 class="mb-0">156</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Trade Listings -->
+        <div class="container-fluid px-3">
+            <h6 class="mb-3">Active Trades</h6>
+            
+            <div class="trade-card" onclick="showTradeDetails()">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <div>
+                        <span class="trade-type buy">BUY</span>
+                        <span class="ms-2 text-secondary-custom">User123</span>
+                    </div>
+                    <i class="fas fa-chevron-right text-muted-custom"></i>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="mb-1">USDT</h6>
+                        <p class="text-muted-custom mb-0">Bank Transfer</p>
+                    </div>
+                    <div class="text-end">
+                        <h5 class="mb-1">99.00</h5>
+                        <p class="text-muted-custom mb-0">IQD/USDT</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="trade-card">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <div>
+                        <span class="trade-type sell">SELL</span>
+                        <span class="ms-2 text-secondary-custom">User456</span>
+                    </div>
+                    <i class="fas fa-chevron-right text-muted-custom"></i>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="mb-1">USDT</h6>
+                        <p class="text-muted-custom mb-0">Transfer</p>
+                    </div>
+                    <div class="text-end">
+                        <h5 class="mb-1">99.50</h5>
+                        <p class="text-muted-custom mb-0">IQD/USDT</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="trade-card">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <div>
+                        <span class="trade-type buy">BUY</span>
+                        <span class="ms-2 text-secondary-custom">User789</span>
+                    </div>
+                    <i class="fas fa-chevron-right text-muted-custom"></i>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="mb-1">USDT</h6>
+                        <p class="text-muted-custom mb-0">Trypster</p>
+                    </div>
+                    <div class="text-end">
+                        <h5 class="mb-1">99.50</h5>
+                        <p class="text-muted-custom mb-0">IQD/USDT</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Post Ad Section -->
+    <section id="post-ad" class="page-section">
+        <div class="app-header">
+            <div class="container-fluid">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-arrow-left me-3" onclick="showSection('home')"></i>
+                    <h5 class="mb-0">Post Ad</h5>
+                </div>
+            </div>
+        </div>
+        
+        <div class="container-fluid p-3">
+            <!-- Type Selection -->
+            <div class="toggle-group">
+                <button class="toggle-btn active" onclick="toggleType(this, 'buy')">Buy</button>
+                <button class="toggle-btn" onclick="toggleType(this, 'sell')">Sell</button>
+            </div>
+            
+            <!-- Form -->
+            <div class="mb-3">
+                <label class="text-secondary-custom mb-2">Crypto</label>
+                <select class="form-control form-control-custom">
+                    <option>USDT</option>
+                    <option>TRX</option>
+                </select>
+            </div>
+            
+            <div class="mb-3">
+                <label class="text-secondary-custom mb-2">Price</label>
+                <input type="number" class="form-control form-control-custom" placeholder="99.5" value="99.5">
+                <small class="text-muted-custom">Market Price: 100.0</small>
+            </div>
+            
+            <div class="mb-3">
+                <label class="text-secondary-custom mb-2">Amount</label>
+                <input type="number" class="form-control form-control-custom" placeholder="Enter amount">
+            </div>
+            
+            <div class="mb-4">
+                <label class="text-secondary-custom mb-2">Payment Method</label>
+                <input type="text" class="form-control form-control-custom" placeholder="Enter payment method">
+            </div>
+            
+            <button class="btn btn-primary-custom w-100">Post Ad</button>
+        </div>
+    </section>
+    
+    <!-- Wallet Section -->
+    <section id="wallet" class="page-section">
+        <div class="app-header">
+            <div class="container-fluid">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Wallet</h5>
+                    <button class="btn btn-sm btn-secondary-custom" onclick="showDepositModal()">
+                        <i class="fas fa-qrcode"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="container-fluid p-3">
+            <!-- Balance Card -->
+            <div class="balance-card">
+                <p class="text-secondary-custom mb-2">USDT Balance</p>
+                <h1 class="balance-amount">120.50</h1>
+                <p class="text-muted-custom">≈ $120.50 USD</p>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <div class="action-btn" onclick="showDepositModal()">
+                    <i class="fas fa-download"></i>
+                    <span>Deposit</span>
+                </div>
+                <div class="action-btn">
+                    <i class="fas fa-upload"></i>
+                    <span>Withdraw</span>
+                </div>
+                <div class="action-btn">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span>Transfer</span>
+                </div>
+                <div class="action-btn">
+                    <i class="fas fa-chart-line"></i>
+                    <span>History</span>
+                </div>
+            </div>
+            
+            <!-- Transactions -->
+            <h6 class="mb-3">Recent Transactions</h6>
+            <div class="custom-card p-0">
+                <div class="transaction-item">
+                    <div>
+                        <h6 class="mb-1">Deposit</h6>
+                        <p class="text-muted-custom mb-0">Completed • Today</p>
+                    </div>
+                    <span class="transaction-amount positive">+100</span>
+                </div>
+                <div class="transaction-item">
+                    <div>
+                        <h6 class="mb-1">Transfer</h6>
+                        <p class="text-muted-custom mb-0">Completed • Yesterday</p>
+                    </div>
+                    <span class="transaction-amount negative">-50</span>
+                </div>
+                <div class="transaction-item">
+                    <div>
+                        <h6 class="mb-1">Deposit</h6>
+                        <p class="text-muted-custom mb-0">Completed • 2 days ago</p>
+                    </div>
+                    <span class="transaction-amount positive">+200</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Filter Modal -->
+    <div class="modal fade" id="filterModal" tabindex="-1">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content modal-content-custom">
+                <div class="modal-header modal-header-custom">
+                    <h5 class="modal-title">Filter</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body modal-body-custom">
+                    <div class="mb-3">
+                        <label class="text-secondary-custom mb-2">Currency</label>
+                        <select class="form-control form-control-custom">
+                            <option>Select</option>
+                            <option>USDT</option>
+                            <option>TRX</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="text-secondary-custom mb-2">Country</label>
+                        <select class="form-control form-control-custom">
+                            <option>Select</option>
+                            <option>Iraq</option>
+                            <option>USA</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="text-secondary-custom mb-2">Payment Method</label>
+                        <select class="form-control form-control-custom">
+                            <option>Auto</option>
+                            <option>Bank Transfer</option>
+                            <option>Cash</option>
+                        </select>
+                    </div>
+                    
+                    <div class="d-flex gap-3">
+                        <button class="btn btn-secondary-custom flex-fill">Reset</button>
+                        <button class="btn btn-primary-custom flex-fill" data-bs-dismiss="modal">Apply</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Trade Details Modal -->
+    <div class="modal fade" id="tradeModal" tabindex="-1">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content modal-content-custom">
+                <div class="chat-container">
+                    <div class="chat-header">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1">Trading with User123</h6>
+                                <p class="text-muted-custom mb-0">USDT 100.00 • 2:45</p>
+                            </div>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-messages">
+                        <div class="message received">
+                            <div class="message-bubble">
+                                Hello! I'm ready to trade 👋
+                            </div>
+                        </div>
+                        <div class="message sent">
+                            <div class="message-bubble">
+                                Great! I'll send the payment now
+                            </div>
+                        </div>
+                        <div class="message sent">
+                            <div class="message-bubble">
+                                Payment sent ✓
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-input">
+                        <div class="d-flex gap-3">
+                            <button class="btn btn-secondary-custom flex-fill">Cancel</button>
+                            <button class="btn btn-primary-custom flex-fill">Confirm</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Deposit Modal -->
+    <div class="modal fade" id="depositModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content modal-content-custom">
+                <div class="modal-header modal-header-custom">
+                    <h5 class="modal-title">Deposit USDT</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body modal-body-custom text-center">
+                    <div class="mb-3">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=TRX123456789ABCDEF&bgcolor=242530&color=FFFFFF" alt="QR Code" class="img-fluid rounded">
+                    </div>
+                    <p class="text-secondary-custom mb-2">Your TRC20 Address:</p>
+                    <div class="custom-card">
+                        <code class="text-break">TRX123456789ABCDEF</code>
+                    </div>
+                    <button class="btn btn-primary-custom w-100 mt-3">
+                        <i class="fas fa-copy me-2"></i>Copy Address
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <div class="d-flex">
+            <a href="home.html" class="nav-item-custom active">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="markets.html" class="nav-item-custom">
+                <i class="fas fa-chart-line"></i>
+                <span>Markets</span>
+            </a>
+            <a href="post-ad.html" class="nav-item-custom">
+                <i class="fas fa-plus-circle"></i>
+                <span>Post</span>
+            </a>
+            <a href="wallet.html" class="nav-item-custom">
+                <i class="fas fa-wallet"></i>
+                <span>Wallet</span>
+            </a>
+            <a href="profile.html" class="nav-item-custom">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </a>
+        </div>
+    </nav>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Page Navigation
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Update navigation
+            document.querySelectorAll('.nav-item-custom').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Map section to nav item
+            const navMap = {
+                'home': 0,
+                'post-ad': 2,
+                'wallet': 3
+            };
+            
+            if (navMap[sectionId] !== undefined) {
+                document.querySelectorAll('.nav-item-custom')[navMap[sectionId]].classList.add('active');
+            }
+        }
+        
+        // Show Filter Modal
+        function showFilterModal() {
+            const filterModal = new bootstrap.Modal(document.getElementById('filterModal'));
+            filterModal.show();
+        }
+        
+        // Show Trade Details
+        function showTradeDetails() {
+            const tradeModal = new bootstrap.Modal(document.getElementById('tradeModal'));
+            tradeModal.show();
+        }
+        
+        // Show Deposit Modal
+        function showDepositModal() {
+            const depositModal = new bootstrap.Modal(document.getElementById('depositModal'));
+            depositModal.show();
+        }
+        
+        // Toggle Type
+        function toggleType(btn, type) {
+            document.querySelectorAll('.toggle-btn').forEach(b => {
+                b.classList.remove('active');
+            });
+            btn.classList.add('active');
+        }
+        
+        // Copy to Clipboard
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click event to copy button
+            const copyBtn = document.querySelector('#depositModal .btn-primary-custom');
+            if (copyBtn) {
+                copyBtn.addEventListener('click', function() {
+                    const address = 'TRX123456789ABCDEF';
+                    navigator.clipboard.writeText(address).then(() => {
+                        // Show success feedback
+                        this.innerHTML = '<i class="fas fa-check me-2"></i>Copied!';
+                        setTimeout(() => {
+                            this.innerHTML = '<i class="fas fa-copy me-2"></i>Copy Address';
+                        }, 2000);
+                    });
+                });
+            }
+        });
+        
+        // Add some demo interactivity
+        function addMessage(text, isSent = true) {
+            const chatMessages = document.querySelector('.chat-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isSent ? 'sent' : 'received'}`;
+            messageDiv.innerHTML = `<div class="message-bubble">${text}</div>`;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        // Demo: Add loading states
+        function showLoading(button) {
+            const originalText = button.innerHTML;
+            button.disabled = true;
+            button.innerHTML = '<span class="loading-spinner"></span> Processing...';
+            
+            setTimeout(() => {
+                button.disabled = false;
+                button.innerHTML = originalText;
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
