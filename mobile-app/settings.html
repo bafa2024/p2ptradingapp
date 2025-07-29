@@ -173,6 +173,11 @@
             color: var(--color-sell);
         }
         
+        .settings-icon.purple {
+            background: rgba(128, 90, 213, 0.1);
+            color: #805AD5;
+        }
+        
         .settings-text {
             display: flex;
             flex-direction: column;
@@ -828,6 +833,21 @@
                         </div>
                         <div class="settings-right">
                             <span class="settings-value">v1.0.0</span>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-item" onclick="window.location.href='../admin/admin-dashboard.html'">
+                        <div class="settings-left">
+                            <div class="settings-icon purple">
+                                <i class="fas fa-cog"></i>
+                            </div>
+                            <div class="settings-text">
+                                <span class="settings-label">Admin Panel</span>
+                                <span class="settings-desc">Access admin dashboard</span>
+                            </div>
+                        </div>
+                        <div class="settings-right">
+                            <i class="fas fa-chevron-right settings-arrow"></i>
                         </div>
                     </div>
                 </div>
