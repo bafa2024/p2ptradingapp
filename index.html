@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P2Ptrading - Welcome</title>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0B0E11 0%, #1A1D21 100%);
+            color: #FFFFFF;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+        
+        .container {
+            max-width: 400px;
+            padding: 40px 20px;
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #00D395 0%, #00B583 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 36px;
+            color: white;
+            box-shadow: 0 8px 24px rgba(0, 211, 149, 0.3);
+        }
+        
+        .title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            color: #B7BDC6;
+            margin-bottom: 40px;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #00D395;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 12px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .redirect-text {
+            font-size: 14px;
+            color: #848E9C;
+            margin-top: 20px;
+        }
+        
+        .manual-link {
+            color: #00D395;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 16px;
+            display: inline-block;
+        }
+        
+        .manual-link:hover {
+            color: #00B583;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <i class="fas fa-cube"></i>
+        </div>
+        <h1 class="title">P2Ptrading</h1>
+        <p class="subtitle">Welcome to the P2P Trading Platform</p>
+        
+        <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+            <div class="loading"></div>
+            <span>Redirecting to login...</span>
+        </div>
+        
+        <p class="redirect-text">You will be automatically redirected to the login page.</p>
+        
+        <a href="mobile-app/index.html" class="manual-link">Click here if not redirected automatically</a>
+    </div>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        // Redirect to mobile app login after 3 seconds
+        setTimeout(() => {
+            window.location.href = 'mobile-app/index.html';
+        }, 3000);
+    </script>
+</body>
+</html> 
