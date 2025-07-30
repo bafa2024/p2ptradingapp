@@ -46,16 +46,16 @@
             background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
             color: var(--text-primary);
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
+            margin: 0;
+            padding: 0;
         }
         
         /* Login Container */
         .login-container {
             width: 100%;
-            max-width: 400px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
             animation: slideUp 0.5s ease-out;
         }
         
@@ -70,36 +70,17 @@
             }
         }
         
-        /* Logo Section */
-        .logo-section {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        
-        .logo {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, var(--color-buy) 0%, #00B583 100%);
-            border-radius: 20px;
+        /* Form Card */
+        .form-card {
+            flex: 1;
             display: flex;
-            align-items: center;
+            flex-direction: column;
             justify-content: center;
-            margin: 0 auto 20px;
-            font-size: 36px;
-            color: white;
-            box-shadow: 0 8px 24px rgba(0, 211, 149, 0.3);
-        }
-        
-        .app-title {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-        
-        .app-subtitle {
-            font-size: 16px;
-            color: var(--text-secondary);
-        }
+            padding: 20px;
+            max-width: 400px;
+            margin: 0 auto;
+            width: 100%;
+
         
         /* Form Card */
         .form-card {
@@ -532,27 +513,21 @@
         
         /* Responsive Design */
         @media (min-width: 768px) {
-            .login-container {
-                max-width: 450px;
-            }
-            
             .form-card {
                 padding: 40px 32px;
+                max-width: 500px;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .form-card {
+                max-width: 600px;
             }
         }
     </style>
 </head>
 <body>
     <div class="login-container">
-        <!-- Logo Section -->
-        <div class="logo-section">
-            <div class="logo">
-                <i class="fas fa-coins"></i>
-            </div>
-            <h1 class="app-title">P2Ptrading</h1>
-            <p class="app-subtitle">P2P Crypto Trading Platform</p>
-        </div>
-        
         <!-- Login Form -->
         <div class="form-card">
             <h2 class="form-title">Welcome Back</h2>
