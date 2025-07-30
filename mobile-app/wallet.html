@@ -627,6 +627,111 @@
             word-break: break-all;
         }
         
+        /* Internal Transfer Styles */
+        .transfer-form {
+            padding: 0;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        
+        .input-group {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .input-group input {
+            flex: 1;
+        }
+        
+        .amount-input-group {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .amount-input-group input {
+            flex: 2;
+        }
+        
+        .amount-input-group select {
+            flex: 1;
+        }
+        
+        .user-suggestions {
+            margin-top: 8px;
+            max-height: 150px;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-elevated);
+            display: none;
+        }
+        
+        .user-suggestion {
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+        
+        .user-suggestion:hover {
+            background: var(--bg-card);
+        }
+        
+        .user-suggestion:last-child {
+            border-bottom: none;
+        }
+        
+        .user-suggestion .user-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .user-suggestion .user-email {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .transfer-summary {
+            background: var(--bg-elevated);
+            border-radius: 12px;
+            padding: 16px;
+            margin: 20px 0;
+        }
+        
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+        }
+        
+        .summary-item.total {
+            border-top: 1px solid var(--border-color);
+            padding-top: 8px;
+            margin-top: 8px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .modal-actions .btn {
+            flex: 1;
+        }
+        
         /* Responsive Design */
         @media (min-width: 576px) {
             .container-custom {
@@ -717,11 +822,11 @@
                     <div class="action-label">Withdraw</div>
                 </div>
                 
-                <div class="action-card" onclick="showTransferModal()">
+                <div class="action-card" onclick="showInternalTransferModal()">
                     <div class="action-icon transfer">
                         <i class="fas fa-exchange-alt"></i>
                     </div>
-                    <div class="action-label">Transfer</div>
+                    <div class="action-label">Internal Transfer</div>
                 </div>
                 
                 <div class="action-card" onclick="showHistoryModal()">
@@ -973,6 +1078,72 @@
         </div>
     </div>
     
+    <!-- Internal Transfer Modal -->
+    <div class="modal-custom" id="internalTransferModal">
+        <div class="modal-content-custom">
+            <div class="modal-header-custom">
+                <h3 class="modal-title-custom">Internal Transfer</h3>
+                <i class="fas fa-times close-modal" onclick="hideModal('internalTransferModal')"></i>
+            </div>
+            <div class="modal-body-custom">
+                <div class="transfer-form">
+                    <div class="form-group">
+                        <label class="form-label">Recipient</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control-custom" id="recipient-input" placeholder="Enter username or email" oninput="searchUsers()">
+                            <button class="btn btn-sm btn-outline-secondary" onclick="showUserSearch()">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                        <div class="user-suggestions" id="user-suggestions"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Amount</label>
+                        <div class="amount-input-group">
+                            <input type="number" class="form-control-custom" id="transfer-amount" placeholder="0.00" step="0.01" min="0">
+                            <select class="form-control-custom" id="transfer-currency">
+                                <option value="USDT">USDT</option>
+                                <option value="IQD">IQD</option>
+                                <option value="USD">USD</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Message (Optional)</label>
+                        <textarea class="form-control-custom" id="transfer-message" placeholder="Add a message..." rows="3"></textarea>
+                    </div>
+                    
+                    <div class="transfer-summary" id="transfer-summary" style="display: none;">
+                        <h6>Transfer Summary</h6>
+                        <div class="summary-item">
+                            <span>To:</span>
+                            <span id="summary-recipient">-</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Amount:</span>
+                            <span id="summary-amount">-</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Fee:</span>
+                            <span id="summary-fee">-</span>
+                        </div>
+                        <div class="summary-item total">
+                            <span>Total:</span>
+                            <span id="summary-total">-</span>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-actions">
+                        <button class="btn btn-secondary-custom" onclick="hideModal('internalTransferModal')">Cancel</button>
+                        <button class="btn btn-primary-custom" onclick="processInternalTransfer()" id="transfer-btn">Continue</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <!-- Bottom Navigation -->
     <nav class="bottom-nav">
         <div class="nav-container">
@@ -1024,6 +1195,10 @@
             document.getElementById('qrModal').classList.add('show');
         }
         
+        function showInternalTransferModal() {
+            document.getElementById('internalTransferModal').classList.add('show');
+        }
+        
         // Hide modal
         function hideModal(modalId) {
             document.getElementById(modalId).classList.remove('show');
@@ -1068,6 +1243,140 @@
                 hideModal('transferModal');
             }
         }
+        
+        // Internal Transfer Functions
+        let demoUsers = [
+            { username: 'user123', email: 'user123@example.com', name: 'John Doe' },
+            { username: 'trader456', email: 'trader456@example.com', name: 'Jane Smith' },
+            { username: 'crypto789', email: 'crypto789@example.com', name: 'Mike Johnson' },
+            { username: 'p2p_trader', email: 'p2p_trader@example.com', name: 'Sarah Wilson' }
+        ];
+        
+        function searchUsers() {
+            const input = document.getElementById('recipient-input');
+            const suggestions = document.getElementById('user-suggestions');
+            const query = input.value.toLowerCase();
+            
+            if (query.length < 2) {
+                suggestions.style.display = 'none';
+                return;
+            }
+            
+            const filteredUsers = demoUsers.filter(user => 
+                user.username.toLowerCase().includes(query) ||
+                user.email.toLowerCase().includes(query) ||
+                user.name.toLowerCase().includes(query)
+            );
+            
+            if (filteredUsers.length > 0) {
+                suggestions.innerHTML = filteredUsers.map(user => `
+                    <div class="user-suggestion" onclick="selectUser('${user.username}', '${user.name}')">
+                        <div class="user-name">${user.name}</div>
+                        <div class="user-email">@${user.username} • ${user.email}</div>
+                    </div>
+                `).join('');
+                suggestions.style.display = 'block';
+            } else {
+                suggestions.style.display = 'none';
+            }
+        }
+        
+        function selectUser(username, name) {
+            document.getElementById('recipient-input').value = `@${username}`;
+            document.getElementById('user-suggestions').style.display = 'none';
+            updateTransferSummary();
+        }
+        
+        function showUserSearch() {
+            const suggestions = document.getElementById('user-suggestions');
+            suggestions.innerHTML = demoUsers.map(user => `
+                <div class="user-suggestion" onclick="selectUser('${user.username}', '${user.name}')">
+                    <div class="user-name">${user.name}</div>
+                    <div class="user-email">@${user.username} • ${user.email}</div>
+                </div>
+            `).join('');
+            suggestions.style.display = 'block';
+        }
+        
+        function updateTransferSummary() {
+            const recipient = document.getElementById('recipient-input').value;
+            const amount = document.getElementById('transfer-amount').value;
+            const currency = document.getElementById('transfer-currency').value;
+            const summary = document.getElementById('transfer-summary');
+            
+            if (recipient && amount) {
+                const fee = calculateTransferFee(amount, currency);
+                const total = parseFloat(amount) + fee;
+                
+                document.getElementById('summary-recipient').textContent = recipient;
+                document.getElementById('summary-amount').textContent = `${amount} ${currency}`;
+                document.getElementById('summary-fee').textContent = `${fee.toFixed(2)} ${currency}`;
+                document.getElementById('summary-total').textContent = `${total.toFixed(2)} ${currency}`;
+                
+                summary.style.display = 'block';
+                document.getElementById('transfer-btn').textContent = 'Send Transfer';
+            } else {
+                summary.style.display = 'none';
+                document.getElementById('transfer-btn').textContent = 'Continue';
+            }
+        }
+        
+        function calculateTransferFee(amount, currency) {
+            // Demo fee calculation
+            const baseFee = 0.5;
+            const percentageFee = parseFloat(amount) * 0.01; // 1%
+            return Math.max(baseFee, percentageFee);
+        }
+        
+        function processInternalTransfer() {
+            const recipient = document.getElementById('recipient-input').value;
+            const amount = document.getElementById('transfer-amount').value;
+            const currency = document.getElementById('transfer-currency').value;
+            const message = document.getElementById('transfer-message').value;
+            
+            if (!recipient || !amount) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            const fee = calculateTransferFee(amount, currency);
+            const total = parseFloat(amount) + fee;
+            
+            if (confirm(`Send ${amount} ${currency} to ${recipient}?\nFee: ${fee.toFixed(2)} ${currency}\nTotal: ${total.toFixed(2)} ${currency}`)) {
+                // Simulate transfer processing
+                const btn = document.getElementById('transfer-btn');
+                const originalText = btn.textContent;
+                btn.textContent = 'Processing...';
+                btn.disabled = true;
+                
+                setTimeout(() => {
+                    alert('Transfer completed successfully!');
+                    hideModal('internalTransferModal');
+                    
+                    // Reset form
+                    document.getElementById('recipient-input').value = '';
+                    document.getElementById('transfer-amount').value = '';
+                    document.getElementById('transfer-message').value = '';
+                    document.getElementById('transfer-summary').style.display = 'none';
+                    btn.textContent = originalText;
+                    btn.disabled = false;
+                }, 2000);
+            }
+        }
+        
+        // Add event listeners for real-time updates
+        document.addEventListener('DOMContentLoaded', function() {
+            const amountInput = document.getElementById('transfer-amount');
+            const currencySelect = document.getElementById('transfer-currency');
+            
+            if (amountInput) {
+                amountInput.addEventListener('input', updateTransferSummary);
+            }
+            
+            if (currencySelect) {
+                currencySelect.addEventListener('change', updateTransferSummary);
+            }
+        });
         
         // Show/hide balance
         function showHideBalance() {

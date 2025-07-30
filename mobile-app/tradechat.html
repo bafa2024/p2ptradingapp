@@ -240,6 +240,193 @@
             display: inline-block;
         }
         
+        /* Rating Modal Styles */
+        .rating-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+        
+        .rating-modal.show {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .rating-content {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 24px;
+            max-width: 400px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+        }
+        
+        .rating-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        
+        .rating-header h3 {
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+        
+        .rating-header p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        
+        .rating-stars {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        
+        .stars-container {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        
+        .star {
+            font-size: 32px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .star:hover {
+            color: var(--color-warning);
+            transform: scale(1.1);
+        }
+        
+        .star.active {
+            color: var(--color-warning);
+        }
+        
+        .rating-text {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .rating-categories {
+            margin-bottom: 24px;
+        }
+        
+        .category-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding: 12px;
+            background: var(--bg-elevated);
+            border-radius: 12px;
+        }
+        
+        .category-item label {
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .category-stars {
+            display: flex;
+            gap: 4px;
+        }
+        
+        .category-star {
+            font-size: 16px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .category-star:hover {
+            color: var(--color-warning);
+        }
+        
+        .category-star.active {
+            color: var(--color-warning);
+        }
+        
+        .rating-comment {
+            margin-bottom: 24px;
+        }
+        
+        .rating-comment label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .rating-comment textarea {
+            width: 100%;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            color: var(--text-primary);
+            font-family: inherit;
+            resize: vertical;
+        }
+        
+        .rating-comment textarea:focus {
+            outline: none;
+            border-color: var(--color-buy);
+        }
+        
+        .rating-actions {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .rating-actions button {
+            flex: 1;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-secondary {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+        
+        .btn-primary {
+            background: var(--color-buy);
+            border: none;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #00B583;
+        }
+        
+        .btn-primary:disabled {
+            background: var(--text-muted);
+            cursor: not-allowed;
+        }
+        
         /* Payment Proof */
         .payment-proof {
             background: rgba(56, 97, 251, 0.1);
@@ -603,6 +790,72 @@
         </div>
     </div>
     
+    <!-- Rating Modal -->
+    <div class="rating-modal" id="ratingModal">
+        <div class="rating-content">
+            <div class="rating-header">
+                <h3>Rate Your Trade Partner</h3>
+                <p>How was your trading experience with @user123?</p>
+            </div>
+            
+            <div class="rating-stars">
+                <div class="stars-container">
+                    <i class="fas fa-star star" data-rating="1"></i>
+                    <i class="fas fa-star star" data-rating="2"></i>
+                    <i class="fas fa-star star" data-rating="3"></i>
+                    <i class="fas fa-star star" data-rating="4"></i>
+                    <i class="fas fa-star star" data-rating="5"></i>
+                </div>
+                <div class="rating-text" id="ratingText">Tap to rate</div>
+            </div>
+            
+            <div class="rating-categories">
+                <div class="category-item">
+                    <label>Communication</label>
+                    <div class="category-stars">
+                        <i class="fas fa-star category-star" data-category="communication" data-rating="1"></i>
+                        <i class="fas fa-star category-star" data-category="communication" data-rating="2"></i>
+                        <i class="fas fa-star category-star" data-category="communication" data-rating="3"></i>
+                        <i class="fas fa-star category-star" data-category="communication" data-rating="4"></i>
+                        <i class="fas fa-star category-star" data-category="communication" data-rating="5"></i>
+                    </div>
+                </div>
+                
+                <div class="category-item">
+                    <label>Speed</label>
+                    <div class="category-stars">
+                        <i class="fas fa-star category-star" data-category="speed" data-rating="1"></i>
+                        <i class="fas fa-star category-star" data-category="speed" data-rating="2"></i>
+                        <i class="fas fa-star category-star" data-category="speed" data-rating="3"></i>
+                        <i class="fas fa-star category-star" data-category="speed" data-rating="4"></i>
+                        <i class="fas fa-star category-star" data-category="speed" data-rating="5"></i>
+                    </div>
+                </div>
+                
+                <div class="category-item">
+                    <label>Fairness</label>
+                    <div class="category-stars">
+                        <i class="fas fa-star category-star" data-category="fairness" data-rating="1"></i>
+                        <i class="fas fa-star category-star" data-category="fairness" data-rating="2"></i>
+                        <i class="fas fa-star category-star" data-category="fairness" data-rating="3"></i>
+                        <i class="fas fa-star category-star" data-category="fairness" data-rating="4"></i>
+                        <i class="fas fa-star category-star" data-category="fairness" data-rating="5"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="rating-comment">
+                <label>Additional Comments (Optional)</label>
+                <textarea placeholder="Share your experience..." rows="3"></textarea>
+            </div>
+            
+            <div class="rating-actions">
+                <button class="btn-secondary" onclick="skipRating()">Skip</button>
+                <button class="btn-primary" onclick="submitRating()" id="submitRatingBtn" disabled>Submit Rating</button>
+            </div>
+        </div>
+    </div>
+    
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
@@ -794,6 +1047,11 @@
                     btn.disabled = true;
                     btn.style.opacity = '0.5';
                 });
+                
+                // Show rating modal after 2 seconds
+                setTimeout(() => {
+                    showRatingModal();
+                }, 2000);
             }
         }
         
@@ -819,6 +1077,114 @@
             }
         }
         
+        // Rating System Variables
+        let overallRating = 0;
+        let categoryRatings = {
+            communication: 0,
+            speed: 0,
+            fairness: 0
+        };
+        
+        // Rating Modal Functions
+        function showRatingModal() {
+            document.getElementById('ratingModal').classList.add('show');
+        }
+        
+        function hideRatingModal() {
+            document.getElementById('ratingModal').classList.remove('show');
+        }
+        
+        function setOverallRating(rating) {
+            overallRating = rating;
+            updateOverallStars(rating);
+            updateRatingText(rating);
+            checkRatingComplete();
+        }
+        
+        function setCategoryRating(category, rating) {
+            categoryRatings[category] = rating;
+            updateCategoryStars(category, rating);
+            checkRatingComplete();
+        }
+        
+        function updateOverallStars(rating) {
+            const stars = document.querySelectorAll('.star');
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+        
+        function updateCategoryStars(category, rating) {
+            const stars = document.querySelectorAll(`[data-category="${category}"]`);
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+        
+        function updateRatingText(rating) {
+            const ratingText = document.getElementById('ratingText');
+            const texts = {
+                0: 'Tap to rate',
+                1: 'Poor',
+                2: 'Fair',
+                3: 'Good',
+                4: 'Very Good',
+                5: 'Excellent'
+            };
+            ratingText.textContent = texts[rating] || 'Tap to rate';
+        }
+        
+        function checkRatingComplete() {
+            const submitBtn = document.getElementById('submitRatingBtn');
+            const hasOverallRating = overallRating > 0;
+            const hasAllCategories = Object.values(categoryRatings).every(rating => rating > 0);
+            
+            submitBtn.disabled = !hasOverallRating || !hasAllCategories;
+        }
+        
+        function submitRating() {
+            const comment = document.querySelector('.rating-comment textarea').value;
+            
+            // Simulate rating submission
+            const btn = document.getElementById('submitRatingBtn');
+            const originalText = btn.textContent;
+            btn.textContent = 'Submitting...';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                alert('Thank you for your rating! Your feedback helps improve the trading experience for everyone.');
+                hideRatingModal();
+                
+                // Reset ratings
+                overallRating = 0;
+                categoryRatings = { communication: 0, speed: 0, fairness: 0 };
+                updateOverallStars(0);
+                Object.keys(categoryRatings).forEach(category => {
+                    updateCategoryStars(category, 0);
+                });
+                updateRatingText(0);
+                document.querySelector('.rating-comment textarea').value = '';
+                checkRatingComplete();
+                
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }, 1500);
+        }
+        
+        function skipRating() {
+            if (confirm('Are you sure you want to skip rating? You can rate later from your trade history.')) {
+                hideRatingModal();
+            }
+        }
+        
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             // Focus on input
@@ -831,6 +1197,22 @@
             setTimeout(() => {
                 addMessage('Please send the payment proof when you\'re ready.', 'received');
             }, 3000);
+            
+            // Add rating event listeners
+            document.querySelectorAll('.star').forEach(star => {
+                star.addEventListener('click', function() {
+                    const rating = parseInt(this.getAttribute('data-rating'));
+                    setOverallRating(rating);
+                });
+            });
+            
+            document.querySelectorAll('.category-star').forEach(star => {
+                star.addEventListener('click', function() {
+                    const category = this.getAttribute('data-category');
+                    const rating = parseInt(this.getAttribute('data-rating'));
+                    setCategoryRating(category, rating);
+                });
+            });
         });
     </script>
 </body>
