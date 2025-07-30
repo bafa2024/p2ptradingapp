@@ -332,132 +332,6 @@
             color: #00B583;
         }
         
-        /* Admin Feature Links */
-        .admin-feature-link {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            padding: 12px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 12px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-        
-        .admin-feature-link:hover {
-            background: var(--bg-elevated);
-            border-color: var(--color-buy);
-            color: var(--color-buy);
-            transform: translateY(-2px);
-        }
-        
-        .admin-feature-link i {
-            font-size: 16px;
-        }
-        
-        /* OTP Modal */
-        .modal-custom {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            padding: 20px;
-        }
-        
-        .modal-custom.show {
-            display: flex;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        .modal-content-custom {
-            background: var(--bg-card);
-            border-radius: 20px;
-            max-width: 400px;
-            width: 100%;
-            padding: 32px 24px;
-            animation: slideUp 0.3s ease;
-        }
-        
-        .modal-title {
-            font-size: 20px;
-            font-weight: 600;
-            text-align: center;
-            margin-bottom: 8px;
-        }
-        
-        .modal-subtitle {
-            font-size: 14px;
-            color: var(--text-muted);
-            text-align: center;
-            margin-bottom: 24px;
-        }
-        
-        /* OTP Input */
-        .otp-container {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-            margin-bottom: 24px;
-        }
-        
-        .otp-input {
-            width: 50px;
-            height: 50px;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            text-align: center;
-            font-size: 20px;
-            font-weight: 600;
-            color: var(--text-primary);
-            transition: all 0.3s ease;
-        }
-        
-        .otp-input:focus {
-            outline: none;
-            border-color: var(--color-buy);
-            box-shadow: 0 0 0 3px rgba(0, 211, 149, 0.1);
-        }
-        
-        /* Resend Timer */
-        .resend-section {
-            text-align: center;
-            margin-bottom: 24px;
-        }
-        
-        .resend-text {
-            font-size: 14px;
-            color: var(--text-muted);
-        }
-        
-        .resend-link {
-            color: var(--color-buy);
-            text-decoration: none;
-            font-weight: 500;
-            cursor: pointer;
-        }
-        
-        .resend-link:disabled {
-            color: var(--text-muted);
-            cursor: not-allowed;
-        }
-        
         /* Loading State */
         .loading-spinner {
             display: inline-block;
@@ -558,7 +432,6 @@
                         <input type="checkbox" id="rememberMe">
                         <span class="checkbox-label">Remember me</span>
                     </label>
-                    <a href="#" class="forgot-link" onclick="showForgotPasswordModal()">Forgot password?</a>
                 </div>
                 
                 <button type="submit" class="btn-primary-custom" id="loginBtn">
@@ -586,117 +459,10 @@
                 <span class="signup-text">Don't have an account? </span>
                 <a href="register.html" class="signup-link">Sign up</a>
             </div>
-            
-                            <div class="signup-section" style="margin-top: 16px;">
-                    <span class="signup-text">Admin Panel? </span>
-                    <a href="../admin/index.html" class="signup-link">Access Admin</a>
-                </div>
-                
-                <!-- Admin Feature Links -->
-                <div class="admin-features" style="margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border-color);">
-                    <div style="text-align: center; margin-bottom: 16px;">
-                        <span style="font-size: 14px; color: var(--text-muted);">Admin Features</span>
-                    </div>
-                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
-                        <a href="../admin/admin-permissions.html" class="admin-feature-link">
-                            <i class="fas fa-shield-alt"></i>
-                            <span>Permissions</span>
-                        </a>
-                        <a href="../admin/admin-kyc.html" class="admin-feature-link">
-                            <i class="fas fa-id-card"></i>
-                            <span>KYC Management</span>
-                        </a>
-                        <a href="../admin/admin-membership.html" class="admin-feature-link">
-                            <i class="fas fa-crown"></i>
-                            <span>Membership</span>
-                        </a>
-                        <a href="../admin/admin-commissions.html" class="admin-feature-link">
-                            <i class="fas fa-percentage"></i>
-                            <span>Commissions</span>
-                        </a>
-                        <a href="../admin/admin-master-wallet.html" class="admin-feature-link">
-                            <i class="fas fa-university"></i>
-                            <span>Master Wallet</span>
-                        </a>
-                        <a href="../admin/admin-users.html" class="admin-feature-link">
-                            <i class="fas fa-users"></i>
-                            <span>Users</span>
-                        </a>
-                    </div>
-                </div>
         </div>
     </div>
     
-    <!-- OTP Verification Modal -->
-    <div class="modal-custom" id="otpModal">
-        <div class="modal-content-custom">
-            <h3 class="modal-title">Verify Your Account</h3>
-            <p class="modal-subtitle">We've sent a 6-digit code to your phone/email</p>
-            
-            <div class="otp-container">
-                <input type="text" class="otp-input" maxlength="1" onkeyup="moveToNext(this, 1)">
-                <input type="text" class="otp-input" maxlength="1" onkeyup="moveToNext(this, 2)">
-                <input type="text" class="otp-input" maxlength="1" onkeyup="moveToNext(this, 3)">
-                <input type="text" class="otp-input" maxlength="1" onkeyup="moveToNext(this, 4)">
-                <input type="text" class="otp-input" maxlength="1" onkeyup="moveToNext(this, 5)">
-                <input type="text" class="otp-input" maxlength="1" onkeyup="moveToNext(this, 6)">
-            </div>
-            
-            <div class="resend-section">
-                <span class="resend-text">Didn't receive the code? </span>
-                <a href="#" class="resend-link" id="resendLink" onclick="resendOTP()">Resend</a>
-                <span class="resend-text" id="resendTimer" style="display: none;"> in <span id="timer">30</span>s</span>
-            </div>
-            
-            <button class="btn-primary-custom" onclick="verifyOTP()">
-                <span class="btn-text">Verify</span>
-                <span class="loading-spinner" style="display: none;"></span>
-            </button>
-            
-            <button class="btn-secondary-custom mt-3" onclick="hideOTPModal()">
-                Cancel
-            </button>
-        </div>
-    </div>
-    
-    <!-- Forgot Password Modal -->
-    <div class="modal-custom" id="forgotPasswordModal">
-        <div class="modal-content-custom">
-            <h3 class="modal-title">Reset Password</h3>
-            <p class="modal-subtitle">Enter your email to receive a password reset link</p>
-            
-            <!-- Success Message -->
-            <div class="success-message" id="modalSuccessMessage" style="display: none;">
-                <i class="fas fa-check-circle success-icon"></i>
-                <span>Password reset email sent successfully!</span>
-            </div>
-            
-            <!-- Error Message -->
-            <div class="error-message" id="modalErrorMessage" style="display: none;">
-                <i class="fas fa-exclamation-circle error-icon"></i>
-                <span>Email not found or error occurred.</span>
-            </div>
-            
-            <form id="forgotPasswordForm">
-                <div class="form-group">
-                    <label class="form-label">Email Address</label>
-                    <div class="input-group-custom">
-                        <i class="fas fa-envelope input-icon"></i>
-                        <input type="email" class="form-control-custom" placeholder="Enter your email" required id="forgotEmailInput">
-                    </div>
-                </div>
-                
-                <button type="submit" class="btn-primary-custom" id="resetBtn">
-                    <span class="btn-text">Send Reset Link</span>
-                    <span class="loading-spinner" style="display: none;"></span>
-                </button>
-            </form>
-            
-            <button class="btn-secondary-custom mt-3" onclick="hideForgotPasswordModal()">
-                Cancel
-            </button>
-        </div>
-    </div>
+
     
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -731,22 +497,21 @@
             
             // Simulate API call
             setTimeout(() => {
-                // Check if OTP is required (simulate for demo)
+                // Demo credentials - accept any valid email format
                 const email = document.querySelector('input[type="text"]').value;
                 const password = document.querySelector('input[type="password"]').value;
                 
-                // Check if it's admin login
-                if (email === 'admin@p2ptrading.com' && password === 'admin123') {
-                    // Set admin authentication flag
-                    sessionStorage.setItem('adminAuthenticated', 'true');
-                    // Redirect to admin dashboard
-                    window.location.href = '../admin/index.html';
-                } else if (email.includes('@')) {
-                    // Email login - show OTP modal
-                    showOTPModal();
+                if (email && password && email.includes('@') && password.length >= 6) {
+                    // Show success message
+                    document.getElementById('successMessage').style.display = 'block';
+                    
+                    // Redirect to dashboard after 2 seconds
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 2000);
                 } else {
-                    // Phone login - show OTP modal
-                    showOTPModal();
+                    // Show error message
+                    document.getElementById('errorMessage').style.display = 'block';
                 }
                 
                 // Reset button state
@@ -756,177 +521,10 @@
             }, 2000);
         });
         
-        // Show OTP modal
-        function showOTPModal() {
-            document.getElementById('otpModal').classList.add('show');
-            startResendTimer();
-        }
-        
-        // Hide OTP modal
-        function hideOTPModal() {
-            document.getElementById('otpModal').classList.remove('show');
-        }
-        
-        // Move to next OTP input
-        function moveToNext(input, nextIndex) {
-            if (input.value.length === 1) {
-                const inputs = document.querySelectorAll('.otp-input');
-                if (nextIndex < inputs.length) {
-                    inputs[nextIndex].focus();
-                }
-            }
-        }
-        
-        // Verify OTP
-        function verifyOTP() {
-            const inputs = document.querySelectorAll('.otp-input');
-            const otp = Array.from(inputs).map(input => input.value).join('');
-            
-            if (otp.length === 6) {
-                // Simulate verification
-                const verifyBtn = document.querySelector('#otpModal .btn-primary-custom');
-                const btnText = verifyBtn.querySelector('.btn-text');
-                const spinner = verifyBtn.querySelector('.loading-spinner');
-                
-                btnText.style.display = 'none';
-                spinner.style.display = 'inline-block';
-                verifyBtn.disabled = true;
-                
-                setTimeout(() => {
-                    // Success - redirect to home
-                    window.location.href = 'index.html';
-                }, 1500);
-            } else {
-                alert('Please enter the complete 6-digit code');
-            }
-        }
-        
-        // Resend OTP
-        function resendOTP() {
-            const resendLink = document.getElementById('resendLink');
-            const resendTimer = document.getElementById('resendTimer');
-            const timer = document.getElementById('timer');
-            
-            resendLink.style.display = 'none';
-            resendTimer.style.display = 'inline';
-            
-            let countdown = 30;
-            const interval = setInterval(() => {
-                countdown--;
-                timer.textContent = countdown;
-                
-                if (countdown <= 0) {
-                    clearInterval(interval);
-                    resendLink.style.display = 'inline';
-                    resendTimer.style.display = 'none';
-                }
-            }, 1000);
-        }
-        
-        // Start resend timer
-        function startResendTimer() {
-            const resendLink = document.getElementById('resendLink');
-            const resendTimer = document.getElementById('resendTimer');
-            const timer = document.getElementById('timer');
-            
-            resendLink.style.display = 'none';
-            resendTimer.style.display = 'inline';
-            
-            let countdown = 30;
-            const interval = setInterval(() => {
-                countdown--;
-                timer.textContent = countdown;
-                
-                if (countdown <= 0) {
-                    clearInterval(interval);
-                    resendLink.style.display = 'inline';
-                    resendTimer.style.display = 'none';
-                }
-            }, 1000);
-        }
-        
         // Social login
         function socialLogin(provider) {
             alert(`${provider} login will be implemented`);
         }
-        
-        // Show forgot password modal
-        function showForgotPasswordModal() {
-            document.getElementById('forgotPasswordModal').classList.add('show');
-            document.getElementById('forgotEmailInput').focus();
-        }
-        
-        // Hide forgot password modal
-        function hideForgotPasswordModal() {
-            document.getElementById('forgotPasswordModal').classList.remove('show');
-            // Reset form
-            document.getElementById('forgotPasswordForm').reset();
-            document.getElementById('modalSuccessMessage').style.display = 'none';
-            document.getElementById('modalErrorMessage').style.display = 'none';
-        }
-        
-        // Handle forgot password form submission
-        document.getElementById('forgotPasswordForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const email = document.getElementById('forgotEmailInput').value;
-            const resetBtn = document.getElementById('resetBtn');
-            const btnText = resetBtn.querySelector('.btn-text');
-            const spinner = resetBtn.querySelector('.loading-spinner');
-            
-            // Hide any existing messages
-            document.getElementById('modalSuccessMessage').style.display = 'none';
-            document.getElementById('modalErrorMessage').style.display = 'none';
-            
-            // Show loading state
-            btnText.style.display = 'none';
-            spinner.style.display = 'inline-block';
-            resetBtn.disabled = true;
-            
-            // Simulate API call for password reset
-            setTimeout(() => {
-                // Demo - accept any email for demo purposes
-                if (email && email.includes('@')) {
-                    // Show success message
-                    document.getElementById('modalSuccessMessage').style.display = 'block';
-                    
-                    // Auto-hide modal after 3 seconds
-                    setTimeout(() => {
-                        hideForgotPasswordModal();
-                    }, 3000);
-                } else {
-                    // Show error message
-                    document.getElementById('modalErrorMessage').style.display = 'block';
-                }
-                
-                // Reset button state
-                btnText.style.display = 'inline';
-                spinner.style.display = 'none';
-                resetBtn.disabled = false;
-            }, 2000);
-        });
-        
-        // Close modal on outside click
-        document.getElementById('otpModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                hideOTPModal();
-            }
-        });
-        
-        // Close forgot password modal on outside click
-        document.getElementById('forgotPasswordModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                hideForgotPasswordModal();
-            }
-        });
-        
-        // Auto-focus first OTP input
-        document.addEventListener('DOMContentLoaded', function() {
-            const firstOtpInput = document.querySelector('.otp-input');
-            if (firstOtpInput) {
-                firstOtpInput.focus();
-            }
-        });
     </script>
 </body>
 </html>
