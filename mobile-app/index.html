@@ -5,9 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>P2Ptrading - Login</title>
     
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -15,159 +12,177 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* Design System Variables */
+        /* Mobile-First Dark Theme Design System */
         :root {
-            /* Colors */
-            --bg-primary: #0B0E11;
-            --bg-secondary: #1A1D21;
-            --bg-card: #242530;
-            --bg-elevated: #2B2F36;
-            --border-color: #2B2F36;
+            /* Dark Theme Colors */
+            --bg-primary: #000000;
+            --bg-secondary: #0A0A0A;
+            --bg-card: #111111;
+            --bg-elevated: #1A1A1A;
+            --border-color: #2A2A2A;
             
             --text-primary: #FFFFFF;
-            --text-secondary: #B7BDC6;
-            --text-muted: #848E9C;
+            --text-secondary: #CCCCCC;
+            --text-muted: #888888;
             
-            --color-buy: #00D395;
-            --color-sell: #F6465D;
+            --color-primary: #00D395;
+            --color-secondary: #00B583;
+            --color-accent: #3861FB;
+            --color-danger: #F6465D;
             --color-warning: #FFA500;
-            --color-info: #3861FB;
         }
         
-        /* Global Styles */
+        /* Reset and Base Styles */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
         
+        html {
+            font-size: 16px;
+        }
+        
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            background: var(--bg-primary);
             color: var(--text-primary);
             min-height: 100vh;
-            margin: 0;
-            padding: 0;
+            overflow-x: hidden;
         }
         
-        /* Login Container */
-        .login-container {
+        /* Mobile-First Container */
+        .app-container {
             width: 100%;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            animation: slideUp 0.5s ease-out;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
         }
         
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        /* Header Section */
+        .header {
+            padding: 1rem;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
         }
         
-        /* Form Card */
-        .form-card {
+        .logo {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 28px;
+            color: white;
+            box-shadow: 0 4px 20px rgba(0, 211, 149, 0.3);
+        }
+        
+        .app-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        
+        .app-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+        
+        /* Main Content */
+        .main-content {
             flex: 1;
             display: flex;
-            flex-direction: column;
+            align-items: center;
             justify-content: center;
-            padding: 20px;
-            max-width: 400px;
-            margin: 0 auto;
-            width: 100%;
-
+            padding: 1rem;
+        }
         
-        /* Form Card */
-        .form-card {
+        /* Login Form */
+        .login-form {
+            width: 100%;
+            max-width: 400px;
             background: var(--bg-card);
             border: 1px solid var(--border-color);
             border-radius: 20px;
-            padding: 32px 24px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            padding: 2rem 1.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
         }
         
         .form-title {
-            font-size: 24px;
+            font-size: 1.5rem;
             font-weight: 600;
             text-align: center;
-            margin-bottom: 8px;
+            margin-bottom: 0.5rem;
         }
         
         .form-subtitle {
-            font-size: 14px;
+            font-size: 0.875rem;
             color: var(--text-muted);
             text-align: center;
-            margin-bottom: 32px;
+            margin-bottom: 2rem;
         }
         
         /* Form Groups */
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 1.5rem;
         }
         
         .form-label {
             display: block;
-            font-size: 14px;
+            font-size: 0.875rem;
             font-weight: 500;
             color: var(--text-secondary);
-            margin-bottom: 8px;
+            margin-bottom: 0.5rem;
         }
         
-        .form-control-custom {
-            background: var(--bg-secondary);
+        .input-group {
+            position: relative;
+        }
+        
+        .form-input {
+            width: 100%;
+            background: var(--bg-elevated);
             border: 1px solid var(--border-color);
             border-radius: 12px;
-            padding: 16px 20px;
+            padding: 1rem 1rem 1rem 3rem;
             color: var(--text-primary);
-            font-size: 16px;
-            width: 100%;
+            font-size: 1rem;
             transition: all 0.3s ease;
         }
         
-        .form-control-custom:focus {
+        .form-input:focus {
             outline: none;
-            border-color: var(--color-buy);
+            border-color: var(--color-primary);
             box-shadow: 0 0 0 3px rgba(0, 211, 149, 0.1);
-            background: var(--bg-secondary);
         }
         
-        .form-control-custom::placeholder {
+        .form-input::placeholder {
             color: var(--text-muted);
-        }
-        
-        /* Input Icons */
-        .input-group-custom {
-            position: relative;
         }
         
         .input-icon {
             position: absolute;
-            left: 20px;
+            left: 1rem;
             top: 50%;
             transform: translateY(-50%);
             color: var(--text-muted);
-            font-size: 18px;
+            font-size: 1.125rem;
         }
         
-        .input-group-custom .form-control-custom {
-            padding-left: 56px;
-        }
-        
-        /* Password Toggle */
         .password-toggle {
             position: absolute;
-            right: 20px;
+            right: 1rem;
             top: 50%;
             transform: translateY(-50%);
             background: none;
             border: none;
             color: var(--text-muted);
-            font-size: 18px;
+            font-size: 1.125rem;
             cursor: pointer;
             transition: color 0.2s ease;
         }
@@ -179,90 +194,60 @@
         /* Remember Me */
         .remember-section {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 24px;
+            margin-bottom: 1.5rem;
         }
         
         .checkbox-custom {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 0.5rem;
             cursor: pointer;
         }
         
         .checkbox-custom input[type="checkbox"] {
             width: 18px;
             height: 18px;
-            accent-color: var(--color-buy);
+            accent-color: var(--color-primary);
         }
         
         .checkbox-label {
-            font-size: 14px;
+            font-size: 0.875rem;
             color: var(--text-secondary);
         }
         
-        .forgot-link {
-            font-size: 14px;
-            color: var(--color-buy);
-            text-decoration: none;
-            transition: color 0.2s ease;
-        }
-        
-        .forgot-link:hover {
-            color: #00B583;
-        }
-        
         /* Buttons */
-        .btn-primary-custom {
-            background: linear-gradient(135deg, var(--color-buy) 0%, #00B583 100%);
+        .btn-primary {
+            width: 100%;
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
             border: none;
             border-radius: 12px;
-            padding: 16px 24px;
+            padding: 1rem;
             font-weight: 600;
-            font-size: 16px;
+            font-size: 1rem;
             color: white;
-            width: 100%;
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 12px rgba(0, 211, 149, 0.3);
-            margin-bottom: 16px;
+            margin-bottom: 1rem;
         }
         
-        .btn-primary-custom:hover {
+        .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(0, 211, 149, 0.4);
         }
         
-        .btn-primary-custom:active {
+        .btn-primary:active {
             transform: scale(0.98);
-        }
-        
-        .btn-secondary-custom {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 16px 24px;
-            font-weight: 600;
-            font-size: 16px;
-            color: var(--text-primary);
-            width: 100%;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-secondary-custom:hover {
-            background: var(--bg-elevated);
-            transform: translateY(-2px);
         }
         
         /* Divider */
         .divider {
             display: flex;
             align-items: center;
-            margin: 24px 0;
+            margin: 1.5rem 0;
             color: var(--text-muted);
-            font-size: 14px;
+            font-size: 0.875rem;
         }
         
         .divider::before,
@@ -274,62 +259,61 @@
         }
         
         .divider span {
-            padding: 0 16px;
+            padding: 0 1rem;
         }
         
         /* Social Login */
         .social-login {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 24px;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
         }
         
         .social-btn {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            padding: 12px 16px;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
             border: 1px solid var(--border-color);
             border-radius: 12px;
-            background: var(--bg-secondary);
+            background: var(--bg-elevated);
             color: var(--text-primary);
-            font-size: 14px;
+            font-size: 0.875rem;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
         }
         
         .social-btn:hover {
-            background: var(--bg-elevated);
+            background: var(--bg-card);
             transform: translateY(-2px);
         }
         
         .social-btn i {
-            font-size: 18px;
+            font-size: 1rem;
         }
         
         /* Sign Up Link */
         .signup-section {
             text-align: center;
-            margin-top: 24px;
         }
         
         .signup-text {
-            font-size: 14px;
+            font-size: 0.875rem;
             color: var(--text-secondary);
         }
         
         .signup-link {
-            color: var(--color-buy);
+            color: var(--color-primary);
             text-decoration: none;
             font-weight: 600;
             transition: color 0.2s ease;
         }
         
         .signup-link:hover {
-            color: #00B583;
+            color: var(--color-secondary);
         }
         
         /* Loading State */
@@ -347,125 +331,204 @@
             to { transform: rotate(360deg); }
         }
         
-        /* Success Message */
+        /* Success/Error Messages */
+        .message {
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+        
         .success-message {
             background: rgba(0, 211, 149, 0.1);
-            border: 1px solid #00D395;
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 20px;
-            display: none;
+            border: 1px solid var(--color-primary);
+            color: var(--color-primary);
         }
         
-        .success-message.show {
-            display: block;
-        }
-        
-        .success-icon {
-            color: #00D395;
-            margin-right: 8px;
-        }
-        
-        /* Error Message */
         .error-message {
             background: rgba(246, 70, 93, 0.1);
-            border: 1px solid #F6465D;
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 20px;
-            display: none;
+            border: 1px solid var(--color-danger);
+            color: var(--color-danger);
         }
         
-        .error-message.show {
-            display: block;
+        /* Mobile-First Responsive Design */
+        @media (max-width: 480px) {
+            .header {
+                padding: 0.75rem;
+            }
+            
+            .logo {
+                width: 50px;
+                height: 50px;
+                font-size: 24px;
+            }
+            
+            .app-title {
+                font-size: 1.25rem;
+            }
+            
+            .main-content {
+                padding: 0.75rem;
+            }
+            
+            .login-form {
+                padding: 1.5rem 1rem;
+                border-radius: 16px;
+            }
+            
+            .form-title {
+                font-size: 1.25rem;
+            }
+            
+            .social-login {
+                grid-template-columns: 1fr;
+            }
         }
         
-        .error-icon {
-            color: #F6465D;
-            margin-right: 8px;
-        }
-        
-        /* Responsive Design */
         @media (min-width: 768px) {
-            .form-card {
-                padding: 40px 32px;
-                max-width: 500px;
+            .app-container {
+                background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-primary) 100%);
+            }
+            
+            .header {
+                padding: 2rem 1rem;
+            }
+            
+            .logo {
+                width: 80px;
+                height: 80px;
+                font-size: 36px;
+            }
+            
+            .app-title {
+                font-size: 2rem;
+            }
+            
+            .app-subtitle {
+                font-size: 1rem;
+            }
+            
+            .main-content {
+                padding: 2rem;
+            }
+            
+            .login-form {
+                max-width: 450px;
+                padding: 2.5rem 2rem;
+            }
+            
+            .form-title {
+                font-size: 1.75rem;
             }
         }
         
         @media (min-width: 1024px) {
-            .form-card {
-                max-width: 600px;
+            .login-form {
+                max-width: 500px;
+                padding: 3rem 2.5rem;
             }
+        }
+        
+        /* Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .login-form {
+            animation: fadeInUp 0.6s ease-out;
         }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <!-- Login Form -->
-        <div class="form-card">
-            <h2 class="form-title">Welcome Back</h2>
-            <p class="form-subtitle">Sign in to your account to continue trading</p>
-            
-            <form id="loginForm">
-                <div class="form-group">
-                    <label class="form-label">Email or Phone Number</label>
-                    <div class="input-group-custom">
-                        <i class="fas fa-envelope input-icon"></i>
-                        <input type="text" class="form-control-custom" placeholder="Enter your email or phone" required>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-coins"></i>
+            </div>
+            <h1 class="app-title">P2Ptrading</h1>
+            <p class="app-subtitle">P2P Crypto Trading Platform</p>
+        </header>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="login-form">
+                <h2 class="form-title">Welcome Back</h2>
+                <p class="form-subtitle">Sign in to your account to continue trading</p>
+                
+                <!-- Success/Error Messages -->
+                <div class="message success-message" id="successMessage">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Login successful! Redirecting...</span>
+                </div>
+                
+                <div class="message error-message" id="errorMessage">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span>Invalid credentials. Please try again.</span>
+                </div>
+                
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label class="form-label">Email or Phone Number</label>
+                        <div class="input-group">
+                            <i class="fas fa-envelope input-icon"></i>
+                            <input type="text" class="form-input" placeholder="Enter your email or phone" required>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <div class="input-group-custom">
-                        <i class="fas fa-lock input-icon"></i>
-                        <input type="password" class="form-control-custom" placeholder="Enter your password" required id="passwordInput">
-                        <button type="button" class="password-toggle" onclick="togglePassword()">
-                            <i class="fas fa-eye"></i>
-                        </button>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <div class="input-group">
+                            <i class="fas fa-lock input-icon"></i>
+                            <input type="password" class="form-input" placeholder="Enter your password" required id="passwordInput">
+                            <button type="button" class="password-toggle" onclick="togglePassword()">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
                     </div>
+                    
+                    <div class="remember-section">
+                        <label class="checkbox-custom">
+                            <input type="checkbox" id="rememberMe">
+                            <span class="checkbox-label">Remember me</span>
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary" id="loginBtn">
+                        <span class="btn-text">Sign In</span>
+                        <span class="loading-spinner" style="display: none;"></span>
+                    </button>
+                </form>
+                
+                <div class="divider">
+                    <span>or continue with</span>
                 </div>
                 
-                <div class="remember-section">
-                    <label class="checkbox-custom">
-                        <input type="checkbox" id="rememberMe">
-                        <span class="checkbox-label">Remember me</span>
-                    </label>
+                <div class="social-login">
+                    <button class="social-btn" onclick="socialLogin('google')">
+                        <i class="fab fa-google"></i>
+                        <span>Google</span>
+                    </button>
+                    <button class="social-btn" onclick="socialLogin('apple')">
+                        <i class="fab fa-apple"></i>
+                        <span>Apple</span>
+                    </button>
                 </div>
                 
-                <button type="submit" class="btn-primary-custom" id="loginBtn">
-                    <span class="btn-text">Sign In</span>
-                    <span class="loading-spinner" style="display: none;"></span>
-                </button>
-            </form>
-            
-            <div class="divider">
-                <span>or continue with</span>
+                <div class="signup-section">
+                    <span class="signup-text">Don't have an account? </span>
+                    <a href="register.html" class="signup-link">Sign up</a>
+                </div>
             </div>
-            
-            <div class="social-login">
-                <button class="social-btn" onclick="socialLogin('google')">
-                    <i class="fab fa-google"></i>
-                    <span>Google</span>
-                </button>
-                <button class="social-btn" onclick="socialLogin('apple')">
-                    <i class="fab fa-apple"></i>
-                    <span>Apple</span>
-                </button>
-            </div>
-            
-            <div class="signup-section">
-                <span class="signup-text">Don't have an account? </span>
-                <a href="register.html" class="signup-link">Sign up</a>
-            </div>
-        </div>
+        </main>
     </div>
-    
-
-    
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
         // Toggle password visibility
@@ -490,6 +553,10 @@
             const btnText = loginBtn.querySelector('.btn-text');
             const spinner = loginBtn.querySelector('.loading-spinner');
             
+            // Hide any existing messages
+            document.getElementById('successMessage').style.display = 'none';
+            document.getElementById('errorMessage').style.display = 'none';
+            
             // Show loading state
             btnText.style.display = 'none';
             spinner.style.display = 'inline-block';
@@ -497,7 +564,6 @@
             
             // Simulate API call
             setTimeout(() => {
-                // Demo credentials - accept any valid email format
                 const email = document.querySelector('input[type="text"]').value;
                 const password = document.querySelector('input[type="password"]').value;
                 
