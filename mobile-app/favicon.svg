@@ -1,29 +1,29 @@
 <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="faviconGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#00D395;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#00B583;stop-opacity:1" />
+      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1D4ED8;stop-opacity:1" />
     </linearGradient>
   </defs>
   
   <!-- Background Circle -->
   <circle cx="16" cy="16" r="14" fill="url(#faviconGradient)"/>
   
-  <!-- Coins Icon -->
+  <!-- Simplified Coins Icon -->
   <g transform="translate(16, 16)">
     <!-- First Coin -->
-    <circle cx="-4" cy="-2" r="3" fill="white" opacity="0.9"/>
-    <circle cx="-4" cy="-2" r="2.5" fill="url(#faviconGradient)"/>
-    <text x="-4" y="-1" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="3" font-weight="bold">$</text>
+    <circle cx="-6" cy="-3" r="4" fill="white" opacity="0.9"/>
+    <circle cx="-6" cy="-3" r="3" fill="url(#faviconGradient)"/>
+    <text x="-6" y="-1" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="4" font-weight="bold">$</text>
     
     <!-- Second Coin -->
-    <circle cx="2" cy="-3" r="2.5" fill="white" opacity="0.9"/>
-    <circle cx="2" cy="-3" r="2" fill="url(#faviconGradient)"/>
-    <text x="2" y="-2" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="2.5" font-weight="bold">$</text>
+    <circle cx="3" cy="-4" r="3" fill="white" opacity="0.9"/>
+    <circle cx="3" cy="-4" r="2" fill="url(#faviconGradient)"/>
+    <text x="3" y="-2" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="3" font-weight="bold">$</text>
     
     <!-- Third Coin -->
-    <circle cx="3" cy="2" r="2" fill="white" opacity="0.9"/>
-    <circle cx="3" cy="2" r="1.5" fill="url(#faviconGradient)"/>
-    <text x="3" y="3" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="2" font-weight="bold">$</text>
+    <circle cx="4" cy="3" r="3" fill="white" opacity="0.9"/>
+    <circle cx="4" cy="3" r="2" fill="url(#faviconGradient)"/>
+    <text x="4" y="5" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="3" font-weight="bold">$</text>
   </g>
 </svg> 
