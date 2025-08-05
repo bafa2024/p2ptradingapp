@@ -1,4 +1,4 @@
-Complete Feature Requirements for the P2P Crypto Trading App (User Side + System Side)
+﻿Complete Feature Requirements for the P2P Crypto Trading App (User Side + System Side)
 
 ⸻
 
@@ -16,7 +16,7 @@ Complete Feature Requirements for the P2P Crypto Trading App (User Side + System
 • Off-chain internal transfers between users.
 • Support for internal balance in local currency.
 
-1.3 P2P Trading System:
+1.3 IQX System:
 • Browse and execute buy/sell trades.
 • Create offers (buy/sell) with custom price and amount.
 • Secure Escrow system.
@@ -84,3 +84,7 @@ Complete Feature Requirements for the P2P Crypto Trading App (User Side + System
 • TronWeb / TronGrid (for monitoring deposits and withdrawals).
 • Centralized master wallet managed by the platform.
 • Optional support for Redis (for caching and performance).
+
+
+
+

@@ -1,0 +1,983 @@
+/* RTL Support for Arabic Language - Admin Panel */
+
+/* RTL Direction */
+[dir="rtl"] {
+    direction: rtl;
+    text-align: right;
+}
+
+[dir="rtl"] body {
+    font-family: var(--font-body-ar), 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* RTL Layout Adjustments */
+[dir="rtl"] .admin-header {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .header-actions {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .sidebar {
+    right: 0;
+    left: auto;
+}
+
+[dir="rtl"] .main-content {
+    margin-left: 0;
+    margin-right: 250px;
+}
+
+[dir="rtl"] .sidebar-collapsed + .main-content {
+    margin-right: 60px;
+}
+
+/* RTL Sidebar */
+[dir="rtl"] .sidebar-nav {
+    text-align: right;
+}
+
+[dir="rtl"] .sidebar-nav-item {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+[dir="rtl"] .sidebar-nav-icon {
+    margin-left: 12px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .sidebar-nav-text {
+    text-align: right;
+}
+
+[dir="rtl"] .sidebar-submenu {
+    padding-right: 20px;
+    padding-left: 0;
+}
+
+[dir="rtl"] .sidebar-submenu-item {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+[dir="rtl"] .sidebar-submenu-icon {
+    margin-left: 8px;
+    margin-right: 0;
+}
+
+/* RTL Form Elements */
+[dir="rtl"] .form-group {
+    text-align: right;
+}
+
+[dir="rtl"] .form-input,
+[dir="rtl"] .form-select,
+[dir="rtl"] .form-textarea {
+    text-align: right;
+    padding-right: 12px;
+    padding-left: 40px;
+}
+
+[dir="rtl"] .form-label {
+    text-align: right;
+}
+
+[dir="rtl"] .form-help {
+    text-align: right;
+}
+
+/* RTL Button Groups */
+[dir="rtl"] .button-group {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .btn {
+    margin-left: 8px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .btn:first-child {
+    margin-left: 8px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .btn:last-child {
+    margin-left: 0;
+    margin-right: 8px;
+}
+
+/* RTL Cards and Containers */
+[dir="rtl"] .card {
+    text-align: right;
+}
+
+[dir="rtl"] .card-header {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .card-title {
+    text-align: right;
+}
+
+[dir="rtl"] .card-content {
+    text-align: right;
+}
+
+[dir="rtl"] .card-footer {
+    flex-direction: row-reverse;
+}
+
+/* RTL Tables */
+[dir="rtl"] .table {
+    text-align: right;
+}
+
+[dir="rtl"] .table th,
+[dir="rtl"] .table td {
+    text-align: right;
+}
+
+[dir="rtl"] .table-actions {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .table-action-btn {
+    margin-left: 4px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .table-action-btn:first-child {
+    margin-left: 4px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .table-action-btn:last-child {
+    margin-left: 0;
+    margin-right: 4px;
+}
+
+/* RTL Alerts */
+[dir="rtl"] .alert {
+    text-align: right;
+}
+
+[dir="rtl"] .alert-icon {
+    margin-left: 8px;
+    margin-right: 0;
+}
+
+/* RTL Navigation */
+[dir="rtl"] .nav-tabs {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .nav-tab {
+    margin-left: 0;
+    margin-right: 8px;
+}
+
+[dir="rtl"] .nav-tab:first-child {
+    margin-right: 0;
+}
+
+/* RTL Dropdowns */
+[dir="rtl"] .dropdown-menu {
+    text-align: right;
+    right: 0;
+    left: auto;
+}
+
+[dir="rtl"] .dropdown-item {
+    text-align: right;
+}
+
+[dir="rtl"] .dropdown-icon {
+    margin-left: 8px;
+    margin-right: 0;
+}
+
+/* RTL Tooltips */
+[dir="rtl"] .tooltip {
+    text-align: right;
+}
+
+/* RTL Progress Bars */
+[dir="rtl"] .progress-bar {
+    direction: rtl;
+}
+
+/* RTL Icons and Images */
+[dir="rtl"] .icon-left {
+    margin-left: 8px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .icon-right {
+    margin-left: 0;
+    margin-right: 8px;
+}
+
+/* RTL Spacing */
+[dir="rtl"] .ml-auto {
+    margin-left: 0 !important;
+    margin-right: auto !important;
+}
+
+[dir="rtl"] .mr-auto {
+    margin-right: 0 !important;
+    margin-left: auto !important;
+}
+
+[dir="rtl"] .pl-0 {
+    padding-left: 0 !important;
+    padding-right: 0.25rem !important;
+}
+
+[dir="rtl"] .pr-0 {
+    padding-right: 0 !important;
+    padding-left: 0.25rem !important;
+}
+
+/* RTL Flexbox Utilities */
+[dir="rtl"] .flex-row-reverse {
+    flex-direction: row-reverse !important;
+}
+
+[dir="rtl"] .justify-content-start {
+    justify-content: flex-end !important;
+}
+
+[dir="rtl"] .justify-content-end {
+    justify-content: flex-start !important;
+}
+
+[dir="rtl"] .text-left {
+    text-align: right !important;
+}
+
+[dir="rtl"] .text-right {
+    text-align: left !important;
+}
+
+/* RTL Specific Admin Components */
+
+/* Dashboard */
+[dir="rtl"] .stats-grid {
+    direction: rtl;
+}
+
+[dir="rtl"] .stat-card {
+    text-align: right;
+}
+
+[dir="rtl"] .stat-icon {
+    margin-left: 12px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .stat-value {
+    text-align: right;
+}
+
+[dir="rtl"] .stat-label {
+    text-align: right;
+}
+
+[dir="rtl"] .chart-container {
+    direction: rtl;
+}
+
+/* Users Management */
+[dir="rtl"] .user-list {
+    text-align: right;
+}
+
+[dir="rtl"] .user-item {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+[dir="rtl"] .user-avatar {
+    margin-left: 12px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .user-info {
+    text-align: right;
+}
+
+[dir="rtl"] .user-actions {
+    flex-direction: row-reverse;
+}
+
+/* Trades Management */
+[dir="rtl"] .trade-list {
+    text-align: right;
+}
+
+[dir="rtl"] .trade-item {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+[dir="rtl"] .trade-icon {
+    margin-left: 12px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .trade-info {
+    text-align: right;
+}
+
+[dir="rtl"] .trade-actions {
+    flex-direction: row-reverse;
+}
+
+/* Wallet Management */
+[dir="rtl"] .wallet-balance {
+    text-align: right;
+}
+
+[dir="rtl"] .balance-amount {
+    text-align: right;
+}
+
+[dir="rtl"] .transaction-list {
+    text-align: right;
+}
+
+[dir="rtl"] .transaction-item {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+[dir="rtl"] .transaction-icon {
+    margin-left: 12px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .transaction-info {
+    text-align: right;
+}
+
+/* KYC Management */
+[dir="rtl"] .kyc-list {
+    text-align: right;
+}
+
+[dir="rtl"] .kyc-item {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+[dir="rtl"] .kyc-avatar {
+    margin-left: 12px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .kyc-info {
+    text-align: right;
+}
+
+[dir="rtl"] .kyc-actions {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .document-preview {
+    text-align: right;
+}
+
+/* Disputes Management */
+[dir="rtl"] .dispute-list {
+    text-align: right;
+}
+
+[dir="rtl"] .dispute-item {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+[dir="rtl"] .dispute-icon {
+    margin-left: 12px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .dispute-info {
+    text-align: right;
+}
+
+[dir="rtl"] .dispute-actions {
+    flex-direction: row-reverse;
+}
+
+/* Reports */
+[dir="rtl"] .report-filters {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .report-type {
+    margin-left: 8px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .report-date {
+    margin-left: 8px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .report-actions {
+    flex-direction: row-reverse;
+}
+
+/* Support */
+[dir="rtl"] .ticket-list {
+    text-align: right;
+}
+
+[dir="rtl"] .ticket-item {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+[dir="rtl"] .ticket-icon {
+    margin-left: 12px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .ticket-info {
+    text-align: right;
+}
+
+[dir="rtl"] .ticket-actions {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .ticket-message {
+    text-align: right;
+}
+
+/* Settings */
+[dir="rtl"] .settings-section {
+    text-align: right;
+}
+
+[dir="rtl"] .settings-item {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+[dir="rtl"] .settings-icon {
+    margin-left: 12px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .settings-info {
+    text-align: right;
+}
+
+[dir="rtl"] .toggle-switch {
+    margin-left: 12px;
+    margin-right: 0;
+}
+
+/* Permissions */
+[dir="rtl"] .permission-list {
+    text-align: right;
+}
+
+[dir="rtl"] .permission-item {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+[dir="rtl"] .permission-icon {
+    margin-left: 12px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .permission-info {
+    text-align: right;
+}
+
+[dir="rtl"] .permission-actions {
+    flex-direction: row-reverse;
+}
+
+/* Language Switcher */
+[dir="rtl"] .language-switcher {
+    margin-left: 0;
+    margin-right: 16px;
+}
+
+[dir="rtl"] .language-btn {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .language-icon {
+    margin-left: 8px;
+    margin-right: 0;
+}
+
+/* RTL Modals */
+[dir="rtl"] .modal-header {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .modal-title {
+    text-align: right;
+}
+
+[dir="rtl"] .modal-content {
+    text-align: right;
+}
+
+[dir="rtl"] .modal-footer {
+    flex-direction: row-reverse;
+}
+
+/* RTL Notifications */
+[dir="rtl"] .notification {
+    text-align: right;
+}
+
+[dir="rtl"] .notification-icon {
+    margin-left: 8px;
+    margin-right: 0;
+}
+
+/* RTL Loading States */
+[dir="rtl"] .loading-state {
+    text-align: right;
+}
+
+[dir="rtl"] .loading-icon {
+    margin-left: 0;
+    margin-right: 12px;
+}
+
+/* RTL Empty States */
+[dir="rtl"] .empty-state {
+    text-align: right;
+}
+
+[dir="rtl"] .empty-state-icon {
+    margin-left: 0;
+    margin-right: 16px;
+}
+
+/* RTL Error States */
+[dir="rtl"] .error-state {
+    text-align: right;
+}
+
+[dir="rtl"] .error-state-icon {
+    margin-left: 0;
+    margin-right: 16px;
+}
+
+/* RTL Success States */
+[dir="rtl"] .success-state {
+    text-align: right;
+}
+
+[dir="rtl"] .success-state-icon {
+    margin-left: 0;
+    margin-right: 16px;
+}
+
+/* RTL Checkbox and Radio */
+[dir="rtl"] .checkbox-label,
+[dir="rtl"] .radio-label {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .checkbox-input,
+[dir="rtl"] .radio-input {
+    margin-left: 8px;
+    margin-right: 0;
+}
+
+/* RTL Toggle Switch */
+[dir="rtl"] .toggle-switch {
+    direction: rtl;
+}
+
+[dir="rtl"] .toggle-slider {
+    transform: translateX(0);
+}
+
+[dir="rtl"] .toggle-switch input:checked + .toggle-slider {
+    transform: translateX(-20px);
+}
+
+/* RTL Badge */
+[dir="rtl"] .badge {
+    margin-left: 8px;
+    margin-right: 0;
+}
+
+/* RTL Status Indicators */
+[dir="rtl"] .status-indicator {
+    margin-left: 8px;
+    margin-right: 0;
+}
+
+/* RTL Price Display */
+[dir="rtl"] .price-display {
+    text-align: right;
+}
+
+[dir="rtl"] .currency-symbol {
+    margin-left: 4px;
+    margin-right: 0;
+}
+
+/* RTL Time Display */
+[dir="rtl"] .time-display {
+    text-align: right;
+}
+
+/* RTL Counter */
+[dir="rtl"] .counter {
+    direction: rtl;
+}
+
+/* RTL Rating */
+[dir="rtl"] .rating {
+    direction: rtl;
+}
+
+[dir="rtl"] .rating-star {
+    margin-left: 2px;
+    margin-right: 0;
+}
+
+/* RTL Pagination */
+[dir="rtl"] .pagination {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .page-item {
+    margin-left: 0;
+    margin-right: 4px;
+}
+
+[dir="rtl"] .page-item:first-child {
+    margin-right: 0;
+}
+
+/* RTL Breadcrumb */
+[dir="rtl"] .breadcrumb {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .breadcrumb-item {
+    margin-left: 0;
+    margin-right: 8px;
+}
+
+[dir="rtl"] .breadcrumb-separator {
+    margin-left: 0;
+    margin-right: 8px;
+}
+
+/* RTL Tabs */
+[dir="rtl"] .tab-list {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .tab-item {
+    margin-left: 0;
+    margin-right: 8px;
+}
+
+[dir="rtl"] .tab-item:first-child {
+    margin-right: 0;
+}
+
+/* RTL Accordion */
+[dir="rtl"] .accordion-header {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .accordion-icon {
+    margin-left: 12px;
+    margin-right: 0;
+}
+
+/* RTL Timeline */
+[dir="rtl"] .timeline {
+    text-align: right;
+}
+
+[dir="rtl"] .timeline-item {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .timeline-marker {
+    margin-left: 16px;
+    margin-right: 0;
+}
+
+/* RTL Calendar */
+[dir="rtl"] .calendar {
+    direction: rtl;
+}
+
+[dir="rtl"] .calendar-header {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .calendar-nav {
+    flex-direction: row-reverse;
+}
+
+/* RTL Color Picker */
+[dir="rtl"] .color-picker {
+    direction: rtl;
+}
+
+/* RTL Slider */
+[dir="rtl"] .slider {
+    direction: rtl;
+}
+
+/* RTL Range Input */
+[dir="rtl"] input[type="range"] {
+    direction: rtl;
+}
+
+/* RTL File Upload */
+[dir="rtl"] .file-upload {
+    text-align: right;
+}
+
+[dir="rtl"] .file-upload-icon {
+    margin-left: 12px;
+    margin-right: 0;
+}
+
+/* RTL Search */
+[dir="rtl"] .search-box {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .search-icon {
+    margin-left: 0;
+    margin-right: 12px;
+}
+
+[dir="rtl"] .search-input {
+    text-align: right;
+}
+
+/* RTL Filter */
+[dir="rtl"] .filter-box {
+    text-align: right;
+}
+
+[dir="rtl"] .filter-option {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .filter-checkbox {
+    margin-left: 8px;
+    margin-right: 0;
+}
+
+/* RTL Sort */
+[dir="rtl"] .sort-dropdown {
+    text-align: right;
+}
+
+[dir="rtl"] .sort-option {
+    text-align: right;
+}
+
+/* RTL Menu */
+[dir="rtl"] .menu-item {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+[dir="rtl"] .menu-icon {
+    margin-left: 12px;
+    margin-right: 0;
+}
+
+/* RTL Context Menu */
+[dir="rtl"] .context-menu {
+    text-align: right;
+}
+
+[dir="rtl"] .context-menu-item {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .context-menu-icon {
+    margin-left: 8px;
+    margin-right: 0;
+}
+
+/* RTL Tooltip */
+[dir="rtl"] .tooltip-content {
+    text-align: right;
+}
+
+/* RTL Popover */
+[dir="rtl"] .popover-content {
+    text-align: right;
+}
+
+/* RTL Drawer */
+[dir="rtl"] .drawer {
+    right: 0;
+    left: auto;
+    transform: translateX(100%);
+}
+
+[dir="rtl"] .drawer.open {
+    transform: translateX(0);
+}
+
+/* RTL Toast */
+[dir="rtl"] .toast {
+    text-align: right;
+}
+
+[dir="rtl"] .toast-icon {
+    margin-left: 8px;
+    margin-right: 0;
+}
+
+/* RTL Skeleton */
+[dir="rtl"] .skeleton {
+    direction: rtl;
+}
+
+/* RTL Animation Adjustments */
+[dir="rtl"] .slide-in-right {
+    animation: slideInLeft 0.3s ease-out;
+}
+
+[dir="rtl"] .slide-out-right {
+    animation: slideOutLeft 0.3s ease-out;
+}
+
+[dir="rtl"] .slide-in-left {
+    animation: slideInRight 0.3s ease-out;
+}
+
+[dir="rtl"] .slide-out-left {
+    animation: slideOutRight 0.3s ease-out;
+}
+
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOutLeft {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-100%);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOutRight {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(100%);
+    }
+}
+
+/* RTL Notification */
+[dir="rtl"] .language-notification {
+    right: auto;
+    left: 20px;
+    transform: translateX(-100%);
+}
+
+[dir="rtl"] .language-notification.show {
+    transform: translateX(0);
+}
+
+/* RTL Loading Spinner */
+[dir="rtl"] .loading-spinner {
+    direction: rtl;
+}
+
+/* RTL Progress Bar */
+[dir="rtl"] .progress-bar-fill {
+    direction: rtl;
+}
+
+/* Responsive RTL Adjustments */
+@media (max-width: 768px) {
+    [dir="rtl"] .admin-header {
+        flex-direction: column-reverse;
+    }
+    
+    [dir="rtl"] .header-actions {
+        flex-direction: column-reverse;
+    }
+    
+    [dir="rtl"] .main-content {
+        margin-right: 0;
+    }
+    
+    [dir="rtl"] .sidebar {
+        transform: translateX(100%);
+    }
+    
+    [dir="rtl"] .sidebar.open {
+        transform: translateX(0);
+    }
+    
+    [dir="rtl"] .card-header {
+        flex-direction: column-reverse;
+        align-items: flex-end;
+    }
+    
+    [dir="rtl"] .button-group {
+        flex-direction: column-reverse;
+    }
+}
+
+@media (max-width: 480px) {
+    [dir="rtl"] .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    [dir="rtl"] .table-responsive {
+        direction: rtl;
+    }
+    
+    [dir="rtl"] .modal-header {
+        flex-direction: column-reverse;
+        align-items: flex-end;
+    }
+    
+    [dir="rtl"] .modal-footer {
+        flex-direction: column-reverse;
+    }
+} 

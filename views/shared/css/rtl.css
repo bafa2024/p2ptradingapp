@@ -1,0 +1,956 @@
+/* Shared RTL Support for Arabic Language */
+
+/* RTL Direction */
+[dir="rtl"] {
+    direction: rtl;
+    text-align: right;
+}
+
+[dir="rtl"] body {
+    font-family: var(--font-body-ar), 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* RTL Layout Adjustments */
+[dir="rtl"] .header {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .header-actions {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .bottom-nav {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .nav-item {
+    flex-direction: column;
+}
+
+[dir="rtl"] .nav-icon {
+    margin-left: 0;
+    margin-right: 4px;
+}
+
+/* RTL Form Elements */
+[dir="rtl"] .form-group {
+    text-align: right;
+}
+
+[dir="rtl"] .form-input,
+[dir="rtl"] .form-select,
+[dir="rtl"] .form-textarea {
+    text-align: right;
+    padding-right: 12px;
+    padding-left: 40px;
+}
+
+[dir="rtl"] .form-label {
+    text-align: right;
+}
+
+/* RTL Button Groups */
+[dir="rtl"] .button-group {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .btn {
+    margin-left: 8px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .btn:first-child {
+    margin-left: 8px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .btn:last-child {
+    margin-left: 0;
+    margin-right: 8px;
+}
+
+/* RTL Cards and Containers */
+[dir="rtl"] .card {
+    text-align: right;
+}
+
+[dir="rtl"] .card-header {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .card-title {
+    text-align: right;
+}
+
+[dir="rtl"] .card-content {
+    text-align: right;
+}
+
+/* RTL Lists */
+[dir="rtl"] .list-item {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+[dir="rtl"] .list-item-icon {
+    margin-left: 12px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .list-item-content {
+    text-align: right;
+}
+
+/* RTL Modals */
+[dir="rtl"] .modal-header {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .modal-title {
+    text-align: right;
+}
+
+[dir="rtl"] .modal-content {
+    text-align: right;
+}
+
+[dir="rtl"] .modal-footer {
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+}
+
+/* RTL Tables */
+[dir="rtl"] .table {
+    text-align: right;
+}
+
+[dir="rtl"] .table th,
+[dir="rtl"] .table td {
+    text-align: right;
+    padding-right: 12px;
+    padding-left: 8px;
+}
+
+/* RTL Alerts */
+[dir="rtl"] .alert {
+    text-align: right;
+}
+
+[dir="rtl"] .alert-icon {
+    margin-left: 8px;
+    margin-right: 0;
+}
+
+/* RTL Navigation */
+[dir="rtl"] .nav-tabs {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .nav-tab {
+    margin-left: 4px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .nav-tab:first-child {
+    margin-left: 4px;
+    margin-right: 0;
+}
+
+/* RTL Sidebar (Admin Panel) */
+[dir="rtl"] .sidebar {
+    left: auto;
+    right: 0;
+    transform: translateX(100%);
+}
+
+[dir="rtl"] .sidebar.open {
+    transform: translateX(0);
+}
+
+[dir="rtl"] .sidebar-header {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .sidebar-nav {
+    text-align: right;
+}
+
+[dir="rtl"] .sidebar-nav-item {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .sidebar-nav-icon {
+    margin-left: 12px;
+    margin-right: 0;
+}
+
+/* RTL Dropdowns */
+[dir="rtl"] .dropdown-menu {
+    left: auto;
+    right: 0;
+    text-align: right;
+}
+
+[dir="rtl"] .dropdown-item {
+    text-align: right;
+    padding-right: 16px;
+    padding-left: 12px;
+}
+
+/* RTL Tooltips */
+[dir="rtl"] .tooltip {
+    text-align: right;
+}
+
+/* RTL Progress Bars */
+[dir="rtl"] .progress-bar {
+    direction: rtl;
+}
+
+/* RTL Icons */
+[dir="rtl"] .icon-left {
+    margin-left: 8px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .icon-right {
+    margin-left: 0;
+    margin-right: 8px;
+}
+
+/* RTL Utility Classes */
+[dir="rtl"] .ml-auto {
+    margin-left: 0 !important;
+    margin-right: auto !important;
+}
+
+[dir="rtl"] .mr-auto {
+    margin-right: 0 !important;
+    margin-left: auto !important;
+}
+
+[dir="rtl"] .pl-0 {
+    padding-left: 0 !important;
+    padding-right: 0.5rem !important;
+}
+
+[dir="rtl"] .pr-0 {
+    padding-right: 0 !important;
+    padding-left: 0.5rem !important;
+}
+
+/* RTL Flexbox */
+[dir="rtl"] .flex-row-reverse {
+    flex-direction: row-reverse !important;
+}
+
+[dir="rtl"] .justify-content-start {
+    justify-content: flex-end !important;
+}
+
+[dir="rtl"] .justify-content-end {
+    justify-content: flex-start !important;
+}
+
+/* RTL Text Alignment */
+[dir="rtl"] .text-left {
+    text-align: right !important;
+}
+
+[dir="rtl"] .text-right {
+    text-align: left !important;
+}
+
+/* Mobile App Specific RTL */
+[dir="rtl"] .trading-controls {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .currency-selector {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .buy-sell-tabs {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .merchant-card {
+    text-align: right;
+}
+
+[dir="rtl"] .merchant-info {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .merchant-avatar {
+    margin-left: 12px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .payment-methods {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .balance-card {
+    text-align: right;
+}
+
+[dir="rtl"] .balance-amount {
+    text-align: right;
+}
+
+[dir="rtl"] .transaction-item {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+[dir="rtl"] .transaction-icon {
+    margin-left: 12px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .profile-header {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .profile-avatar {
+    margin-left: 16px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .profile-info {
+    text-align: right;
+}
+
+[dir="rtl"] .verification-badge {
+    margin-left: 8px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .settings-item {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+[dir="rtl"] .settings-icon {
+    margin-left: 12px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .toggle-switch {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .notification-item {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+[dir="rtl"] .notification-icon {
+    margin-left: 12px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .support-item {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+[dir="rtl"] .support-icon {
+    margin-left: 12px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .chat-message {
+    text-align: right;
+}
+
+[dir="rtl"] .chat-message.sent {
+    text-align: left;
+}
+
+[dir="rtl"] .chat-input {
+    text-align: right;
+}
+
+[dir="rtl"] .chat-send-btn {
+    margin-left: 8px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .scanner-controls {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .scanner-info {
+    text-align: right;
+}
+
+[dir="rtl"] .referral-card {
+    text-align: right;
+}
+
+[dir="rtl"] .referral-stats {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .membership-card {
+    text-align: right;
+}
+
+[dir="rtl"] .membership-benefits {
+    text-align: right;
+}
+
+[dir="rtl"] .membership-price {
+    text-align: right;
+}
+
+[dir="rtl"] .kyc-form {
+    text-align: right;
+}
+
+[dir="rtl"] .document-upload {
+    text-align: right;
+}
+
+[dir="rtl"] .verification-steps {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .ad-form {
+    text-align: right;
+}
+
+[dir="rtl"] .ad-preview {
+    text-align: right;
+}
+
+[dir="rtl"] .market-info {
+    text-align: right;
+}
+
+[dir="rtl"] .market-stats {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .market-actions {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .filter-form {
+    text-align: right;
+}
+
+[dir="rtl"] .filter-options {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .language-switcher {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .language-btn {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .language-icon {
+    margin-left: 8px;
+    margin-right: 0;
+}
+
+/* Admin Panel Specific RTL */
+[dir="rtl"] .main-content {
+    margin-left: 0;
+    margin-right: 250px;
+}
+
+[dir="rtl"] .sidebar-collapsed + .main-content {
+    margin-right: 60px;
+}
+
+[dir="rtl"] .stats-grid {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .stats-card {
+    text-align: right;
+}
+
+[dir="rtl"] .table-responsive {
+    direction: rtl;
+}
+
+[dir="rtl"] .table-responsive .table {
+    direction: rtl;
+}
+
+[dir="rtl"] .action-buttons {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .search-filters {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .pagination {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .breadcrumb {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .breadcrumb-item {
+    margin-left: 8px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .breadcrumb-separator {
+    margin-left: 8px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .tab-list {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .tab-item {
+    margin-left: 4px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .tab-item:first-child {
+    margin-left: 4px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .accordion-header {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .accordion-icon {
+    margin-left: 12px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .timeline {
+    direction: rtl;
+}
+
+[dir="rtl"] .timeline-item {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .timeline-marker {
+    margin-left: 16px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .calendar {
+    direction: rtl;
+}
+
+[dir="rtl"] .calendar-header {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .calendar-nav {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .color-picker {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .slider {
+    direction: rtl;
+}
+
+[dir="rtl"] input[type="range"] {
+    direction: rtl;
+}
+
+[dir="rtl"] .file-upload {
+    text-align: right;
+}
+
+[dir="rtl"] .file-upload-icon {
+    margin-left: 12px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .search-box {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .search-icon {
+    margin-left: 12px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .search-input {
+    text-align: right;
+    padding-right: 12px;
+    padding-left: 40px;
+}
+
+[dir="rtl"] .filter-box {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .filter-option {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .filter-checkbox {
+    margin-left: 8px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .sort-dropdown {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .sort-option {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .menu-item {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+[dir="rtl"] .menu-icon {
+    margin-left: 12px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .context-menu {
+    left: auto;
+    right: 0;
+    text-align: right;
+}
+
+[dir="rtl"] .context-menu-item {
+    text-align: right;
+    padding-right: 16px;
+    padding-left: 12px;
+}
+
+[dir="rtl"] .context-menu-icon {
+    margin-left: 8px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .tooltip-content {
+    text-align: right;
+    left: auto;
+    right: 0;
+}
+
+[dir="rtl"] .popover-content {
+    text-align: right;
+    left: auto;
+    right: 0;
+}
+
+[dir="rtl"] .modal-content {
+    text-align: right;
+}
+
+[dir="rtl"] .modal-header {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .modal-footer {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .drawer {
+    left: auto;
+    right: 0;
+    transform: translateX(100%);
+}
+
+[dir="rtl"] .drawer.open {
+    transform: translateX(0);
+}
+
+[dir="rtl"] .toast {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+[dir="rtl"] .toast-icon {
+    margin-left: 12px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .skeleton {
+    direction: rtl;
+}
+
+[dir="rtl"] .empty-state {
+    text-align: right;
+}
+
+[dir="rtl"] .empty-state-icon {
+    margin-left: 0;
+    margin-right: auto;
+}
+
+[dir="rtl"] .error-state {
+    text-align: right;
+}
+
+[dir="rtl"] .error-state-icon {
+    margin-left: 0;
+    margin-right: auto;
+}
+
+[dir="rtl"] .success-state {
+    text-align: right;
+}
+
+[dir="rtl"] .success-state-icon {
+    margin-left: 0;
+    margin-right: auto;
+}
+
+[dir="rtl"] .loading-state {
+    text-align: right;
+}
+
+[dir="rtl"] .loading-state-icon {
+    margin-left: 0;
+    margin-right: auto;
+}
+
+/* RTL Animations */
+[dir="rtl"] .slide-in-right {
+    animation: slideInLeft 0.3s ease-out;
+}
+
+[dir="rtl"] .slide-out-right {
+    animation: slideOutLeft 0.3s ease-in;
+}
+
+[dir="rtl"] .slide-in-left {
+    animation: slideInRight 0.3s ease-out;
+}
+
+[dir="rtl"] .slide-out-left {
+    animation: slideOutRight 0.3s ease-in;
+}
+
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutLeft {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutRight {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+/* RTL Notifications */
+[dir="rtl"] .language-notification {
+    left: auto;
+    right: 20px;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+}
+
+[dir="rtl"] .language-notification.show {
+    transform: translateX(0);
+}
+
+/* RTL Loading States */
+[dir="rtl"] .loading-spinner {
+    direction: rtl;
+}
+
+[dir="rtl"] .progress-bar-fill {
+    direction: rtl;
+}
+
+/* RTL Form Controls */
+[dir="rtl"] .checkbox-label,
+[dir="rtl"] .radio-label {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+[dir="rtl"] .checkbox-input,
+[dir="rtl"] .radio-input {
+    margin-left: 8px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .toggle-switch {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .toggle-slider {
+    direction: rtl;
+}
+
+[dir="rtl"] .toggle-switch input:checked + .toggle-slider {
+    transform: translateX(-20px);
+}
+
+/* RTL Status Indicators */
+[dir="rtl"] .badge {
+    margin-left: 8px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .status-indicator {
+    margin-left: 8px;
+    margin-right: 0;
+}
+
+/* RTL Price and Currency */
+[dir="rtl"] .price-display {
+    direction: rtl;
+}
+
+[dir="rtl"] .currency-symbol {
+    margin-left: 4px;
+    margin-right: 0;
+}
+
+/* RTL Time and Counters */
+[dir="rtl"] .time-display {
+    direction: rtl;
+}
+
+[dir="rtl"] .counter {
+    direction: rtl;
+}
+
+/* RTL Ratings */
+[dir="rtl"] .rating {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .rating-star {
+    margin-left: 2px;
+    margin-right: 0;
+}
+
+/* RTL Pagination */
+[dir="rtl"] .pagination {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .page-item {
+    margin-left: 4px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .page-item:first-child {
+    margin-left: 4px;
+    margin-right: 0;
+}
+
+/* Responsive RTL Adjustments */
+@media (max-width: 768px) {
+    [dir="rtl"] .header-actions {
+        flex-direction: row-reverse;
+    }
+    
+    [dir="rtl"] .bottom-nav {
+        flex-direction: row-reverse;
+    }
+    
+    [dir="rtl"] .button-group {
+        flex-direction: row-reverse;
+    }
+    
+    [dir="rtl"] .card-header {
+        flex-direction: row-reverse;
+    }
+    
+    [dir="rtl"] .main-content {
+        margin-right: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    [dir="rtl"] .nav-item {
+        flex-direction: column;
+    }
+    
+    [dir="rtl"] .nav-icon {
+        margin-left: 0;
+        margin-right: 4px;
+    }
+    
+    [dir="rtl"] .merchant-info {
+        flex-direction: column;
+    }
+    
+    [dir="rtl"] .profile-header {
+        flex-direction: column;
+    }
+    
+    [dir="rtl"] .profile-avatar {
+        margin-left: 0;
+        margin-right: 0;
+        margin-bottom: 12px;
+    }
+}
+
+@media (max-width: 360px) {
+    [dir="rtl"] .nav-item {
+        font-size: 0.75rem;
+    }
+    
+    [dir="rtl"] .nav-icon {
+        font-size: 1.2rem;
+    }
+    
+    [dir="rtl"] .merchant-info {
+        font-size: 0.8rem;
+    }
+    
+    [dir="rtl"] .profile-header {
+        font-size: 0.8rem;
+    }
+} 

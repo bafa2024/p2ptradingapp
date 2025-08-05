@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title data-i18n="my_qr_code">IQX - My QR Code</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- QR Code Library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    
+    <!-- Font System -->
+    <link rel="stylesheet" href="css/fonts.css">
+    
+    <!-- Language Support -->
+    <link rel="stylesheet" href="css/rtl.css">
+    <script src="js/language.js"></script>
+    
+    <style>
+        /* Design System Variables */
+        :root {
+            /* Colors */
+            --bg-primary: #0B0E11;
+            --bg-secondary: #1A1D21;
+            --bg-card: #242530;
+            --bg-elevated: #2B2F36;
+            --border-color: #2B2F36;
+            
+            --text-primary: #FFFFFF;
+            --text-secondary: #B7BDC6;
+            --text-muted: #848E9C;
+            
+            --color-buy: #10B981;
+            --color-sell: #F6465D;
+            --color-warning: #FFA500;
+            --color-info: #3861FB;
+            --color-success: #10B981;
+            --color-verified: #8B5CF6;
+            --color-star: #F59E0B;
+        }
+        
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
+        body {
+            font-family: var(--font-body-en), -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Status Bar */
+        .status-bar {
+            background: var(--bg-primary);
+            padding: 8px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        /* Header */
+        .app-header {
+            background: var(--bg-secondary);
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .back-btn {
+            color: var(--text-primary);
+            font-size: 20px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        
+        .back-btn:hover {
+            color: var(--color-buy);
+        }
+        
+        .header-tabs {
+            display: flex;
+            gap: 0;
+            background: var(--bg-elevated);
+            border-radius: 8px;
+            padding: 4px;
+        }
+        
+        .header-tab {
+            padding: 8px 16px;
+            border-radius: 6px;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            background: none;
+        }
+        
+        .header-tab.active {
+            background: var(--color-buy);
+            color: white;
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding: 24px 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+        }
+        
+        /* Profile Section */
+        .profile-section {
+            text-align: center;
+        }
+        
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--color-buy) 0%, var(--color-info) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 32px;
+            margin: 0 auto 16px;
+            border: 3px solid var(--bg-elevated);
+        }
+        
+        .profile-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+        
+        .profile-id {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+        
+        /* QR Code Section */
+        .qr-section {
+            width: 100%;
+            max-width: 300px;
+        }
+        
+        .qr-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .qr-code-container {
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .qr-code {
+            width: 200px;
+            height: 200px;
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .qr-logo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            background: var(--color-buy);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            border: 3px solid white;
+        }
+        
+        .qr-instructions {
+            margin-top: 16px;
+        }
+        
+        .qr-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+        
+        .qr-subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+        
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 16px;
+            margin-top: 24px;
+        }
+        
+        .action-btn {
+            flex: 1;
+            padding: 16px;
+            border-radius: 12px;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .share-btn {
+            background: var(--color-buy);
+            color: white;
+        }
+        
+        .share-btn:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+        
+        .save-btn {
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+        
+        .save-btn:hover {
+            background: var(--bg-secondary);
+            transform: translateY(-2px);
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 8px 0;
+            z-index: 100;
+        }
+        
+        .nav-items {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            padding: 4px 8px;
+        }
+        
+        .nav-item.active {
+            color: var(--color-buy);
+        }
+        
+        .nav-item:not(.active) {
+            color: var(--text-muted);
+        }
+        
+        .nav-icon {
+            font-size: 20px;
+        }
+        
+        .nav-label {
+            font-size: 10px;
+            font-weight: 500;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 20px 16px;
+            }
+            
+            .qr-code {
+                width: 180px;
+                height: 180px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                gap: 12px;
+            }
+        }
+        
+        /* RTL Support */
+        [dir="rtl"] .header-left {
+            flex-direction: row-reverse;
+        }
+        
+        [dir="rtl"] .action-buttons {
+            flex-direction: row-reverse;
+        }
+        
+        /* Animation */
+        .qr-card {
+            animation: fadeInUp 0.5s ease-out;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Status Bar -->
+    <div class="status-bar">
+        <span>5:04</span>
+        <span>IQX</span>
+        <span>62 LTE Ill.</span>
+    </div>
+    
+    <!-- Header -->
+    <div class="app-header">
+        <div class="header-content">
+            <div class="header-left">
+                <button class="back-btn" onclick="goBack()">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <div class="header-tabs">
+                    <button class="header-tab" onclick="switchTab('scan')" data-i18n="scan">Scan</button>
+                    <button class="header-tab active" onclick="switchTab('mycode')" data-i18n="my_code">My code</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Profile Section -->
+        <div class="profile-section">
+            <div class="profile-avatar" id="profileAvatar">I</div>
+            <div class="profile-name" id="profileName">IQX User</div>
+            <div class="profile-id" id="profileId">ID: IQX123456789</div>
+        </div>
+        
+        <!-- QR Code Section -->
+        <div class="qr-section">
+            <div class="qr-card">
+                <div class="qr-code-container">
+                    <div class="qr-code" id="qrCode">
+                        <!-- QR code will be generated here -->
+                    </div>
+                    <div class="qr-logo">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                </div>
+                <div class="qr-instructions">
+                    <div class="qr-title" data-i18n="scan_to_add">Scan to add me on IQX</div>
+                    <div class="qr-subtitle" data-i18n="requires_version">Requires app version 1.0.0 or higher</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <button class="action-btn share-btn" onclick="shareQR()">
+                <i class="fas fa-share-alt"></i>
+                <span data-i18n="share">Share</span>
+            </button>
+            <button class="action-btn save-btn" onclick="saveQR()">
+                <i class="fas fa-download"></i>
+                <span data-i18n="save">Save</span>
+            </button>
+        </div>
+    </div>
+    
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <div class="nav-items">
+            <div class="nav-item">
+                <i class="fas fa-users nav-icon"></i>
+                <span class="nav-label">P2P</span>
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-file-alt nav-icon"></i>
+                <span class="nav-label">Orders</span>
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-bullhorn nav-icon"></i>
+                <span class="nav-label">Ads</span>
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-comments nav-icon"></i>
+                <span class="nav-label">Chat</span>
+            </div>
+            <div class="nav-item active">
+                <i class="fas fa-qrcode nav-icon"></i>
+                <span class="nav-label">QR</span>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // User data (in real app, this would come from backend)
+        const userData = {
+            name: 'IQX User',
+            id: 'IQX123456789',
+            avatar: 'I',
+            qrData: 'iqx://user/IQX123456789'
+        };
+        
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeQRCode();
+            loadUserData();
+            
+            // Initialize language manager
+            if (typeof initializeLanguageManager === 'function') {
+                initializeLanguageManager('app');
+            }
+        });
+        
+        function initializeQRCode() {
+            const qrContainer = document.getElementById('qrCode');
+            
+            // Generate QR code
+            QRCode.toCanvas(qrContainer, userData.qrData, {
+                width: 168,
+                height: 168,
+                margin: 0,
+                color: {
+                    dark: '#000000',
+                    light: '#FFFFFF'
+                }
+            }, function(error) {
+                if (error) {
+                    console.error('QR Code generation failed:', error);
+                    qrContainer.innerHTML = '<div style="color: #666; text-align: center; padding: 40px;">QR Code Error</div>';
+                }
+            });
+        }
+        
+        function loadUserData() {
+            // Load user data from localStorage or API
+            const savedUser = localStorage.getItem('iqx_user');
+            if (savedUser) {
+                const user = JSON.parse(savedUser);
+                document.getElementById('profileName').textContent = user.name || userData.name;
+                document.getElementById('profileId').textContent = `ID: ${user.id || userData.id}`;
+                document.getElementById('profileAvatar').textContent = user.avatar || userData.avatar;
+            }
+        }
+        
+        function switchTab(tab) {
+            const tabs = document.querySelectorAll('.header-tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (tab === 'scan') {
+                window.location.href = 'qr.html';
+            }
+        }
+        
+        function goBack() {
+            window.history.back();
+        }
+        
+        function shareQR() {
+            // Share functionality
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Add me on IQX',
+                    text: `Scan my QR code to add me on IQX: ${userData.qrData}`,
+                    url: userData.qrData
+                }).catch(console.error);
+            } else {
+                // Fallback for browsers that don't support Web Share API
+                copyToClipboard(userData.qrData);
+                showToast('QR code data copied to clipboard!');
+            }
+        }
+        
+        function saveQR() {
+            // Save QR code as image
+            const qrCanvas = document.querySelector('#qrCode canvas');
+            if (qrCanvas) {
+                const link = document.createElement('a');
+                link.download = 'iqx-qr-code.png';
+                link.href = qrCanvas.toDataURL();
+                link.click();
+            } else {
+                showToast('QR code not ready yet');
+            }
+        }
+        
+        function copyToClipboard(text) {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text);
+            } else {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+            }
+        }
+        
+        function showToast(message) {
+            // Simple toast notification
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: var(--bg-card);
+                color: var(--text-primary);
+                padding: 12px 20px;
+                border-radius: 8px;
+                z-index: 10000;
+                font-size: 14px;
+            `;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                document.body.removeChild(toast);
+            }, 2000);
+        }
+        
+        // Bottom navigation
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const navLabel = this.querySelector('.nav-label').textContent;
+                
+                // Navigate based on tab
+                switch(navLabel) {
+                    case 'P2P':
+                        window.location.href = 'markets.html';
+                        break;
+                    case 'Orders':
+                        window.location.href = 'orders.html';
+                        break;
+                    case 'Ads':
+                        window.location.href = 'ads.html';
+                        break;
+                    case 'Chat':
+                        window.location.href = 'chat.html';
+                        break;
+                    case 'QR':
+                        // Already on QR page
+                        break;
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

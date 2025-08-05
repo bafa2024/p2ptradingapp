@@ -3,112 +3,730 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>P2Ptrading - Welcome</title>
+    <title>IQX - P2P Crypto Trading Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #0B0E11 0%, #1A1D21 100%);
-            color: #FFFFFF;
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(15, 15, 35, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 100vh;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            color: #b8b8b8;
+            line-height: 1.6;
+        }
+
+        /* App Download Section */
+        .app-download {
+            padding: 5rem 2rem;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .download-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .download-subtitle {
+            font-size: 1.1rem;
+            color: #b8b8b8;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .download-options {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .download-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            min-width: 250px;
             text-align: center;
         }
-        
-        .container {
-            max-width: 400px;
-            padding: 40px 20px;
+
+        .download-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(102, 126, 234, 0.3);
         }
-        
-        .logo {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-            font-size: 36px;
+
+        .download-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .android-icon {
+            color: #4ade80;
+        }
+
+        .ios-icon {
+            color: #60a5fa;
+        }
+
+        .playstore-icon {
+            color: #fbbf24;
+        }
+
+        .download-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .download-card p {
+            color: #b8b8b8;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .download-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            box-shadow: 0 8px 24px rgba(0, 211, 149, 0.3);
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
         }
-        
-        .title {
-            font-size: 32px;
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Live Market Data */
+        .market-data {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background: rgba(15, 15, 35, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 12px;
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 999;
+            min-width: 250px;
+        }
+
+        .market-data h3 {
+            font-size: 0.9rem;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .market-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .market-item:last-child {
+            border-bottom: none;
+        }
+
+        .market-pair {
+            font-size: 0.9rem;
+            color: #b8b8b8;
+        }
+
+        .market-price {
+            font-weight: 600;
+            color: #4ade80;
+        }
+
+        .market-change {
+            font-size: 0.8rem;
+            color: #4ade80;
+        }
+
+        .market-change.negative {
+            color: #f87171;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
             font-weight: 700;
-            margin-bottom: 8px;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
-        
-        .subtitle {
-            font-size: 16px;
-            color: #B7BDC6;
-            margin-bottom: 40px;
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
         }
-        
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .feature-card p {
+            color: #b8b8b8;
+            line-height: 1.6;
+        }
+
+        /* Stats Section */
+        .stats {
+            padding: 5rem 2rem;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #b8b8b8;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(15, 15, 35, 0.95);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #b8b8b8;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #667eea;
+        }
+
+        .footer-text {
+            color: #b8b8b8;
+            font-size: 0.9rem;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .market-data {
+                position: static;
+                margin: 1rem;
+                max-width: none;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .download-options {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .download-card {
+                min-width: 280px;
+            }
+        }
+
+        /* Loading Animation */
         .loading {
             display: inline-block;
             width: 20px;
             height: 20px;
             border: 3px solid rgba(255, 255, 255, 0.3);
             border-radius: 50%;
-            border-top-color: #3B82F6;
+            border-top-color: #667eea;
             animation: spin 1s ease-in-out infinite;
-            margin-right: 12px;
         }
-        
+
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-        
-        .redirect-text {
-            font-size: 14px;
-            color: #848E9C;
-            margin-top: 20px;
-        }
-        
-        .manual-link {
-            color: #3B82F6;
-            text-decoration: none;
-            font-weight: 600;
-            margin-top: 16px;
+
+        /* Real-time Updates */
+        .live-indicator {
             display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #4ade80;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+            animation: pulse 2s infinite;
         }
-        
-        .manual-link:hover {
-            color: #1D4ED8;
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="logo">
-            <i class="fas fa-cube"></i>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav-container">
+            <div class="logo">
+                <i class="fas fa-rocket"></i>
+                IQX
+            </div>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#support">Support</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Live Market Data -->
+    <div class="market-data">
+        <h3><span class="live-indicator"></span>Live Market Data</h3>
+        <div class="market-item">
+            <span class="market-pair">USDT/IQD</span>
+            <div>
+                <div class="market-price" id="usdt-iqd-price">1,320</div>
+                <div class="market-change" id="usdt-iqd-change">+2.5%</div>
+            </div>
         </div>
-        <h1 class="title">P2Ptrading</h1>
-        <p class="subtitle">Welcome to the P2P Trading Platform</p>
-        
-        <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-            <div class="loading"></div>
-            <span>Redirecting to app...</span>
+        <div class="market-item">
+            <span class="market-pair">TRX/IQD</span>
+            <div>
+                <div class="market-price" id="trx-iqd-price">0.85</div>
+                <div class="market-change negative" id="trx-iqd-change">-1.2%</div>
+            </div>
         </div>
-        
-        <p class="redirect-text">You will be automatically redirected to the mobile app.</p>
-        
-        <a href="mobile-app/splash.html" class="manual-link">Click here if not redirected automatically</a>
+        <div class="market-item">
+            <span class="market-pair">USDT/USD</span>
+            <div>
+                <div class="market-price" id="usdt-usd-price">1.00</div>
+                <div class="market-change" id="usdt-usd-change">+0.1%</div>
+            </div>
+        </div>
     </div>
-    
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content animate-fade-in">
+            <h1>P2P Crypto Trading<br>Made Simple</h1>
+            <p>Trade USDT and TRX with local currency (IQD/USD) on our secure, escrow-protected platform. Join thousands of users in the fastest-growing P2P crypto trading community.</p>
+        </div>
+    </section>
+
+    <!-- App Download Section -->
+    <section class="app-download" id="download">
+        <h2 class="download-title">Get IQX App</h2>
+        <p class="download-subtitle">Download our mobile app and start trading securely on the go. Available for both Android and iOS devices.</p>
+        
+        <div class="download-options">
+            <div class="download-card animate-fade-in">
+                <div class="download-icon android-icon">
+                    <i class="fab fa-google-play"></i>
+                </div>
+                <h3>Google Play Store</h3>
+                <p>Download the Android version from Google Play Store. Get instant access to P2P trading with secure escrow protection.</p>
+                <a href="#" class="download-btn">
+                    <i class="fab fa-google-play"></i> Get it on Google Play
+                </a>
+            </div>
+
+            <div class="download-card animate-fade-in">
+                <div class="download-icon ios-icon">
+                    <i class="fab fa-apple"></i>
+                </div>
+                <h3>App Store</h3>
+                <p>Download the iOS version from Apple App Store. Trade USDT and TRX with local currency on your iPhone or iPad.</p>
+                <a href="#" class="download-btn">
+                    <i class="fab fa-apple"></i> Download on App Store
+                </a>
+            </div>
+
+            <div class="download-card animate-fade-in">
+                <div class="download-icon playstore-icon">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <h3>Direct APK</h3>
+                <p>Download the Android APK file directly. Install manually for devices without Google Play Store access.</p>
+                <a href="#" class="download-btn">
+                    <i class="fas fa-download"></i> Download APK
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <h2 class="section-title">Why Choose IQX?</h2>
+        <div class="features-grid">
+            <div class="feature-card animate-fade-in">
+                <div class="feature-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>Secure Escrow System</h3>
+                <p>All trades are protected by our advanced escrow system, ensuring safe and secure transactions between buyers and sellers.</p>
+            </div>
+            <div class="feature-card animate-fade-in">
+                <div class="feature-icon">
+                    <i class="fas fa-wallet"></i>
+                </div>
+                <h3>Centralized Wallet</h3>
+                <p>Unique TRC20 deposit addresses with automatic detection. Manage your USDT and TRX balances with ease.</p>
+            </div>
+            <div class="feature-card animate-fade-in">
+                <div class="feature-icon">
+                    <i class="fas fa-exchange-alt"></i>
+                </div>
+                <h3>P2P Trading</h3>
+                <p>Create buy/sell offers with custom pricing. Trade directly with other users without intermediaries.</p>
+            </div>
+            <div class="feature-card animate-fade-in">
+                <div class="feature-icon">
+                    <i class="fas fa-gift"></i>
+                </div>
+                <h3>Referral Rewards</h3>
+                <p>Earn rewards by referring friends. Get one free trade for each successful referral.</p>
+            </div>
+            <div class="feature-card animate-fade-in">
+                <div class="feature-icon">
+                    <i class="fas fa-bell"></i>
+                </div>
+                <h3>Real-time Notifications</h3>
+                <p>Stay updated with instant notifications for trades, deposits, withdrawals, and platform updates.</p>
+            </div>
+            <div class="feature-card animate-fade-in">
+                <div class="feature-icon">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <h3>24/7 Support</h3>
+                <p>Get help anytime with our comprehensive support system including in-app ticketing and live chat.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="stats-grid">
+            <div class="stat-item animate-fade-in">
+                <div class="stat-number" id="total-users">15,000+</div>
+                <div class="stat-label">Active Users</div>
+            </div>
+            <div class="stat-item animate-fade-in">
+                <div class="stat-number" id="total-trades">50,000+</div>
+                <div class="stat-label">Completed Trades</div>
+            </div>
+            <div class="stat-item animate-fade-in">
+                <div class="stat-number" id="total-volume">$2.5M+</div>
+                <div class="stat-label">Trading Volume</div>
+            </div>
+            <div class="stat-item animate-fade-in">
+                <div class="stat-number" id="success-rate">99.8%</div>
+                <div class="stat-label">Success Rate</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="/app/">Mobile App</a>
+                <a href="/admin/">Admin Panel</a>
+                <a href="#download">Download</a>
+                <a href="#support">Support</a>
+                <a href="#privacy">Privacy Policy</a>
+                <a href="#terms">Terms of Service</a>
+            </div>
+            <div class="footer-text">
+                © 2024 IQX P2P Trading Platform. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
     <script>
-        // Redirect to mobile app splash screen after 3 seconds
-        setTimeout(() => {
-            window.location.href = 'mobile-app/splash.html';
-        }, 3000);
+        // Real-time market data updates
+        function updateMarketData() {
+            const prices = {
+                'usdt-iqd': { price: 1320 + Math.random() * 20, change: (Math.random() - 0.5) * 5 },
+                'trx-iqd': { price: 0.85 + Math.random() * 0.1, change: (Math.random() - 0.5) * 3 },
+                'usdt-usd': { price: 1.00 + Math.random() * 0.01, change: (Math.random() - 0.5) * 0.5 }
+            };
+
+            Object.keys(prices).forEach(pair => {
+                const data = prices[pair];
+                const priceElement = document.getElementById(`${pair}-price`);
+                const changeElement = document.getElementById(`${pair}-change`);
+                
+                if (priceElement && changeElement) {
+                    priceElement.textContent = data.price.toFixed(2);
+                    changeElement.textContent = `${data.change > 0 ? '+' : ''}${data.change.toFixed(1)}%`;
+                    changeElement.className = `market-change ${data.change < 0 ? 'negative' : ''}`;
+                }
+            });
+        }
+
+        // Update market data every 5 seconds
+        setInterval(updateMarketData, 5000);
+
+        // Animate stats on scroll
+        function animateStats() {
+            const stats = document.querySelectorAll('.stat-number');
+            stats.forEach(stat => {
+                const target = parseInt(stat.textContent.replace(/[^\d]/g, ''));
+                let current = 0;
+                const increment = target / 50;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    stat.textContent = Math.floor(current).toLocaleString() + '+';
+                }, 50);
+            });
+        }
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fade-in');
+                    if (entry.target.classList.contains('stats')) {
+                        animateStats();
+                    }
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for animation
+        document.querySelectorAll('.feature-card, .stat-item, .download-card').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Initialize with some market data
+        updateMarketData();
     </script>
 </body>
-</html> 
+</html>

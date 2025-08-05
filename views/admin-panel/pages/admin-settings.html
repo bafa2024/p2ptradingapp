@@ -1,0 +1,1335 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IQX Admin - Platform Settings</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Font System -->
+    <link rel="stylesheet" href="css/fonts.css">
+    
+    <style>
+        /* Design System Variables */
+        :root {
+            /* Colors */
+            --bg-primary: #0B0E11;
+            --bg-secondary: #1A1D21;
+            --bg-card: #242530;
+            --bg-elevated: #2B2F36;
+            --border-color: #2B2F36;
+            
+            --text-primary: #FFFFFF;
+            --text-secondary: #B7BDC6;
+            --text-muted: #848E9C;
+            
+            --color-buy: #00D395;
+            --color-sell: #F6465D;
+            --color-warning: #FFA500;
+            --color-info: #3861FB;
+            --color-success: #00D395;
+            --color-danger: #F6465D;
+        }
+        
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-body-en), -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 280px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        
+        .sidebar-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-buy);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .admin-info {
+            margin-top: 16px;
+            padding: 16px;
+            background: var(--bg-card);
+            border-radius: 12px;
+        }
+        
+        .admin-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--color-buy) 0%, #00B583 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+            margin-bottom: 12px;
+        }
+        
+        .admin-name {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .admin-role {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .nav-menu {
+            padding: 16px 0;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 24px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+        
+        .nav-item:hover {
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+        }
+        
+        .nav-item.active {
+            background: rgba(0, 211, 149, 0.1);
+            color: var(--color-buy);
+            border-left-color: var(--color-buy);
+        }
+        
+        .nav-item i {
+            width: 20px;
+            font-size: 16px;
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            padding: 24px;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+        
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .header-btn {
+            padding: 8px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .header-btn:hover {
+            border-color: var(--color-buy);
+            color: var(--color-buy);
+        }
+        
+        .header-btn.primary {
+            background: var(--color-buy);
+            border-color: var(--color-buy);
+            color: white;
+        }
+        
+        .header-btn.primary:hover {
+            background: #00B583;
+        }
+        
+        /* Settings Grid */
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 24px;
+        }
+        
+        .settings-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: white;
+        }
+        
+        .card-icon.fees {
+            background: var(--color-info);
+        }
+        
+        .card-icon.limits {
+            background: var(--color-warning);
+        }
+        
+        .card-icon.features {
+            background: var(--color-success);
+        }
+        
+        .card-icon.security {
+            background: var(--color-danger);
+        }
+        
+        .card-icon.notifications {
+            background: var(--color-buy);
+        }
+        
+        .card-icon.maintenance {
+            background: var(--text-muted);
+        }
+        
+        /* Form Groups */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+        
+        .form-input {
+            width: 100%;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--color-buy);
+        }
+        
+        .form-select {
+            width: 100%;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            color: var(--text-primary);
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .form-select:focus {
+            outline: none;
+            border-color: var(--color-buy);
+        }
+        
+        .form-textarea {
+            width: 100%;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            color: var(--text-primary);
+            font-size: 14px;
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--color-buy);
+        }
+        
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--border-color);
+            transition: .4s;
+            border-radius: 24px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background-color: var(--color-buy);
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+        
+        /* Toggle Row */
+        .toggle-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .toggle-row:last-child {
+            border-bottom: none;
+        }
+        
+        .toggle-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        
+        .toggle-title {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .toggle-description {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        /* Button Groups */
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: var(--color-buy);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #00B583;
+        }
+        
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+        }
+        
+        .btn-danger {
+            background: var(--color-danger);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #E63946;
+        }
+        
+        /* Alert */
+        .alert {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 14px;
+        }
+        
+        .alert-success {
+            background: rgba(0, 211, 149, 0.2);
+            color: var(--color-success);
+            border: 1px solid rgba(0, 211, 149, 0.3);
+        }
+        
+        .alert-warning {
+            background: rgba(255, 165, 0, 0.2);
+            color: var(--color-warning);
+            border: 1px solid rgba(255, 165, 0, 0.3);
+        }
+        
+        .alert-danger {
+            background: rgba(246, 70, 93, 0.2);
+            color: var(--color-danger);
+            border: 1px solid rgba(246, 70, 93, 0.3);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .page-header {
+                flex-direction: column;
+                gap: 16px;
+            }
+            
+            .header-actions {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .header-btn {
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+            
+            .settings-card {
+                padding: 16px;
+                margin-bottom: 16px;
+            }
+            
+            .card-header {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-start;
+            }
+            
+            .form-group {
+                margin-bottom: 12px;
+            }
+            
+            .form-input, .form-select, .form-textarea {
+                padding: 10px;
+                font-size: 14px;
+            }
+            
+            .toggle-row {
+                padding: 12px 0;
+            }
+            
+            .toggle-title {
+                font-size: 14px;
+            }
+            
+            .toggle-description {
+                font-size: 12px;
+            }
+            
+            .button-group {
+                gap: 8px;
+            }
+            
+            .btn {
+                padding: 10px 16px;
+                font-size: 12px;
+            }
+            
+            .alert {
+                padding: 12px;
+                font-size: 12px;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            .page-title {
+                font-size: 20px;
+            }
+            
+            .settings-card {
+                padding: 12px;
+            }
+            
+            .form-input, .form-select, .form-textarea {
+                padding: 8px;
+                font-size: 13px;
+            }
+            
+            .toggle-row {
+                padding: 10px 0;
+            }
+            
+            .toggle-title {
+                font-size: 13px;
+            }
+            
+            .toggle-description {
+                font-size: 11px;
+            }
+            
+            .btn {
+                padding: 8px 12px;
+                font-size: 11px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-cube"></i>
+                <span>IQX Admin</span>
+            </div>
+        </div>
+        
+        <div class="admin-info">
+            <div class="admin-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="admin-name">Admin User</div>
+            <div class="admin-role">Super Administrator</div>
+        </div>
+        
+        <nav class="nav-menu">
+            <a href="admin-dashboard.html" class="nav-item">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="admin-users.html" class="nav-item">
+                <i class="fas fa-users"></i>
+                <span>Users</span>
+            </a>
+            <a href="admin-trades.html" class="nav-item">
+                <i class="fas fa-exchange-alt"></i>
+                <span>Trades</span>
+            </a>
+            <a href="admin-disputes.html" class="nav-item">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>Disputes</span>
+            </a>
+            <a href="admin-wallet.html" class="nav-item">
+                <i class="fas fa-wallet"></i>
+                <span>Wallet</span>
+            </a>
+            <a href="admin-settings.html" class="nav-item active">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+            <a href="admin-support.html" class="nav-item">
+                <i class="fas fa-headset"></i>
+                <span>Support</span>
+            </a>
+            <a href="admin-reports.html" class="nav-item">
+                <i class="fas fa-chart-bar"></i>
+                <span>Reports</span>
+            </a>
+        </nav>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">Platform Settings</h1>
+                <p style="color: var(--text-muted); margin-top: 4px;">Configure platform fees, limits, and features</p>
+            </div>
+            <div class="header-actions">
+                <button class="header-btn" onclick="window.location.href='../mobile-app/index.html'">
+                    <i class="fas fa-mobile-alt"></i>
+                    <span>Mobile App</span>
+                </button>
+                <button class="header-btn" onclick="resetSettings()">
+                    <i class="fas fa-undo"></i>
+                    <span>Reset</span>
+                </button>
+                <button class="header-btn primary" onclick="saveSettings()">
+                    <i class="fas fa-save"></i>
+                    <span>Save Changes</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Settings Grid -->
+        <div class="settings-grid">
+            <!-- Fees Settings -->
+            <div class="settings-card">
+                <div class="card-header">
+                    <div class="card-title">Trading Fees</div>
+                    <div class="card-icon fees">
+                        <i class="fas fa-percentage"></i>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Maker Fee (%)</label>
+                    <input type="number" class="form-input" id="makerFee" value="0.1" step="0.01" min="0" max="10">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Taker Fee (%)</label>
+                    <input type="number" class="form-input" id="takerFee" value="0.2" step="0.01" min="0" max="10">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Withdrawal Fee (USDT)</label>
+                    <input type="number" class="form-input" id="withdrawalFee" value="5" step="0.1" min="0">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Deposit Fee (%)</label>
+                    <input type="number" class="form-input" id="depositFee" value="0" step="0.01" min="0" max="10">
+                </div>
+                
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="saveFees()">Save Fees</button>
+                    <button class="btn btn-secondary" onclick="resetFees()">Reset</button>
+                </div>
+            </div>
+            
+            <!-- Limits Settings -->
+            <div class="settings-card">
+                <div class="card-header">
+                    <div class="card-title">Trading Limits</div>
+                    <div class="card-icon limits">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Minimum Trade Amount (USDT)</label>
+                    <input type="number" class="form-input" id="minTradeAmount" value="10" step="1" min="0">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Maximum Trade Amount (USDT)</label>
+                    <input type="number" class="form-input" id="maxTradeAmount" value="100000" step="1000" min="0">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Daily Trading Limit (USDT)</label>
+                    <input type="number" class="form-input" id="dailyTradingLimit" value="50000" step="1000" min="0">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Withdrawal Limit (USDT)</label>
+                    <input type="number" class="form-input" id="withdrawalLimit" value="10000" step="100" min="0">
+                </div>
+                
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="saveLimits()">Save Limits</button>
+                    <button class="btn btn-secondary" onclick="resetLimits()">Reset</button>
+                </div>
+            </div>
+            
+            <!-- Features Settings -->
+            <div class="settings-card">
+                <div class="card-header">
+                    <div class="card-title">Platform Features</div>
+                    <div class="card-icon features">
+                        <i class="fas fa-toggle-on"></i>
+                    </div>
+                </div>
+                
+                <div class="toggle-row">
+                    <div class="toggle-info">
+                        <div class="toggle-title">IQX</div>
+                        <div class="toggle-description">Enable peer-to-peer trading</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="IQX" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="toggle-row">
+                    <div class="toggle-info">
+                        <div class="toggle-title">Escrow System</div>
+                        <div class="toggle-description">Enable escrow protection for trades</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="escrowSystem" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="toggle-row">
+                    <div class="toggle-info">
+                        <div class="toggle-title">KYC Verification</div>
+                        <div class="toggle-description">Require KYC for all users</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="kycVerification">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="toggle-row">
+                    <div class="toggle-info">
+                        <div class="toggle-title">Referral System</div>
+                        <div class="toggle-description">Enable referral rewards</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="referralSystem" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="toggle-row">
+                    <div class="toggle-info">
+                        <div class="toggle-title">Chat System</div>
+                        <div class="toggle-description">Enable in-app messaging</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="chatSystem" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="saveFeatures()">Save Features</button>
+                    <button class="btn btn-secondary" onclick="resetFeatures()">Reset</button>
+                </div>
+            </div>
+            
+            <!-- Security Settings -->
+            <div class="settings-card">
+                <div class="card-header">
+                    <div class="card-title">Security Settings</div>
+                    <div class="card-icon security">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Session Timeout (minutes)</label>
+                    <input type="number" class="form-input" id="sessionTimeout" value="30" step="5" min="5" max="480">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Max Login Attempts</label>
+                    <input type="number" class="form-input" id="maxLoginAttempts" value="5" step="1" min="1" max="10">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Password Min Length</label>
+                    <input type="number" class="form-input" id="passwordMinLength" value="8" step="1" min="6" max="20">
+                </div>
+                
+                <div class="toggle-row">
+                    <div class="toggle-info">
+                        <div class="toggle-title">Two-Factor Authentication</div>
+                        <div class="toggle-description">Require 2FA for all users</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="twoFactorAuth">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="toggle-row">
+                    <div class="toggle-info">
+                        <div class="toggle-title">IP Whitelist</div>
+                        <div class="toggle-description">Restrict access to specific IPs</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="ipWhitelist">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="saveSecurity()">Save Security</button>
+                    <button class="btn btn-secondary" onclick="resetSecurity()">Reset</button>
+                </div>
+            </div>
+            
+            <!-- Notification Settings -->
+            <div class="settings-card">
+                <div class="card-header">
+                    <div class="card-title">Notification Settings</div>
+                    <div class="card-icon notifications">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Email Notifications</label>
+                    <select class="form-select" id="emailNotifications">
+                        <option value="all">All Notifications</option>
+                        <option value="important">Important Only</option>
+                        <option value="none">None</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">SMS Notifications</label>
+                    <select class="form-select" id="smsNotifications">
+                        <option value="none">None</option>
+                        <option value="important">Important Only</option>
+                        <option value="all">All Notifications</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Push Notifications</label>
+                    <select class="form-select" id="pushNotifications">
+                        <option value="all">All Notifications</option>
+                        <option value="important">Important Only</option>
+                        <option value="none">None</option>
+                    </select>
+                </div>
+                
+                <div class="toggle-row">
+                    <div class="toggle-info">
+                        <div class="toggle-title">Trade Alerts</div>
+                        <div class="toggle-description">Send alerts for completed trades</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="tradeAlerts" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="toggle-row">
+                    <div class="toggle-info">
+                        <div class="toggle-title">Price Alerts</div>
+                        <div class="toggle-description">Send price change notifications</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="priceAlerts">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="saveNotifications()">Save Notifications</button>
+                    <button class="btn btn-secondary" onclick="resetNotifications()">Reset</button>
+                </div>
+            </div>
+            
+            <!-- Maintenance Settings -->
+            <div class="settings-card">
+                <div class="card-header">
+                    <div class="card-title">Maintenance Mode</div>
+                    <div class="card-icon maintenance">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                </div>
+                
+                <div class="toggle-row">
+                    <div class="toggle-info">
+                        <div class="toggle-title">Maintenance Mode</div>
+                        <div class="toggle-description">Put platform in maintenance mode</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="maintenanceMode">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Maintenance Message</label>
+                    <textarea class="form-textarea" id="maintenanceMessage" placeholder="Enter maintenance message...">Platform is currently under maintenance. Please check back later.</textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Estimated Duration (hours)</label>
+                    <input type="number" class="form-input" id="maintenanceDuration" value="2" step="0.5" min="0.5" max="24">
+                </div>
+                
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <strong>Warning:</strong> Enabling maintenance mode will restrict all user access to the platform.
+                </div>
+                
+                <div class="button-group">
+                    <button class="btn btn-danger" onclick="enableMaintenance()">Enable Maintenance</button>
+                    <button class="btn btn-secondary" onclick="disableMaintenance()">Disable Maintenance</button>
+                </div>
+            </div>
+            
+            <!-- Free Trial & Membership Control -->
+            <div class="settings-card">
+                <div class="card-header">
+                    <div class="card-title">Free Trial & Membership Control</div>
+                    <div class="card-icon trial">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                </div>
+                
+                <div class="toggle-row">
+                    <div class="toggle-info">
+                        <div class="toggle-title">Free Trial Period</div>
+                        <div class="toggle-description">Enable one month free trial for new users</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="freeTrialEnabled" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Free Trial Duration (days)</label>
+                    <input type="number" class="form-input" id="freeTrialDuration" value="30" step="1" min="1" max="90">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Free Trial End Date</label>
+                    <input type="date" class="form-input" id="freeTrialEndDate" value="2025-02-01">
+                </div>
+                
+                <div class="toggle-row">
+                    <div class="toggle-info">
+                        <div class="toggle-title">Membership System</div>
+                        <div class="toggle-description">Enable membership system after trial period</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="membershipSystemEnabled">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="toggle-row">
+                    <div class="toggle-info">
+                        <div class="toggle-title">Auto-Activate Membership</div>
+                        <div class="toggle-description">Automatically activate membership after trial</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="autoActivateMembership">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="toggle-row">
+                    <div class="toggle-info">
+                        <div class="toggle-title">KYC Verification System</div>
+                        <div class="toggle-description">Enable KYC verification after trial period</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="kycSystemEnabled">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="toggle-row">
+                    <div class="toggle-info">
+                        <div class="toggle-title">Auto-Verification</div>
+                        <div class="toggle-description">Automatically verify KYC after trial</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="autoVerifyKYC">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="toggle-row">
+                    <div class="toggle-info">
+                        <div class="toggle-title">Phone Number Verification</div>
+                        <div class="toggle-description">Require phone verification for internal transfers</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="phoneVerificationEnabled" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">System Activation Schedule</label>
+                    <input type="datetime-local" class="form-input" id="systemActivationDate" value="2025-02-01T00:00">
+                </div>
+                
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i>
+                    <strong>Info:</strong> Initially, only phone number verification is required. After the trial period, membership and KYC systems will be activated.
+                </div>
+                
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="saveTrialSettings()">Save Trial Settings</button>
+                    <button class="btn btn-secondary" onclick="resetTrialSettings()">Reset</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Save all settings
+        function saveSettings() {
+            showNotification('Saving all settings...');
+            setTimeout(() => {
+                showNotification('All settings saved successfully');
+            }, 2000);
+        }
+        
+        // Reset all settings
+        function resetSettings() {
+            const confirmReset = confirm('Are you sure you want to reset all settings to default values?');
+            if (confirmReset) {
+                showNotification('Resetting all settings...');
+                setTimeout(() => {
+                    showNotification('All settings reset to default values');
+                    // Reset form values here
+                }, 2000);
+            }
+        }
+        
+        // Save fees
+        function saveFees() {
+            const makerFee = document.getElementById('makerFee').value;
+            const takerFee = document.getElementById('takerFee').value;
+            const withdrawalFee = document.getElementById('withdrawalFee').value;
+            const depositFee = document.getElementById('depositFee').value;
+            
+            showNotification('Saving fee settings...');
+            setTimeout(() => {
+                showNotification('Fee settings saved successfully');
+            }, 1000);
+        }
+        
+        // Reset fees
+        function resetFees() {
+            document.getElementById('makerFee').value = '0.1';
+            document.getElementById('takerFee').value = '0.2';
+            document.getElementById('withdrawalFee').value = '5';
+            document.getElementById('depositFee').value = '0';
+            showNotification('Fee settings reset to default');
+        }
+        
+        // Save limits
+        function saveLimits() {
+            const minTradeAmount = document.getElementById('minTradeAmount').value;
+            const maxTradeAmount = document.getElementById('maxTradeAmount').value;
+            const dailyTradingLimit = document.getElementById('dailyTradingLimit').value;
+            const withdrawalLimit = document.getElementById('withdrawalLimit').value;
+            
+            showNotification('Saving limit settings...');
+            setTimeout(() => {
+                showNotification('Limit settings saved successfully');
+            }, 1000);
+        }
+        
+        // Reset limits
+        function resetLimits() {
+            document.getElementById('minTradeAmount').value = '10';
+            document.getElementById('maxTradeAmount').value = '100000';
+            document.getElementById('dailyTradingLimit').value = '50000';
+            document.getElementById('withdrawalLimit').value = '10000';
+            showNotification('Limit settings reset to default');
+        }
+        
+        // Save features
+        function saveFeatures() {
+            const IQX = document.getElementById('IQX').checked;
+            const escrowSystem = document.getElementById('escrowSystem').checked;
+            const kycVerification = document.getElementById('kycVerification').checked;
+            const referralSystem = document.getElementById('referralSystem').checked;
+            const chatSystem = document.getElementById('chatSystem').checked;
+            
+            showNotification('Saving feature settings...');
+            setTimeout(() => {
+                showNotification('Feature settings saved successfully');
+            }, 1000);
+        }
+        
+        // Reset features
+        function resetFeatures() {
+            document.getElementById('IQX').checked = true;
+            document.getElementById('escrowSystem').checked = true;
+            document.getElementById('kycVerification').checked = false;
+            document.getElementById('referralSystem').checked = true;
+            document.getElementById('chatSystem').checked = true;
+            showNotification('Feature settings reset to default');
+        }
+        
+        // Save security
+        function saveSecurity() {
+            const sessionTimeout = document.getElementById('sessionTimeout').value;
+            const maxLoginAttempts = document.getElementById('maxLoginAttempts').value;
+            const passwordMinLength = document.getElementById('passwordMinLength').value;
+            const twoFactorAuth = document.getElementById('twoFactorAuth').checked;
+            const ipWhitelist = document.getElementById('ipWhitelist').checked;
+            
+            showNotification('Saving security settings...');
+            setTimeout(() => {
+                showNotification('Security settings saved successfully');
+            }, 1000);
+        }
+        
+        // Reset security
+        function resetSecurity() {
+            document.getElementById('sessionTimeout').value = '30';
+            document.getElementById('maxLoginAttempts').value = '5';
+            document.getElementById('passwordMinLength').value = '8';
+            document.getElementById('twoFactorAuth').checked = false;
+            document.getElementById('ipWhitelist').checked = false;
+            showNotification('Security settings reset to default');
+        }
+        
+        // Save notifications
+        function saveNotifications() {
+            const emailNotifications = document.getElementById('emailNotifications').value;
+            const smsNotifications = document.getElementById('smsNotifications').value;
+            const pushNotifications = document.getElementById('pushNotifications').value;
+            const tradeAlerts = document.getElementById('tradeAlerts').checked;
+            const priceAlerts = document.getElementById('priceAlerts').checked;
+            
+            showNotification('Saving notification settings...');
+            setTimeout(() => {
+                showNotification('Notification settings saved successfully');
+            }, 1000);
+        }
+        
+        // Reset notifications
+        function resetNotifications() {
+            document.getElementById('emailNotifications').value = 'all';
+            document.getElementById('smsNotifications').value = 'none';
+            document.getElementById('pushNotifications').value = 'all';
+            document.getElementById('tradeAlerts').checked = true;
+            document.getElementById('priceAlerts').checked = false;
+            showNotification('Notification settings reset to default');
+        }
+        
+        // Enable maintenance mode
+        function enableMaintenance() {
+            const maintenanceMode = document.getElementById('maintenanceMode');
+            const maintenanceMessage = document.getElementById('maintenanceMessage').value;
+            const maintenanceDuration = document.getElementById('maintenanceDuration').value;
+            
+            if (!maintenanceMessage.trim()) {
+                showNotification('Please enter a maintenance message', 'error');
+                return;
+            }
+            
+            const confirmMaintenance = confirm('Are you sure you want to enable maintenance mode? This will restrict all user access.');
+            if (confirmMaintenance) {
+                maintenanceMode.checked = true;
+                showNotification('Maintenance mode enabled successfully');
+            }
+        }
+        
+        // Disable maintenance mode
+        function disableMaintenance() {
+            const maintenanceMode = document.getElementById('maintenanceMode');
+            maintenanceMode.checked = false;
+            showNotification('Maintenance mode disabled successfully');
+        }
+        
+        // Show notification
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'error' ? 'var(--color-danger)' : 'var(--color-buy)'};
+                color: white;
+                padding: 12px 24px;
+                border-radius: 8px;
+                font-weight: 600;
+                z-index: 1000;
+                animation: slideIn 0.3s ease-out;
+            `;
+            notification.textContent = message;
+            
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideIn {
+                    from {
+                        transform: translateX(100%);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+                style.remove();
+            }, 3000);
+        }
+        
+        // Save trial settings
+        function saveTrialSettings() {
+            const freeTrialEnabled = document.getElementById('freeTrialEnabled').checked;
+            const freeTrialDuration = document.getElementById('freeTrialDuration').value;
+            const freeTrialEndDate = document.getElementById('freeTrialEndDate').value;
+            const membershipSystemEnabled = document.getElementById('membershipSystemEnabled').checked;
+            const autoActivateMembership = document.getElementById('autoActivateMembership').checked;
+            const kycSystemEnabled = document.getElementById('kycSystemEnabled').checked;
+            const autoVerifyKYC = document.getElementById('autoVerifyKYC').checked;
+            const phoneVerificationEnabled = document.getElementById('phoneVerificationEnabled').checked;
+            const systemActivationDate = document.getElementById('systemActivationDate').value;
+            
+            showNotification('Saving trial settings...');
+            setTimeout(() => {
+                showNotification('Trial settings saved successfully');
+            }, 1000);
+        }
+        
+        // Reset trial settings
+        function resetTrialSettings() {
+            document.getElementById('freeTrialEnabled').checked = true;
+            document.getElementById('freeTrialDuration').value = '30';
+            document.getElementById('freeTrialEndDate').value = '2025-02-01';
+            document.getElementById('membershipSystemEnabled').checked = false;
+            document.getElementById('autoActivateMembership').checked = false;
+            document.getElementById('kycSystemEnabled').checked = false;
+            document.getElementById('autoVerifyKYC').checked = false;
+            document.getElementById('phoneVerificationEnabled').checked = true;
+            document.getElementById('systemActivationDate').value = '2025-02-01T00:00';
+            showNotification('Trial settings reset to default');
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add form validation
+            const numberInputs = document.querySelectorAll('input[type="number"]');
+            numberInputs.forEach(input => {
+                input.addEventListener('change', function() {
+                    const value = parseFloat(this.value);
+                    const min = parseFloat(this.min);
+                    const max = parseFloat(this.max);
+                    
+                    if (value < min) {
+                        this.value = min;
+                        showNotification(`Value cannot be less than ${min}`, 'error');
+                    } else if (value > max) {
+                        this.value = max;
+                        showNotification(`Value cannot be greater than ${max}`, 'error');
+                    }
+                });
+            });
+            
+            // Add maintenance mode listener
+            document.getElementById('maintenanceMode').addEventListener('change', function() {
+                if (this.checked) {
+                    showNotification('Maintenance mode will be enabled when you save settings', 'warning');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+

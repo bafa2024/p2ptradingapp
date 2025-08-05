@@ -1,0 +1,993 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IQX - Post Ad</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Design System Variables */
+        :root {
+            /* Colors */
+            --bg-primary: #0B0E11;
+            --bg-secondary: #1A1D21;
+            --bg-card: #242530;
+            --bg-elevated: #2B2F36;
+            --border-color: #2B2F36;
+            
+            --text-primary: #FFFFFF;
+            --text-secondary: #B7BDC6;
+            --text-muted: #848E9C;
+            
+            --color-buy: #3B82F6;
+            --color-sell: #F6465D;
+            --color-warning: #FFA500;
+            --color-info: #3861FB;
+        }
+        
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
+        
+        /* Header */
+        .app-header {
+            background: var(--bg-secondary);
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .back-btn {
+            color: var(--text-primary);
+            font-size: 20px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        
+        .back-btn:hover {
+            color: var(--color-buy);
+        }
+        
+        .header-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .save-btn {
+            color: var(--color-buy);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        
+        .save-btn:hover {
+            color: #1D4ED8;
+        }
+        
+        /* Ad Type Selector */
+        .ad-type-section {
+            padding: 16px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .ad-type-tabs {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .ad-type-tab {
+            flex: 1;
+            padding: 12px 16px;
+            border-radius: 12px;
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .ad-type-tab.active {
+            background: var(--color-buy);
+            border-color: var(--color-buy);
+            color: white;
+        }
+        
+        .ad-type-tab:hover {
+            background: var(--bg-elevated);
+        }
+        
+        /* Form Sections */
+        .form-sections {
+            padding: 16px;
+        }
+        
+        .form-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+        
+        .form-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .form-title i {
+            color: var(--color-buy);
+        }
+        
+        /* Form Groups */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+        
+        .form-control-custom {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 14px 16px;
+            color: var(--text-primary);
+            font-size: 16px;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control-custom:focus {
+            outline: none;
+            border-color: var(--color-buy);
+            box-shadow: 0 0 0 3px rgba(0, 211, 149, 0.1);
+            background: var(--bg-secondary);
+        }
+        
+        .form-control-custom::placeholder {
+            color: var(--text-muted);
+        }
+        
+        /* Select Styling */
+        .select-custom {
+            position: relative;
+        }
+        
+        .select-custom select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23848E9C' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 12px center;
+            background-repeat: no-repeat;
+            background-size: 16px;
+            padding-right: 40px;
+        }
+        
+        /* Price Range */
+        .price-range {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        
+        .price-range .form-control-custom {
+            flex: 1;
+        }
+        
+        .price-separator {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        
+        /* Payment Methods */
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        
+        .payment-method {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .payment-method:hover {
+            border-color: var(--color-buy);
+            background: var(--bg-elevated);
+        }
+        
+        .payment-method.selected {
+            border-color: var(--color-buy);
+            background: rgba(0, 211, 149, 0.1);
+        }
+        
+        .payment-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 8px;
+            font-size: 18px;
+            color: var(--color-buy);
+        }
+        
+        .payment-name {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        /* Terms Section */
+        .terms-section {
+            background: rgba(56, 97, 251, 0.1);
+            border: 1px solid rgba(56, 97, 251, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .terms-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        
+        .terms-icon {
+            color: var(--color-info);
+            font-size: 18px;
+        }
+        
+        .terms-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .terms-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        /* Checkbox Styling */
+        .checkbox-custom {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            cursor: pointer;
+            margin-bottom: 12px;
+        }
+        
+        .checkbox-custom:last-child {
+            margin-bottom: 0;
+        }
+        
+        .checkbox-custom input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--color-buy);
+            margin-top: 2px;
+        }
+        
+        .checkbox-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        .checkbox-label a {
+            color: var(--color-buy);
+            text-decoration: none;
+        }
+        
+        .checkbox-label a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Buttons */
+        .btn-primary-custom {
+            background: linear-gradient(135deg, var(--color-buy) 0%, #1D4ED8 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 16px 24px;
+            font-weight: 600;
+            font-size: 16px;
+            color: white;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 211, 149, 0.3);
+        }
+        
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 211, 149, 0.4);
+        }
+        
+        .btn-primary-custom:active {
+            transform: scale(0.98);
+        }
+        
+        .btn-secondary-custom {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px 24px;
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--text-primary);
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary-custom:hover {
+            background: var(--bg-elevated);
+            transform: translateY(-2px);
+        }
+        
+        /* Loading State */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 8px 0;
+            z-index: 100;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        
+        .nav-item.active {
+            color: var(--color-buy);
+        }
+        
+        .nav-item i {
+            font-size: 22px;
+            margin-bottom: 4px;
+        }
+        
+        .nav-item span {
+            font-size: 11px;
+            font-weight: 500;
+        }
+        
+        /* Responsive Design */
+        @media (min-width: 576px) {
+            .container-custom {
+                max-width: 540px;
+                margin: 0 auto;
+            }
+        }
+        
+        @media (min-width: 768px) {
+            .container-custom {
+                max-width: 600px;
+                margin: 0 auto;
+            }
+            
+            .app-header {
+                padding: 20px 24px;
+            }
+            
+            .ad-type-section,
+            .form-sections {
+                padding-left: 24px;
+                padding-right: 24px;
+            }
+            
+            .bottom-nav {
+                display: none;
+            }
+            
+            body {
+                padding-bottom: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-custom">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <i class="fas fa-arrow-left back-btn" onclick="history.back()"></i>
+                    <h1 class="header-title">Post Advertisement</h1>
+                </div>
+                <div class="header-right">
+                    <button class="btn btn-sm btn-outline-secondary" onclick="window.location.href='../admin/index.html'" style="font-size: 12px; padding: 4px 8px; margin-right: 8px;">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                    <div class="save-btn" onclick="saveDraft()">Save Draft</div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Ad Type Selector -->
+        <div class="ad-type-section">
+            <div class="ad-type-tabs">
+                <div class="ad-type-tab active" onclick="selectAdType('buy')">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Buy</span>
+                </div>
+                <div class="ad-type-tab" onclick="selectAdType('sell')">
+                    <i class="fas fa-tags"></i>
+                    <span>Sell</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Form Sections -->
+        <div class="form-sections">
+            <!-- Basic Information -->
+            <div class="form-card">
+                <h3 class="form-title">
+                    <i class="fas fa-info-circle"></i>
+                    Basic Information
+                </h3>
+                
+                <div class="form-group">
+                    <label class="form-label">Cryptocurrency</label>
+                    <div class="select-custom">
+                        <select class="form-control-custom" id="cryptoSelect">
+                            <option value="">Select cryptocurrency</option>
+                            <option value="BTC">Bitcoin (BTC)</option>
+                            <option value="ETH">Ethereum (ETH)</option>
+                            <option value="USDT">Tether (USDT)</option>
+                            <option value="USDC">USD Coin (USDC)</option>
+                            <option value="ADA">Cardano (ADA)</option>
+                            <option value="DOT">Polkadot (DOT)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Ad Title</label>
+                    <input type="text" class="form-control-custom" placeholder="Enter a descriptive title for your ad" id="adTitle">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-control-custom" rows="4" placeholder="Describe your trading terms, requirements, and any additional information" id="adDescription"></textarea>
+                </div>
+            </div>
+            
+            <!-- Trading Parameters -->
+            <div class="form-card">
+                <h3 class="form-title">
+                    <i class="fas fa-chart-line"></i>
+                    Trading Parameters
+                </h3>
+                
+                <div class="form-group">
+                    <label class="form-label">Price Range (USD)</label>
+                    <div class="price-range">
+                        <input type="number" class="form-control-custom" placeholder="Min price" id="minPrice">
+                        <span class="price-separator">-</span>
+                        <input type="number" class="form-control-custom" placeholder="Max price" id="maxPrice">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Trade Limits</label>
+                    <div class="price-range">
+                        <input type="number" class="form-control-custom" placeholder="Min amount" id="minAmount">
+                        <span class="price-separator">-</span>
+                        <input type="number" class="form-control-custom" placeholder="Max amount" id="maxAmount">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Payment Window</label>
+                    <div class="select-custom">
+                        <select class="form-control-custom" id="paymentWindow">
+                            <option value="">Select payment window</option>
+                            <option value="15">15 minutes</option>
+                            <option value="30">30 minutes</option>
+                            <option value="60">1 hour</option>
+                            <option value="120">2 hours</option>
+                            <option value="240">4 hours</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Payment Methods -->
+            <div class="form-card">
+                <h3 class="form-title">
+                    <i class="fas fa-credit-card"></i>
+                    Payment Methods
+                </h3>
+                
+                <div class="payment-methods">
+                    <div class="payment-method" onclick="togglePaymentMethod(this, 'bank')">
+                        <div class="payment-icon">
+                            <i class="fas fa-university"></i>
+                        </div>
+                        <div class="payment-name">Bank Transfer</div>
+                    </div>
+                    
+                    <div class="payment-method" onclick="togglePaymentMethod(this, 'paypal')">
+                        <div class="payment-icon">
+                            <i class="fab fa-paypal"></i>
+                        </div>
+                        <div class="payment-name">PayPal</div>
+                    </div>
+                    
+                    <div class="payment-method" onclick="togglePaymentMethod(this, 'cash')">
+                        <div class="payment-icon">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="payment-name">Cash</div>
+                    </div>
+                    
+                    <div class="payment-method" onclick="togglePaymentMethod(this, 'mobile')">
+                        <div class="payment-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <div class="payment-name">Mobile Money</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Terms & Conditions -->
+            <div class="form-card">
+                <h3 class="form-title">
+                    <i class="fas fa-file-contract"></i>
+                    Terms & Conditions
+                </h3>
+                
+                <div class="terms-section">
+                    <div class="terms-header">
+                        <i class="fas fa-info-circle terms-icon"></i>
+                        <span class="terms-title">Important Information</span>
+                    </div>
+                    <p class="terms-desc">
+                        By posting this advertisement, you agree to our terms of service and confirm that all information provided is accurate and up-to-date.
+                    </p>
+                </div>
+                
+                <div class="checkbox-custom">
+                    <input type="checkbox" id="termsAgreement" required>
+                    <span class="checkbox-label">
+                        I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                    </span>
+                </div>
+                
+                <div class="checkbox-custom">
+                    <input type="checkbox" id="verificationAgreement" required>
+                    <span class="checkbox-label">
+                        I confirm that I have completed KYC verification and am eligible to trade
+                    </span>
+                </div>
+                
+                <div class="checkbox-custom">
+                    <input type="checkbox" id="complianceAgreement" required>
+                    <span class="checkbox-label">
+                        I will comply with all applicable laws and regulations in my jurisdiction
+                    </span>
+                </div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="form-card">
+                <button class="btn-primary-custom" onclick="postAdvertisement()" id="postBtn">
+                    <span class="btn-text">Post Advertisement</span>
+                    <span class="loading-spinner" style="display: none;"></span>
+                </button>
+                
+                <button class="btn-secondary-custom" onclick="previewAd()" style="margin-top: 12px;">
+                    Preview Advertisement
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <div class="nav-container">
+            <a href="home.html" class="nav-item">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="markets.html" class="nav-item">
+                <i class="fas fa-chart-line"></i>
+                <span>Markets</span>
+            </a>
+            <a href="post-ad.html" class="nav-item active">
+                <i class="fas fa-plus-circle"></i>
+                <span>Post</span>
+            </a>
+            <a href="wallet.html" class="nav-item">
+                <i class="fas fa-wallet"></i>
+                <span>Wallet</span>
+            </a>
+            <a href="profile.html" class="nav-item">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </a>
+        </div>
+    </nav>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        let selectedAdType = 'buy';
+        let selectedPaymentMethods = [];
+        
+        // Select ad type
+        function selectAdType(type) {
+            selectedAdType = type;
+            
+            // Update active tab
+            document.querySelectorAll('.ad-type-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.closest('.ad-type-tab').classList.add('active');
+            
+            // Update form based on ad type
+            updateFormForAdType();
+        }
+        
+        // Update form based on ad type
+        function updateFormForAdType() {
+            const adTitle = document.getElementById('adTitle');
+            const adDescription = document.getElementById('adDescription');
+            
+            if (selectedAdType === 'buy') {
+                adTitle.placeholder = 'e.g., Looking to buy Bitcoin with bank transfer';
+                adDescription.placeholder = 'Describe your buying requirements, preferred payment methods, and any specific terms...';
+            } else {
+                adTitle.placeholder = 'e.g., Selling Bitcoin for cash in Baghdad';
+                adDescription.placeholder = 'Describe your selling terms, payment preferences, and any specific requirements...';
+            }
+        }
+        
+        // Toggle payment method selection
+        function togglePaymentMethod(element, method) {
+            element.classList.toggle('selected');
+            
+            if (element.classList.contains('selected')) {
+                selectedPaymentMethods.push(method);
+            } else {
+                const index = selectedPaymentMethods.indexOf(method);
+                if (index > -1) {
+                    selectedPaymentMethods.splice(index, 1);
+                }
+            }
+        }
+        
+        // Save draft
+        function saveDraft() {
+            const formData = collectFormData();
+            localStorage.setItem('adDraft', JSON.stringify(formData));
+            
+            // Show success message
+            const saveBtn = document.querySelector('.save-btn');
+            const originalText = saveBtn.textContent;
+            saveBtn.textContent = 'Saved!';
+            saveBtn.style.color = 'var(--color-buy)';
+            
+            setTimeout(() => {
+                saveBtn.textContent = originalText;
+                saveBtn.style.color = '';
+            }, 2000);
+        }
+        
+        // Collect form data
+        function collectFormData() {
+            return {
+                adType: selectedAdType,
+                crypto: document.getElementById('cryptoSelect').value,
+                title: document.getElementById('adTitle').value,
+                description: document.getElementById('adDescription').value,
+                minPrice: document.getElementById('minPrice').value,
+                maxPrice: document.getElementById('maxPrice').value,
+                minAmount: document.getElementById('minAmount').value,
+                maxAmount: document.getElementById('maxAmount').value,
+                paymentWindow: document.getElementById('paymentWindow').value,
+                paymentMethods: selectedPaymentMethods,
+                termsAgreement: document.getElementById('termsAgreement').checked,
+                verificationAgreement: document.getElementById('verificationAgreement').checked,
+                complianceAgreement: document.getElementById('complianceAgreement').checked
+            };
+        }
+        
+        // Validate form
+        function validateForm() {
+            const formData = collectFormData();
+            
+            if (!formData.crypto) {
+                alert('Please select a cryptocurrency');
+                return false;
+            }
+            
+            if (!formData.title.trim()) {
+                alert('Please enter an ad title');
+                return false;
+            }
+            
+            if (!formData.description.trim()) {
+                alert('Please enter a description');
+                return false;
+            }
+            
+            if (!formData.minPrice || !formData.maxPrice) {
+                alert('Please enter price range');
+                return false;
+            }
+            
+            if (!formData.minAmount || !formData.maxAmount) {
+                alert('Please enter trade limits');
+                return false;
+            }
+            
+            if (!formData.paymentWindow) {
+                alert('Please select payment window');
+                return false;
+            }
+            
+            if (selectedPaymentMethods.length === 0) {
+                alert('Please select at least one payment method');
+                return false;
+            }
+            
+            if (!formData.termsAgreement || !formData.verificationAgreement || !formData.complianceAgreement) {
+                alert('Please agree to all terms and conditions');
+                return false;
+            }
+            
+            return true;
+        }
+        
+        // Post advertisement
+        function postAdvertisement() {
+            if (!validateForm()) {
+                return;
+            }
+            
+            const postBtn = document.getElementById('postBtn');
+            const btnText = postBtn.querySelector('.btn-text');
+            const spinner = postBtn.querySelector('.loading-spinner');
+            
+            // Show loading state
+            btnText.style.display = 'none';
+            spinner.style.display = 'inline-block';
+            postBtn.disabled = true;
+            
+            // Simulate API call
+            setTimeout(() => {
+                // Success - redirect to home
+                alert('Advertisement posted successfully!');
+                window.location.href = 'index.html';
+            }, 2000);
+        }
+        
+        // Preview advertisement
+        function previewAd() {
+            if (!validateForm()) {
+                return;
+            }
+            
+            const formData = collectFormData();
+            
+            // Create preview modal
+            const previewHTML = `
+                <div style="background: var(--bg-card); border-radius: 16px; padding: 20px; margin: 20px;">
+                    <h3 style="margin-bottom: 16px;">Advertisement Preview</h3>
+                    <div style="margin-bottom: 12px;">
+                        <strong>Type:</strong> ${formData.adType.toUpperCase()}
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <strong>Cryptocurrency:</strong> ${formData.crypto}
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <strong>Title:</strong> ${formData.title}
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <strong>Price Range:</strong> $${formData.minPrice} - $${formData.maxPrice}
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <strong>Trade Limits:</strong> $${formData.minAmount} - $${formData.maxAmount}
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <strong>Payment Methods:</strong> ${formData.paymentMethods.join(', ')}
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <strong>Payment Window:</strong> ${formData.paymentWindow} minutes
+                    </div>
+                    <div style="margin-bottom: 16px;">
+                        <strong>Description:</strong><br>
+                        ${formData.description}
+                    </div>
+                </div>
+            `;
+            
+            // Show preview in modal or new window
+            const newWindow = window.open('', '_blank', 'width=600,height=800');
+            newWindow.document.write(`
+                <html>
+                <head>
+                    <title>Ad Preview</title>
+                    <style>
+                        body { 
+                            font-family: 'Inter', sans-serif; 
+                            background: var(--bg-primary); 
+                            color: var(--text-primary); 
+                            margin: 0; 
+                            padding: 20px;
+                        }
+                        :root {
+                            --bg-primary: #0B0E11;
+                            --bg-card: #242530;
+                            --text-primary: #FFFFFF;
+                        }
+                    </style>
+                </head>
+                <body>
+                    ${previewHTML}
+                </body>
+                </html>
+            `);
+        }
+        
+        // Load draft on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const draft = localStorage.getItem('adDraft');
+            if (draft) {
+                const formData = JSON.parse(draft);
+                
+                // Restore form data
+                if (formData.adType) {
+                    selectAdType(formData.adType);
+                }
+                
+                if (formData.crypto) {
+                    document.getElementById('cryptoSelect').value = formData.crypto;
+                }
+                
+                if (formData.title) {
+                    document.getElementById('adTitle').value = formData.title;
+                }
+                
+                if (formData.description) {
+                    document.getElementById('adDescription').value = formData.description;
+                }
+                
+                if (formData.minPrice) {
+                    document.getElementById('minPrice').value = formData.minPrice;
+                }
+                
+                if (formData.maxPrice) {
+                    document.getElementById('maxPrice').value = formData.maxPrice;
+                }
+                
+                if (formData.minAmount) {
+                    document.getElementById('minAmount').value = formData.minAmount;
+                }
+                
+                if (formData.maxAmount) {
+                    document.getElementById('maxAmount').value = formData.maxAmount;
+                }
+                
+                if (formData.paymentWindow) {
+                    document.getElementById('paymentWindow').value = formData.paymentWindow;
+                }
+                
+                // Restore payment methods
+                if (formData.paymentMethods) {
+                    formData.paymentMethods.forEach(method => {
+                        const methodElements = document.querySelectorAll('.payment-method');
+                        methodElements.forEach(element => {
+                            if (element.querySelector('.payment-name').textContent.toLowerCase().includes(method)) {
+                                element.classList.add('selected');
+                                selectedPaymentMethods.push(method);
+                            }
+                        });
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+

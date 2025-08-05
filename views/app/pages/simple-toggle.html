@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Toggle - IQX</title>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #0f0f23;
+            color: white;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            text-align: center;
+            max-width: 400px;
+        }
+        
+        .title {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #6366f1;
+        }
+        
+        .toggle-button {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .toggle-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+        }
+        
+        .toggle-button:active {
+            transform: translateY(0);
+        }
+        
+        .status {
+            background: #1a1a2e;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+        
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid #333;
+        }
+        
+        .status-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        
+        .status-label {
+            color: #a1a1aa;
+        }
+        
+        .status-value {
+            color: #10b981;
+            font-weight: 600;
+        }
+        
+        .currency-display {
+            background: #1a1a2e;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+        
+        .currency-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid #333;
+        }
+        
+        .currency-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        
+        .currency-label {
+            color: #a1a1aa;
+        }
+        
+        .currency-value {
+            color: #10b981;
+            font-weight: 600;
+        }
+        
+        .instructions {
+            background: #16213e;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: left;
+        }
+        
+        .instructions h4 {
+            margin: 0 0 10px 0;
+            color: #6366f1;
+        }
+        
+        .instructions ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 5px;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Language & Currency Toggle</h1>
+        
+        <button class="toggle-button" onclick="toggleLanguage()" id="toggle-btn">
+            <i class="fas fa-globe"></i>
+            <span id="toggle-text">Switch to Arabic</span>
+        </button>
+        
+        <div class="status">
+            <h3>Current Status</h3>
+            <div class="status-item">
+                <span class="status-label">Language:</span>
+                <span class="status-value" id="current-language">English</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Currency:</span>
+                <span class="status-value" id="current-currency">USD</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Direction:</span>
+                <span class="status-value" id="current-direction">LTR</span>
+            </div>
+        </div>
+        
+        <div class="currency-display">
+            <h3>Currency Display</h3>
+            <div class="currency-item">
+                <span class="currency-label">Balance:</span>
+                <span class="currency-value" id="balance-display">$1,250.00</span>
+            </div>
+            <div class="currency-item">
+                <span class="currency-label">Price:</span>
+                <span class="currency-value" id="price-display">$99.50</span>
+            </div>
+            <div class="currency-item">
+                <span class="currency-label">Fee:</span>
+                <span class="currency-value" id="fee-display">$2.50</span>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h4>How to Use:</h4>
+            <ol>
+                <li>Click the blue button above</li>
+                <li>Watch the language switch from English to Arabic</li>
+                <li>See the currency change from USD to IQD</li>
+                <li>Click again to switch back</li>
+            </ol>
+        </div>
+    </div>
+    
+    <script>
+        let currentLanguage = 'en';
+        let currentCurrency = 'USD';
+        
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Simple toggle page loaded');
+            
+            // Load saved preferences
+            const savedLanguage = localStorage.getItem('simple_language');
+            const savedCurrency = localStorage.getItem('simple_currency');
+            
+            if (savedLanguage) {
+                currentLanguage = savedLanguage;
+            }
+            
+            if (savedCurrency) {
+                currentCurrency = savedCurrency;
+            }
+            
+            // Apply saved preferences
+            if (currentLanguage === 'ar') {
+                switchToArabic();
+            } else {
+                switchToEnglish();
+            }
+        });
+        
+        function toggleLanguage() {
+            console.log('Toggle language called');
+            
+            if (currentLanguage === 'en') {
+                switchToArabic();
+            } else {
+                switchToEnglish();
+            }
+        }
+        
+        function switchToArabic() {
+            console.log('Switching to Arabic');
+            currentLanguage = 'ar';
+            currentCurrency = 'IQD';
+            
+            // Update toggle button
+            document.getElementById('toggle-text').textContent = 'التبديل إلى الإنجليزية';
+            
+            // Update status displays
+            document.getElementById('current-language').textContent = 'العربية';
+            document.getElementById('current-currency').textContent = 'IQD';
+            document.getElementById('current-direction').textContent = 'RTL';
+            
+            // Update currency displays
+            document.getElementById('balance-display').textContent = '1,850,000 IQD';
+            document.getElementById('price-display').textContent = '147,260 IQD';
+            document.getElementById('fee-display').textContent = '3,700 IQD';
+            
+            // Save preferences
+            localStorage.setItem('simple_language', 'ar');
+            localStorage.setItem('simple_currency', 'IQD');
+            
+            console.log('Switched to Arabic');
+        }
+        
+        function switchToEnglish() {
+            console.log('Switching to English');
+            currentLanguage = 'en';
+            currentCurrency = 'USD';
+            
+            // Update toggle button
+            document.getElementById('toggle-text').textContent = 'Switch to Arabic';
+            
+            // Update status displays
+            document.getElementById('current-language').textContent = 'English';
+            document.getElementById('current-currency').textContent = 'USD';
+            document.getElementById('current-direction').textContent = 'LTR';
+            
+            // Update currency displays
+            document.getElementById('balance-display').textContent = '$1,250.00';
+            document.getElementById('price-display').textContent = '$99.50';
+            document.getElementById('fee-display').textContent = '$2.50';
+            
+            // Save preferences
+            localStorage.setItem('simple_language', 'en');
+            localStorage.setItem('simple_currency', 'USD');
+            
+            console.log('Switched to English');
+        }
+    </script>
+</body>
+</html> 

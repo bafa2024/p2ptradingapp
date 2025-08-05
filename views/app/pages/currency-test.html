@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Test - IQX</title>
+    
+    <!-- Font System -->
+    <link rel="stylesheet" href="css/fonts.css">
+    
+    <!-- Language Support -->
+    <link rel="stylesheet" href="css/rtl.css">
+    <script src="js/language.js"></script>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Design System Variables */
+        :root {
+            --color-primary: #6366f1;
+            --color-secondary: #8b5cf6;
+            --color-success: #10b981;
+            --color-warning: #f59e0b;
+            --color-danger: #ef4444;
+            --color-buy: #10b981;
+            --color-sell: #ef4444;
+            
+            --bg-primary: #0f0f23;
+            --bg-secondary: #1a1a2e;
+            --bg-card: #16213e;
+            --bg-elevated: #0f3460;
+            
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --text-success: #10b981;
+            --text-warning: #f59e0b;
+            --text-danger: #ef4444;
+            
+            --border-color: #27272a;
+            --border-light: #3f3f46;
+            
+            --radius-sm: 6px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+        }
+        
+        body {
+            font-family: var(--font-body-en), -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .test-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .test-title {
+            font-family: var(--font-heading-en);
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .test-section {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-family: var(--font-heading-en);
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--color-primary);
+        }
+        
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: 2px solid var(--border-color);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: var(--font-body-en);
+        }
+        
+        .btn:hover {
+            background: var(--color-primary);
+            border-color: var(--color-primary);
+        }
+        
+        .btn.active {
+            background: var(--color-primary);
+            border-color: var(--color-primary);
+        }
+        
+        .currency-display {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            margin-bottom: 10px;
+        }
+        
+        .currency-label {
+            font-weight: 500;
+        }
+        
+        .currency-value {
+            font-family: var(--font-numbers-en);
+            font-weight: 600;
+            color: var(--color-success);
+        }
+        
+        .debug-info {
+            background: var(--bg-elevated);
+            border-radius: var(--radius-md);
+            padding: 15px;
+            margin-top: 20px;
+            font-family: monospace;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        .debug-title {
+            color: var(--color-primary);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .debug-item {
+            margin-bottom: 5px;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-success {
+            background: var(--color-success);
+        }
+        
+        .status-error {
+            background: var(--color-danger);
+        }
+        
+        .status-warning {
+            background: var(--color-warning);
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="test-header">
+            <h1 class="test-title">Currency Switching Test</h1>
+            <p>Debug and test currency switching functionality</p>
+        </div>
+        
+        <div class="test-section">
+            <h3 class="section-title">Language Controls</h3>
+            <div class="controls">
+                <button class="btn active" onclick="testLanguage('EN')">
+                    <i class="fas fa-globe"></i> English
+                </button>
+                <button class="btn" onclick="testLanguage('AR')">
+                    <i class="fas fa-globe"></i> العربية
+                </button>
+                <button class="btn" onclick="testToggleLanguage()">
+                    <i class="fas fa-exchange-alt"></i> Toggle Language
+                </button>
+                <button class="btn" onclick="testCurrency('USD')">
+                    <i class="fas fa-dollar-sign"></i> USD
+                </button>
+                <button class="btn" onclick="testCurrency('IQD')">
+                    <i class="fas fa-coins"></i> IQD
+                </button>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h3 class="section-title">Currency Elements Test</h3>
+            <div class="currency-display">
+                <span class="currency-label">Current Currency:</span>
+                <span class="currency-value" id="current-currency">USD</span>
+            </div>
+            <div class="currency-display">
+                <span class="currency-label">Balance:</span>
+                <span class="currency-value" id="balance-display">$1,250.00</span>
+            </div>
+            <div class="currency-display">
+                <span class="currency-label">Price:</span>
+                <span class="currency-value" id="price-display">$99.50</span>
+            </div>
+            <div class="currency-display">
+                <span class="currency-label">Fee:</span>
+                <span class="currency-value" id="fee-display">$2.50</span>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h3 class="section-title">Debug Information</h3>
+            <div class="debug-info">
+                <div class="debug-title">System Status</div>
+                <div class="debug-item">
+                    <span class="status-indicator status-success"></span>
+                    Language Manager: <span id="lang-manager-status">Checking...</span>
+                </div>
+                <div class="debug-item">
+                    <span class="status-indicator status-success"></span>
+                    Current Language: <span id="current-lang-status">EN</span>
+                </div>
+                <div class="debug-item">
+                    <span class="status-indicator status-success"></span>
+                    Current Currency: <span id="current-curr-status">USD</span>
+                </div>
+                <div class="debug-item">
+                    <span class="status-indicator status-success"></span>
+                    LocalStorage Language: <span id="local-lang-status">-</span>
+                </div>
+                <div class="debug-item">
+                    <span class="status-indicator status-success"></span>
+                    LocalStorage Currency: <span id="local-curr-status">-</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h3 class="section-title">Console Logs</h3>
+            <div class="debug-info">
+                <div class="debug-title">Recent Activity</div>
+                <div id="console-logs">
+                    <div class="debug-item">Ready for testing...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let currentLanguage = 'EN';
+        let currentCurrency = 'USD';
+        
+        // Initialize test page
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Currency test page loaded');
+            updateDebugInfo();
+            addLog('Page loaded successfully');
+            
+            // Initialize language manager
+            if (window.languageManager) {
+                addLog('Language manager found and initialized');
+            } else {
+                addLog('ERROR: Language manager not found', 'error');
+            }
+        });
+        
+        function testLanguage(lang) {
+            addLog(`Testing language change to: ${lang}`);
+            currentLanguage = lang;
+            
+            // Update button states
+            document.querySelectorAll('.btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Test language manager
+            if (window.languageManager) {
+                window.languageManager.setLanguage(lang === 'AR' ? 'ar' : 'en');
+                addLog(`Language manager setLanguage called with: ${lang === 'AR' ? 'ar' : 'en'}`);
+            }
+            
+            updateDebugInfo();
+        }
+        
+        function testToggleLanguage() {
+            addLog('Testing toggleLanguage function');
+            if (window.languageManager) {
+                window.languageManager.toggleLanguage();
+                currentLanguage = currentLanguage === 'EN' ? 'AR' : 'EN';
+                addLog(`Language toggled to: ${currentLanguage}`);
+            }
+            updateDebugInfo();
+        }
+        
+        function testCurrency(currency) {
+            addLog(`Testing currency change to: ${currency}`);
+            currentCurrency = currency;
+            
+            // Update currency displays
+            document.getElementById('current-currency').textContent = currency;
+            
+            if (currency === 'USD') {
+                document.getElementById('balance-display').textContent = '$1,250.00';
+                document.getElementById('price-display').textContent = '$99.50';
+                document.getElementById('fee-display').textContent = '$2.50';
+            } else {
+                document.getElementById('balance-display').textContent = '1,850,000 IQD';
+                document.getElementById('price-display').textContent = '147,260 IQD';
+                document.getElementById('fee-display').textContent = '3,700 IQD';
+            }
+            
+            // Save to localStorage
+            localStorage.setItem('currency', currency);
+            addLog(`Currency changed to ${currency} and saved to localStorage`);
+            
+            updateDebugInfo();
+        }
+        
+        function updateDebugInfo() {
+            // Update status indicators
+            document.getElementById('lang-manager-status').textContent = 
+                window.languageManager ? 'Available' : 'Not Found';
+            
+            document.getElementById('current-lang-status').textContent = currentLanguage;
+            document.getElementById('current-curr-status').textContent = currentCurrency;
+            
+            // Update localStorage status
+            const savedLang = localStorage.getItem('language') || localStorage.getItem('iqx_language') || 'None';
+            const savedCurr = localStorage.getItem('currency') || 'None';
+            
+            document.getElementById('local-lang-status').textContent = savedLang;
+            document.getElementById('local-curr-status').textContent = savedCurr;
+        }
+        
+        function addLog(message, type = 'info') {
+            const logsContainer = document.getElementById('console-logs');
+            const logItem = document.createElement('div');
+            logItem.className = 'debug-item';
+            
+            const timestamp = new Date().toLocaleTimeString();
+            const statusClass = type === 'error' ? 'status-error' : 
+                              type === 'warning' ? 'status-warning' : 'status-success';
+            
+            logItem.innerHTML = `
+                <span class="status-indicator ${statusClass}"></span>
+                [${timestamp}] ${message}
+            `;
+            
+            logsContainer.appendChild(logItem);
+            
+            // Keep only last 10 logs
+            while (logsContainer.children.length > 10) {
+                logsContainer.removeChild(logsContainer.firstChild);
+            }
+            
+            // Also log to console
+            console.log(`[Currency Test] ${message}`);
+        }
+        
+        // Override console.log to capture logs
+        const originalConsoleLog = console.log;
+        console.log = function(...args) {
+            originalConsoleLog.apply(console, args);
+            if (args[0] && typeof args[0] === 'string' && args[0].includes('Currency')) {
+                addLog(args.join(' '));
+            }
+        };
+    </script>
+</body>
+</html> 

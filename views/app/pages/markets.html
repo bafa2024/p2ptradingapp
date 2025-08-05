@@ -1,0 +1,3313 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title data-i18n="p2p_trading">IQX - P2P Trading</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Font System -->
+    <link rel="stylesheet" href="css/fonts.css">
+    
+    <!-- Language Support -->
+    <link rel="stylesheet" href="css/rtl.css">
+    <script src="js/language.js"></script>
+    
+    <style>
+        /* Design System Variables */
+        :root {
+            /* Colors */
+            --bg-primary: #0B0E11;
+            --bg-secondary: #1A1D21;
+            --bg-card: #242530;
+            --bg-elevated: #2B2F36;
+            --border-color: #2B2F36;
+            
+            --text-primary: #FFFFFF;
+            --text-secondary: #B7BDC6;
+            --text-muted: #848E9C;
+            
+            --color-buy: #10B981;
+            --color-sell: #F6465D;
+            --color-warning: #FFA500;
+            --color-info: #3861FB;
+            --color-success: #10B981;
+            --color-verified: #8B5CF6;
+            --color-star: #F59E0B;
+        }
+        
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
+        body {
+            font-family: var(--font-body-en), -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding-bottom: 80px;
+            overflow-x: hidden;
+        }
+        
+        /* Status Bar */
+        .status-bar {
+            background: var(--bg-primary);
+            padding: 8px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        /* Header */
+        .app-header {
+            background: var(--bg-secondary);
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .back-btn {
+            color: var(--text-primary);
+            font-size: 20px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        
+        .back-btn:hover {
+            color: var(--color-buy);
+        }
+        
+        .nav-tabs {
+            display: flex;
+            gap: 24px;
+            margin-left: 16px;
+        }
+        
+        .nav-tab {
+            color: var(--text-muted);
+            font-weight: 500;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            border: none;
+            background: none;
+            padding: 0;
+        }
+        
+        .nav-tab.active {
+            color: var(--text-primary);
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+        
+        .action-btn {
+            color: var(--text-secondary);
+            font-size: 18px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        
+        .action-btn:hover {
+            color: var(--color-buy);
+        }
+        
+        /* Expandable Search */
+        .search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        
+        .search-input {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 36px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            padding: 0 40px 0 16px;
+            color: var(--text-primary);
+            font-size: 14px;
+            transition: all 0.3s ease;
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .search-input.active {
+            width: 200px;
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--color-buy);
+            box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+        }
+        
+        .search-input::placeholder {
+            color: var(--text-muted);
+        }
+        
+        .search-btn {
+            position: relative;
+            z-index: 2;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 18px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            padding: 8px;
+        }
+        
+        .search-btn:hover {
+            color: var(--color-buy);
+        }
+        
+        .search-btn.active {
+            color: var(--color-buy);
+        }
+        
+        .search-close {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 14px;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .search-close.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .search-close:hover {
+            color: var(--text-primary);
+            background: var(--bg-secondary);
+        }
+        
+        /* Search Results Dropdown */
+        .search-results {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            width: 280px;
+            max-height: 300px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin-top: 8px;
+            overflow-y: auto;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(-10px);
+            pointer-events: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .search-results.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: all;
+        }
+        
+        .search-result-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+        
+        .search-result-item:hover {
+            background: var(--bg-elevated);
+        }
+        
+        .result-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--color-buy);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .result-info {
+            flex: 1;
+        }
+        
+        .result-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+            font-size: 14px;
+        }
+        
+        .result-details {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .no-results {
+            padding: 16px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .search-input.active {
+                width: 160px;
+            }
+            
+            .search-results {
+                width: 240px;
+            }
+        }
+        
+        /* Language and Currency Toggle */
+        .language-currency-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: 8px;
+        }
+        
+        .toggle-btn {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 6px 12px;
+            color: var(--text-secondary);
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            min-width: 80px;
+            justify-content: center;
+        }
+        
+        .toggle-btn:hover {
+            background: var(--color-buy);
+            color: white;
+            border-color: var(--color-buy);
+        }
+        
+        .toggle-btn.active {
+            background: var(--color-buy);
+            color: white;
+            border-color: var(--color-buy);
+        }
+        
+        .toggle-icon {
+            font-size: 14px;
+        }
+        
+        .toggle-text {
+            font-weight: 500;
+        }
+        
+        /* RTL adjustments for toggle */
+        [dir="rtl"] .language-currency-toggle {
+            margin-left: 0;
+            margin-right: 8px;
+        }
+        
+        .language-switcher {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .language-btn {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 6px 12px;
+            color: var(--text-secondary);
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .language-btn:hover {
+            background: var(--color-buy);
+            color: white;
+        }
+        
+        .language-icon {
+            font-size: 14px;
+        }
+        
+        /* Banner */
+        .banner {
+            background: linear-gradient(135deg, var(--color-buy) 0%, #1D4ED8 100%);
+            margin: 16px;
+            padding: 16px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .banner-content {
+            color: white;
+        }
+        
+        .banner-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .banner-subtitle {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        
+        .banner-dots {
+            display: flex;
+            gap: 4px;
+            margin-top: 8px;
+        }
+        
+        .banner-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .banner-dot.active {
+            background: white;
+        }
+        
+        .banner-icon {
+            font-size: 24px;
+            color: white;
+        }
+        
+        /* Trading Controls */
+        .trading-controls {
+            margin: 16px;
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .currency-selector {
+            margin-bottom: 16px;
+        }
+        
+        /* Currency Dropdown */
+        .currency-dropdown {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: var(--bg-elevated);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            position: relative;
+        }
+        
+        .currency-dropdown:hover {
+            background: var(--bg-secondary);
+        }
+        
+        .currency-dropdown.active {
+            background: var(--bg-secondary);
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+        
+        .currency-options {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+        
+        .currency-dropdown.active .currency-options {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .currency-option {
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .currency-option:hover {
+            background: var(--bg-elevated);
+        }
+        
+        .currency-option.selected {
+            background: var(--color-buy);
+            color: white;
+        }
+        
+        .currency-flag {
+            width: 20px;
+            height: 15px;
+            border-radius: 2px;
+            background: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: white;
+        }
+        
+        .currency-info {
+            flex: 1;
+        }
+        
+        .currency-code {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .currency-name {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .currency-dropdown-icon {
+            transition: transform 0.3s ease;
+        }
+        
+        .currency-dropdown.active .currency-dropdown-icon {
+            transform: rotate(180deg);
+        }
+        
+        .buy-sell-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-elevated);
+            color: var(--text-secondary);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .tab-btn.active {
+            background: var(--color-buy);
+            color: white;
+            border-color: var(--color-buy);
+        }
+        
+        .filters-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        
+        .filter-dropdown {
+            flex: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background: var(--bg-elevated);
+            border-radius: 6px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        
+        .filter-dropdown:hover {
+            background: var(--bg-secondary);
+        }
+        
+        .filter-icon {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .filter-icon:hover {
+            background: var(--color-buy);
+            color: white;
+        }
+        
+        /* Merchant Listings */
+        .merchant-list {
+            margin: 16px;
+        }
+        
+        .merchant-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border-color);
+            transition: transform 0.2s ease;
+        }
+        
+        .merchant-card:hover {
+            transform: translateY(-2px);
+        }
+        
+        .merchant-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+        
+        .merchant-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .merchant-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--color-buy);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 18px;
+        }
+        
+        .merchant-details {
+            flex: 1;
+        }
+        
+        .merchant-name-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+        
+        .merchant-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .verification-badge {
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .badge-verified {
+            background: var(--color-verified);
+        }
+        
+        .badge-star {
+            background: var(--color-star);
+        }
+        
+        .merchant-stats {
+            display: flex;
+            gap: 12px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .merchant-price {
+            text-align: right;
+        }
+        
+        .price-amount {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--color-buy);
+            margin-bottom: 2px;
+        }
+        
+        .price-label {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .merchant-details-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .detail-item {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .detail-value {
+            font-size: 12px;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+        
+        .merchant-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .action-button {
+            flex: 1;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
+        
+        .buy-btn {
+            background: var(--color-buy);
+            color: white;
+        }
+        
+        .buy-btn:hover {
+            background: #059669;
+        }
+        
+        .sell-btn {
+            background: var(--color-sell);
+            color: white;
+        }
+        
+        .sell-btn:hover {
+            background: #DC2626;
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 8px 0;
+            z-index: 100;
+        }
+        
+        .nav-items {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            padding: 4px 8px;
+        }
+        
+        .nav-item.active {
+            color: var(--color-buy);
+        }
+        
+        .nav-item:not(.active) {
+            color: var(--text-muted);
+        }
+        
+        .nav-icon {
+            font-size: 20px;
+        }
+        
+        .nav-label {
+            font-size: 10px;
+            font-weight: 500;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .nav-tabs {
+                gap: 16px;
+            }
+            
+            .header-actions {
+                gap: 12px;
+            }
+            
+            .merchant-stats {
+                flex-direction: column;
+                gap: 4px;
+            }
+        }
+        
+        /* RTL Support */
+        [dir="rtl"] .header-left {
+            flex-direction: row-reverse;
+        }
+        
+        [dir="rtl"] .nav-tabs {
+            margin-left: 0;
+            margin-right: 16px;
+        }
+        
+        [dir="rtl"] .header-actions {
+            flex-direction: row-reverse;
+        }
+        
+        [dir="rtl"] .merchant-header {
+            flex-direction: row-reverse;
+        }
+        
+        [dir="rtl"] .merchant-info {
+            flex-direction: row-reverse;
+        }
+        
+        [dir="rtl"] .merchant-price {
+            text-align: left;
+        }
+        
+        /* Filter Overlay */
+        .filter-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .filter-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-card);
+            border-radius: 20px 20px 0 0;
+            padding: 24px 20px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .filter-overlay.active .filter-container {
+            transform: translateY(0);
+        }
+        
+        .filter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .filter-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .filter-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 20px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+        
+        .filter-close:hover {
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+        }
+        
+        .filter-section {
+            margin-bottom: 24px;
+        }
+        
+        .filter-section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+        
+        .filter-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            border-radius: 8px;
+            padding-left: 12px;
+            padding-right: 12px;
+        }
+        
+        .filter-option:hover {
+            background: var(--bg-elevated);
+        }
+        
+        .filter-option-left {
+            flex: 1;
+        }
+        
+        .filter-option-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+        
+        .filter-option-subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+        
+        .filter-option-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .filter-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 4px;
+            background: var(--bg-elevated);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: transparent;
+        }
+        
+        .filter-checkbox.checked {
+            background: var(--color-buy);
+            border-color: var(--color-buy);
+            color: white;
+        }
+        
+        .filter-radio {
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--border-color);
+            border-radius: 50%;
+            background: var(--bg-elevated);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        
+        .filter-radio.checked {
+            border-color: var(--color-buy);
+        }
+        
+        .filter-radio.checked::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            background: var(--color-buy);
+            border-radius: 50%;
+        }
+        
+        .filter-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .filter-btn {
+            flex: 1;
+            padding: 14px;
+            border-radius: 8px;
+            border: none;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .filter-reset {
+            background: var(--bg-elevated);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+        
+        .filter-reset:hover {
+            background: var(--bg-secondary);
+        }
+        
+        .filter-apply {
+            background: var(--color-buy);
+            color: white;
+        }
+        
+        .filter-apply:hover {
+            background: #059669;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .filter-container {
+                padding: 20px 16px;
+            }
+            
+            .filter-actions {
+                flex-direction: column;
+            }
+        }
+
+        /* Payment Methods Overlay */
+        .payment-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .payment-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .payment-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-card);
+            border-radius: 20px 20px 0 0;
+            padding: 24px 20px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .payment-overlay.active .payment-container {
+            transform: translateY(0);
+        }
+        
+        .payment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .payment-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .payment-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 20px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+        
+        .payment-close:hover {
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+        }
+        
+        .payment-search {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .payment-search-input {
+            width: 100%;
+            padding: 12px 16px 12px 40px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+        
+        .payment-search-input:focus {
+            outline: none;
+            border-color: var(--color-buy);
+            background: var(--bg-secondary);
+        }
+        
+        .payment-search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+        
+        .payment-section {
+            margin-bottom: 20px;
+        }
+        
+        .payment-section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .payment-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            border-radius: 8px;
+            padding-left: 12px;
+            padding-right: 12px;
+        }
+        
+        .payment-option:hover {
+            background: var(--bg-elevated);
+        }
+        
+        .payment-option-left {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .payment-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            background: var(--bg-elevated);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+        
+        .payment-info {
+            flex: 1;
+        }
+        
+        .payment-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+        
+        .payment-description {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .payment-option-right {
+            display: flex;
+            align-items: center;
+        }
+        
+        .payment-radio {
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--border-color);
+            border-radius: 50%;
+            background: var(--bg-elevated);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        
+        .payment-radio.checked {
+            border-color: var(--color-buy);
+        }
+        
+        .payment-radio.checked::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            background: var(--color-buy);
+            border-radius: 50%;
+        }
+        
+        .payment-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 4px;
+            background: var(--bg-elevated);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: transparent;
+        }
+        
+        .payment-checkbox.checked {
+            background: var(--color-buy);
+            border-color: var(--color-buy);
+            color: white;
+        }
+        
+        .payment-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .payment-btn {
+            flex: 1;
+            padding: 14px;
+            border-radius: 8px;
+            border: none;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .payment-cancel {
+            background: var(--bg-elevated);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+        
+        .payment-cancel:hover {
+            background: var(--bg-secondary);
+        }
+        
+        .payment-confirm {
+            background: var(--color-buy);
+            color: white;
+        }
+        
+        .payment-confirm:hover {
+            background: #059669;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .payment-container {
+                padding: 20px 16px;
+            }
+            
+            .payment-actions {
+                flex-direction: column;
+            }
+        }
+
+        /* Amount Input Modal */
+        .amount-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .amount-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .amount-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-card);
+            border-radius: 20px 20px 0 0;
+            padding: 24px 20px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .amount-overlay.active .amount-container {
+            transform: translateY(0);
+        }
+        
+        .amount-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .amount-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .amount-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 20px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+        
+        .amount-close:hover {
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+        }
+        
+        .amount-input-section {
+            margin-bottom: 24px;
+        }
+        
+        .amount-input-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .amount-input {
+            width: 100%;
+            padding: 16px 20px;
+            background: var(--bg-elevated);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 18px;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+        
+        .amount-input:focus {
+            border-color: var(--color-buy);
+            background: var(--bg-secondary);
+        }
+        
+        .amount-input::placeholder {
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+        
+        .amount-currency {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        .amount-limit {
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+        
+        .amount-actions {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        
+        .amount-btn {
+            flex: 1;
+            padding: 14px;
+            border-radius: 8px;
+            border: none;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .amount-reset {
+            background: var(--bg-elevated);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+        
+        .amount-reset:hover {
+            background: var(--bg-secondary);
+        }
+        
+        .amount-enter {
+            background: white;
+            color: var(--bg-card);
+            font-weight: 700;
+        }
+        
+        .amount-enter:hover {
+            background: #f8f9fa;
+        }
+        
+        /* Numerical Keypad */
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .keypad-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+        
+        .keypad-btn {
+            background: var(--bg-elevated);
+            border: none;
+            border-radius: 8px;
+            padding: 16px 8px;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .keypad-btn:hover {
+            background: var(--bg-secondary);
+        }
+        
+        .keypad-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .keypad-btn.operator {
+            background: var(--color-buy);
+            color: white;
+        }
+        
+        .keypad-btn.operator:hover {
+            background: #059669;
+        }
+        
+        .keypad-btn.delete {
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+        }
+        
+        .keypad-btn.delete:hover {
+            background: var(--bg-elevated);
+        }
+        
+        .keypad-btn.language {
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .keypad-btn.language:hover {
+            background: var(--bg-elevated);
+        }
+        
+        .keypad-btn.zero {
+            grid-column: span 2;
+        }
+        
+        .keypad-btn.decimal {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        /* Arabic characters on keypad */
+        .keypad-btn .arabic-char {
+            position: absolute;
+            bottom: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 10px;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .amount-container {
+                padding: 20px 16px;
+            }
+            
+            .keypad-btn {
+                padding: 14px 6px;
+                font-size: 16px;
+                min-height: 45px;
+            }
+            
+            .amount-input {
+                font-size: 16px;
+                padding: 14px 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    
+    <!-- Header -->
+    <div class="app-header">
+        <div class="header-content">
+            <div class="header-left">
+                
+                <div class="nav-tabs">
+                    <button class="nav-tab active" data-i18n="nav_p2p">P2P</button>
+                    <button class="nav-tab" data-i18n="express_trade">Express</button>
+                    <button class="nav-tab" data-i18n="block_trade">Block trade</button>
+                </div>
+            </div>
+            <div class="header-actions">
+                <div class="language-switcher">
+                    <button class="language-btn" onclick="toggleLanguage()">
+                        <i class="language-icon fas fa-globe"></i>
+                        <span id="current-lang">EN</span>
+                    </button>
+                </div>
+                
+                <button class="action-btn" onclick="openQRScanner()">
+                    <i class="fas fa-qrcode"></i>
+                </button>
+                <div class="language-currency-toggle">
+                    <button class="toggle-btn" onclick="toggleLanguageCurrency()" id="langCurrencyToggle">
+                        <i class="toggle-icon fas fa-globe"></i>
+                        <span class="toggle-text" id="toggleText">EN/USD</span>
+                    </button>
+                </div>
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Search merchants..." id="searchInput">
+                    <button class="search-close" onclick="closeSearch()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <button class="search-btn" onclick="toggleSearch()">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <div class="search-results" id="searchResults">
+                        <!-- Search results will be populated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Banner -->
+    <div class="banner">
+        <div class="banner-content">
+            <div class="banner-title" data-i18n="secure_trading">Trade smarter with P2P API</div>
+            <div class="banner-dots">
+                <div class="banner-dot active"></div>
+                <div class="banner-dot"></div>
+                <div class="banner-dot"></div>
+            </div>
+        </div>
+        <div class="banner-icon">
+            <i class="fas fa-chart-line"></i>
+        </div>
+    </div>
+    
+    <!-- Trading Controls -->
+    <div class="trading-controls">
+        <div class="currency-selector">
+            <div class="currency-dropdown" onclick="toggleCurrencyDropdown()">
+                <span data-i18n="iqd" id="selectedCurrency">IQD</span>
+                <i class="fas fa-chevron-down currency-dropdown-icon"></i>
+                <div class="currency-options" id="currencyOptions">
+                    <div class="currency-option selected" data-currency="IQD" onclick="selectCurrency('IQD', 'Iraqi Dinar')">
+                        <div class="currency-flag">🇮🇶</div>
+                        <div class="currency-info">
+                            <div class="currency-code">IQD</div>
+                            <div class="currency-name">Iraqi Dinar</div>
+                        </div>
+                    </div>
+                    <div class="currency-option" data-currency="USD" onclick="selectCurrency('USD', 'US Dollar')">
+                        <div class="currency-flag">🇺🇸</div>
+                        <div class="currency-info">
+                            <div class="currency-code">USD</div>
+                            <div class="currency-name">US Dollar</div>
+                        </div>
+                    </div>
+                    <div class="currency-option" data-currency="EUR" onclick="selectCurrency('EUR', 'Euro')">
+                        <div class="currency-flag">🇪🇺</div>
+                        <div class="currency-info">
+                            <div class="currency-code">EUR</div>
+                            <div class="currency-name">Euro</div>
+                        </div>
+                    </div>
+                    <div class="currency-option" data-currency="GBP" onclick="selectCurrency('GBP', 'British Pound')">
+                        <div class="currency-flag">🇬🇧</div>
+                        <div class="currency-info">
+                            <div class="currency-code">GBP</div>
+                            <div class="currency-name">British Pound</div>
+                        </div>
+                    </div>
+                    <div class="currency-option" data-currency="JPY" onclick="selectCurrency('JPY', 'Japanese Yen')">
+                        <div class="currency-flag">🇯🇵</div>
+                        <div class="currency-info">
+                            <div class="currency-code">JPY</div>
+                            <div class="currency-name">Japanese Yen</div>
+                        </div>
+                    </div>
+                    <div class="currency-option" data-currency="CNY" onclick="selectCurrency('CNY', 'Chinese Yuan')">
+                        <div class="currency-flag">🇨🇳</div>
+                        <div class="currency-info">
+                            <div class="currency-code">CNY</div>
+                            <div class="currency-name">Chinese Yuan</div>
+                        </div>
+                    </div>
+                    <div class="currency-option" data-currency="AED" onclick="selectCurrency('AED', 'UAE Dirham')">
+                        <div class="currency-flag">🇦🇪</div>
+                        <div class="currency-info">
+                            <div class="currency-code">AED</div>
+                            <div class="currency-name">UAE Dirham</div>
+                        </div>
+                    </div>
+                    <div class="currency-option" data-currency="SAR" onclick="selectCurrency('SAR', 'Saudi Riyal')">
+                        <div class="currency-flag">🇸🇦</div>
+                        <div class="currency-info">
+                            <div class="currency-code">SAR</div>
+                            <div class="currency-name">Saudi Riyal</div>
+                        </div>
+                    </div>
+                    <div class="currency-option" data-currency="KWD" onclick="selectCurrency('KWD', 'Kuwaiti Dinar')">
+                        <div class="currency-flag">🇰🇼</div>
+                        <div class="currency-info">
+                            <div class="currency-code">KWD</div>
+                            <div class="currency-name">Kuwaiti Dinar</div>
+                        </div>
+                    </div>
+                    <div class="currency-option" data-currency="QAR" onclick="selectCurrency('QAR', 'Qatari Riyal')">
+                        <div class="currency-flag">🇶🇦</div>
+                        <div class="currency-info">
+                            <div class="currency-code">QAR</div>
+                            <div class="currency-name">Qatari Riyal</div>
+                        </div>
+                    </div>
+                    <div class="currency-option" data-currency="BHD" onclick="selectCurrency('BHD', 'Bahraini Dinar')">
+                        <div class="currency-flag">🇧🇭</div>
+                        <div class="currency-info">
+                            <div class="currency-code">BHD</div>
+                            <div class="currency-name">Bahraini Dinar</div>
+                        </div>
+                    </div>
+                    <div class="currency-option" data-currency="OMR" onclick="selectCurrency('OMR', 'Omani Rial')">
+                        <div class="currency-flag">🇴🇲</div>
+                        <div class="currency-info">
+                            <div class="currency-code">OMR</div>
+                            <div class="currency-name">Omani Rial</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="buy-sell-tabs">
+            <button class="tab-btn active" data-i18n="buy">Buy</button>
+            <button class="tab-btn" data-i18n="sell">Sell</button>
+        </div>
+        
+        <div class="filters-row">
+            <div class="filter-dropdown">
+                <span><i class="fas fa-coins" style="color: var(--color-buy); margin-right: 4px;"></i>T USDT</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="filter-dropdown" onclick="openAmountModal()">
+                <span data-i18n="amount">Amount</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="filter-dropdown" onclick="openPaymentMethods()">
+                <span data-i18n="payment_methods">Payment methods</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <button class="filter-icon" onclick="openFilter()">
+                <i class="fas fa-filter"></i>
+            </button>
+        </div>
+    </div>
+    
+    <!-- Filter Overlay -->
+    <div class="filter-overlay" id="filterOverlay">
+        <div class="filter-container">
+            <div class="filter-header">
+                <h3 class="filter-title">Filters</h3>
+                <button class="filter-close" onclick="closeFilter()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <!-- Sort by Section -->
+            <div class="filter-section">
+                <h4 class="filter-section-title">Sort by</h4>
+                <div class="filter-option" onclick="selectSortOption('recommended')">
+                    <div class="filter-option-left">
+                        <div class="filter-option-title">Recommended</div>
+                        <div class="filter-option-subtitle">Ranked according to merchant's overall quality</div>
+                    </div>
+                    <div class="filter-option-right">
+                        <div class="filter-checkbox checked" id="sortRecommended"></div>
+                    </div>
+                </div>
+                <div class="filter-option" onclick="selectSortOption('price-low')">
+                    <div class="filter-option-left">
+                        <div class="filter-option-title">Price: low - high</div>
+                    </div>
+                    <div class="filter-option-right">
+                        <div class="filter-checkbox" id="sortPriceLow"></div>
+                    </div>
+                </div>
+                <div class="filter-option" onclick="selectSortOption('completion-rate')">
+                    <div class="filter-option-left">
+                        <div class="filter-option-title">Total completion rate</div>
+                    </div>
+                    <div class="filter-option-right">
+                        <div class="filter-checkbox" id="sortCompletionRate"></div>
+                    </div>
+                </div>
+                <div class="filter-option" onclick="selectSortOption('completed-orders')">
+                    <div class="filter-option-left">
+                        <div class="filter-option-title">Total completed orders</div>
+                    </div>
+                    <div class="filter-option-right">
+                        <div class="filter-checkbox" id="sortCompletedOrders"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Ad types Section -->
+            <div class="filter-section">
+                <h4 class="filter-section-title">Ad types</h4>
+                <div class="filter-option" onclick="selectAdType('verified-only')">
+                    <div class="filter-option-left">
+                        <div class="filter-option-title">Verified Merchants only</div>
+                    </div>
+                    <div class="filter-option-right">
+                        <div class="filter-radio" id="adTypeVerifiedOnly"></div>
+                    </div>
+                </div>
+                <div class="filter-option" onclick="selectAdType('eligible-ads')">
+                    <div class="filter-option-left">
+                        <div class="filter-option-title">Eligible ads</div>
+                    </div>
+                    <div class="filter-option-right">
+                        <div class="filter-radio" id="adTypeEligibleAds"></div>
+                    </div>
+                </div>
+                <div class="filter-option" onclick="selectAdType('no-verification')">
+                    <div class="filter-option-left">
+                        <div class="filter-option-title">Verification not required</div>
+                        <div class="filter-option-subtitle">You don't need to provide additional verification to trade</div>
+                    </div>
+                    <div class="filter-option-right">
+                        <div class="filter-radio" id="adTypeNoVerification"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Filter Actions -->
+            <div class="filter-actions">
+                <button class="filter-btn filter-reset" onclick="resetFilters()">Reset</button>
+                <button class="filter-btn filter-apply" onclick="applyFilters()">Apply Filters</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Merchant Listings -->
+    <div class="merchant-list">
+        <!-- Merchant 1 -->
+        <div class="merchant-card">
+            <div class="merchant-header">
+                <div class="merchant-info">
+                    <div class="merchant-avatar">K</div>
+                    <div class="merchant-details">
+                        <div class="merchant-name-row">
+                            <span class="merchant-name">karmandgroup</span>
+                            <span class="verification-badge badge-verified">Verified</span>
+                        </div>
+                        <div class="merchant-stats">
+                            <span>4,423 transactions</span>
+                            <span>96.61% completion</span>
+                            <span><i class="fas fa-thumbs-up"></i> 98.79%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="merchant-price">
+                    <div class="price-amount">د.ع 1,402.19</div>
+                    <div class="price-label">IQD/USDT</div>
+                </div>
+            </div>
+            <div class="merchant-details-row">
+                <span class="detail-item">Available:</span>
+                <span class="detail-value">40,763.46 USDT</span>
+            </div>
+            <div class="merchant-details-row">
+                <span class="detail-item">Order limit:</span>
+                <span class="detail-value">1,000,000-15,000,000 IQD</span>
+            </div>
+            <div class="merchant-details-row">
+                <span class="detail-item">Payment:</span>
+                <span class="detail-value">First Iraqi Bank (FIB)</span>
+            </div>
+            <div class="merchant-actions">
+                <button class="action-button buy-btn">Buy</button>
+            </div>
+        </div>
+        
+        <!-- Merchant 2 -->
+        <div class="merchant-card">
+            <div class="merchant-header">
+                <div class="merchant-info">
+                    <div class="merchant-avatar">M</div>
+                    <div class="merchant-details">
+                        <div class="merchant-name-row">
+                            <span class="merchant-name">Mustafa-Trader</span>
+                            <span class="verification-badge badge-star">Star</span>
+                        </div>
+                        <div class="merchant-stats">
+                            <span>2,156 transactions</span>
+                            <span>94.23% completion</span>
+                            <span><i class="fas fa-thumbs-up"></i> 97.45%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="merchant-price">
+                    <div class="price-amount">د.ع 1,398.50</div>
+                    <div class="price-label">IQD/USDT</div>
+                </div>
+            </div>
+            <div class="merchant-details-row">
+                <span class="detail-item">Available:</span>
+                <span class="detail-value">25,432.18 USDT</span>
+            </div>
+            <div class="merchant-details-row">
+                <span class="detail-item">Order limit:</span>
+                <span class="detail-value">500,000-10,000,000 IQD</span>
+            </div>
+            <div class="merchant-details-row">
+                <span class="detail-item">Payment:</span>
+                <span class="detail-value">Trade Bank of Iraq (TBI)</span>
+            </div>
+            <div class="merchant-actions">
+                <button class="action-button buy-btn">Buy</button>
+            </div>
+        </div>
+        
+        <!-- Merchant 3 -->
+        <div class="merchant-card">
+            <div class="merchant-header">
+                <div class="merchant-info">
+                    <div class="merchant-avatar">ب</div>
+                    <div class="merchant-details">
+                        <div class="merchant-name-row">
+                            <span class="merchant-name">بيرو</span>
+                            <span class="verification-badge badge-star">Star</span>
+                        </div>
+                        <div class="merchant-stats">
+                            <span>3,891 transactions</span>
+                            <span>98.12% completion</span>
+                            <span><i class="fas fa-thumbs-up"></i> 99.23%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="merchant-price">
+                    <div class="price-amount">د.ع 1,405.75</div>
+                    <div class="price-label">IQD/USDT</div>
+                </div>
+            </div>
+            <div class="merchant-details-row">
+                <span class="detail-item">Available:</span>
+                <span class="detail-value">35,678.92 USDT</span>
+            </div>
+            <div class="merchant-details-row">
+                <span class="detail-item">Order limit:</span>
+                <span class="detail-value">750,000-12,000,000 IQD</span>
+            </div>
+            <div class="merchant-details-row">
+                <span class="detail-item">Payment:</span>
+                <span class="detail-value">Bank of Baghdad (BOB)</span>
+            </div>
+            <div class="merchant-actions">
+                <button class="action-button buy-btn">Buy</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <div class="nav-items">
+            <div class="nav-item active">
+                <i class="fas fa-users nav-icon"></i>
+                <span class="nav-label">P2P</span>
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-file-alt nav-icon"></i>
+                <span class="nav-label">Orders</span>
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-bullhorn nav-icon"></i>
+                <span class="nav-label">Ads</span>
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-comments nav-icon"></i>
+                <span class="nav-label">Chat</span>
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-user nav-icon"></i>
+                <span class="nav-label">Profile</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Payment Methods Overlay -->
+    <div class="payment-overlay" id="paymentOverlay">
+        <div class="payment-container">
+            <div class="payment-header">
+                <h3 class="payment-title">Payment methods</h3>
+                <button class="payment-close" onclick="closePaymentMethods()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <!-- Search Payment Methods -->
+            <div class="payment-search">
+                <i class="fas fa-search payment-search-icon"></i>
+                <input type="text" class="payment-search-input" placeholder="Search payment methods" id="paymentSearchInput">
+            </div>
+            
+            <!-- All Payment Methods -->
+            <div class="payment-section">
+                <div class="payment-option" onclick="selectPaymentMethod('all')">
+                    <div class="payment-option-left">
+                        <div class="payment-icon">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <div class="payment-info">
+                            <div class="payment-name">All</div>
+                        </div>
+                    </div>
+                    <div class="payment-option-right">
+                        <div class="payment-checkbox checked" id="paymentAll"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Most Used Section -->
+            <div class="payment-section">
+                <div class="payment-section-title">Most used</div>
+                <div class="payment-option" onclick="selectPaymentMethod('al-rafdin')">
+                    <div class="payment-option-left">
+                        <div class="payment-icon">
+                            <i class="fas fa-university"></i>
+                        </div>
+                        <div class="payment-info">
+                            <div class="payment-name">Al-Rafdin QiServices</div>
+                        </div>
+                    </div>
+                    <div class="payment-option-right">
+                        <div class="payment-radio" id="paymentAlRafdin"></div>
+                    </div>
+                </div>
+                <div class="payment-option" onclick="selectPaymentMethod('western-union')">
+                    <div class="payment-option-left">
+                        <div class="payment-icon">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="payment-info">
+                            <div class="payment-name">Western Union</div>
+                        </div>
+                    </div>
+                    <div class="payment-option-right">
+                        <div class="payment-radio" id="paymentWesternUnion"></div>
+                    </div>
+                </div>
+                <div class="payment-option" onclick="selectPaymentMethod('zain-cash')">
+                    <div class="payment-option-left">
+                        <div class="payment-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <div class="payment-info">
+                            <div class="payment-name">Zain Cash</div>
+                        </div>
+                    </div>
+                    <div class="payment-option-right">
+                        <div class="payment-radio" id="paymentZainCash"></div>
+                    </div>
+                </div>
+                <div class="payment-option" onclick="selectPaymentMethod('fib')">
+                    <div class="payment-option-left">
+                        <div class="payment-icon">
+                            <i class="fas fa-university"></i>
+                        </div>
+                        <div class="payment-info">
+                            <div class="payment-name">First Iraqi Bank (FIB)</div>
+                        </div>
+                    </div>
+                    <div class="payment-option-right">
+                        <div class="payment-radio" id="paymentFIB"></div>
+                    </div>
+                </div>
+                <div class="payment-option" onclick="selectPaymentMethod('zain-cash-business')">
+                    <div class="payment-option-left">
+                        <div class="payment-icon">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                        <div class="payment-info">
+                            <div class="payment-name">Zain Cash - Business</div>
+                        </div>
+                    </div>
+                    <div class="payment-option-right">
+                        <div class="payment-radio" id="paymentZainCashBusiness"></div>
+                    </div>
+                </div>
+                <div class="payment-option" onclick="selectPaymentMethod('fast-pay')">
+                    <div class="payment-option-left">
+                        <div class="payment-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <div class="payment-info">
+                            <div class="payment-name">Fast Pay</div>
+                        </div>
+                    </div>
+                    <div class="payment-option-right">
+                        <div class="payment-radio" id="paymentFastPay"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- All Payment Methods Section -->
+            <div class="payment-section">
+                <div class="payment-section-title">All payment methods</div>
+                <div class="payment-option" onclick="selectPaymentMethod('moneygram')">
+                    <div class="payment-option-left">
+                        <div class="payment-icon">
+                            <i class="fas fa-exchange-alt"></i>
+                        </div>
+                        <div class="payment-info">
+                            <div class="payment-name">MoneyGram</div>
+                        </div>
+                    </div>
+                    <div class="payment-option-right">
+                        <div class="payment-radio" id="paymentMoneyGram"></div>
+                    </div>
+                </div>
+                <div class="payment-option" onclick="selectPaymentMethod('paypal')">
+                    <div class="payment-option-left">
+                        <div class="payment-icon">
+                            <i class="fab fa-paypal"></i>
+                        </div>
+                        <div class="payment-info">
+                            <div class="payment-name">PayPal</div>
+                        </div>
+                    </div>
+                    <div class="payment-option-right">
+                        <div class="payment-radio" id="paymentPayPal"></div>
+                    </div>
+                </div>
+                <div class="payment-option" onclick="selectPaymentMethod('bank-transfer')">
+                    <div class="payment-option-left">
+                        <div class="payment-icon">
+                            <i class="fas fa-university"></i>
+                        </div>
+                        <div class="payment-info">
+                            <div class="payment-name">Bank Transfer</div>
+                        </div>
+                    </div>
+                    <div class="payment-option-right">
+                        <div class="payment-radio" id="paymentBankTransfer"></div>
+                    </div>
+                </div>
+                <div class="payment-option" onclick="selectPaymentMethod('cash')">
+                    <div class="payment-option-left">
+                        <div class="payment-icon">
+                            <i class="fas fa-money-bill"></i>
+                        </div>
+                        <div class="payment-info">
+                            <div class="payment-name">Cash</div>
+                        </div>
+                    </div>
+                    <div class="payment-option-right">
+                        <div class="payment-radio" id="paymentCash"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Payment Actions -->
+            <div class="payment-actions">
+                <button class="payment-btn payment-cancel" onclick="closePaymentMethods()">Cancel</button>
+                <button class="payment-btn payment-confirm" onclick="confirmPaymentMethod()">Confirm</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Amount Input Modal -->
+    <div class="amount-overlay" id="amountOverlay">
+        <div class="amount-container">
+            <div class="amount-header">
+                <h3 class="amount-title">You want to buy</h3>
+                <button class="amount-close" onclick="closeAmountModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <!-- Amount Input Section -->
+            <div class="amount-input-section">
+                <div class="amount-input-container">
+                    <input type="text" class="amount-input" id="amountInput" placeholder="Min 1,300.000" readonly>
+                    <span class="amount-currency">IQD</span>
+                </div>
+                <div class="amount-limit">
+                    Min: 1,300.000 IQD • Max: 7,998,113.64 IQD
+                </div>
+            </div>
+            
+            <!-- Amount Actions -->
+            <div class="amount-actions">
+                <button class="amount-btn amount-reset" onclick="resetAmount()">Reset</button>
+                <button class="amount-btn amount-enter" onclick="confirmAmount()">Enter</button>
+            </div>
+            
+            <!-- Numerical Keypad -->
+            <div class="keypad">
+                <!-- Row 1: 1, 2, 3 -->
+                <div class="keypad-row">
+                    <button class="keypad-btn" onclick="addToAmount('1')">
+                        1
+                        <span class="arabic-char">١</span>
+                    </button>
+                    <button class="keypad-btn" onclick="addToAmount('2')">
+                        2
+                        <span class="arabic-char">٢</span>
+                    </button>
+                    <button class="keypad-btn" onclick="addToAmount('3')">
+                        3
+                        <span class="arabic-char">٣</span>
+                    </button>
+                </div>
+                
+                <!-- Row 2: 4, 5, 6 -->
+                <div class="keypad-row">
+                    <button class="keypad-btn" onclick="addToAmount('4')">
+                        4
+                        <span class="arabic-char">٤</span>
+                    </button>
+                    <button class="keypad-btn" onclick="addToAmount('5')">
+                        5
+                        <span class="arabic-char">٥</span>
+                    </button>
+                    <button class="keypad-btn" onclick="addToAmount('6')">
+                        6
+                        <span class="arabic-char">٦</span>
+                    </button>
+                </div>
+                
+                <!-- Row 3: 7, 8, 9 -->
+                <div class="keypad-row">
+                    <button class="keypad-btn" onclick="addToAmount('7')">
+                        7
+                        <span class="arabic-char">٧</span>
+                    </button>
+                    <button class="keypad-btn" onclick="addToAmount('8')">
+                        8
+                        <span class="arabic-char">٨</span>
+                    </button>
+                    <button class="keypad-btn" onclick="addToAmount('9')">
+                        9
+                        <span class="arabic-char">٩</span>
+                    </button>
+                </div>
+                
+                <!-- Row 4: Language, 0, Delete -->
+                <div class="keypad-row">
+                    <button class="keypad-btn language" onclick="toggleKeyboardLanguage()">
+                        <i class="fas fa-globe"></i>
+                    </button>
+                    <button class="keypad-btn zero" onclick="addToAmount('0')">
+                        0
+                        <span class="arabic-char">٠</span>
+                    </button>
+                    <button class="keypad-btn delete" onclick="deleteFromAmount()">
+                        <i class="fas fa-backspace"></i>
+                    </button>
+                </div>
+                
+                <!-- Row 5: Decimal point -->
+                <div class="keypad-row">
+                    <button class="keypad-btn decimal" onclick="addToAmount('.')">
+                        .
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Search functionality
+        let searchActive = false;
+        
+        function toggleSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const searchBtn = document.querySelector('.search-btn');
+            const searchClose = document.querySelector('.search-close');
+            const searchResults = document.getElementById('searchResults');
+            
+            if (!searchActive) {
+                // Open search
+                searchInput.classList.add('active');
+                searchBtn.classList.add('active');
+                searchClose.classList.add('active');
+                searchInput.focus();
+                searchActive = true;
+            } else {
+                // Close search
+                closeSearch();
+            }
+        }
+        
+        function closeSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const searchBtn = document.querySelector('.search-btn');
+            const searchClose = document.querySelector('.search-close');
+            const searchResults = document.getElementById('searchResults');
+            
+            searchInput.classList.remove('active');
+            searchBtn.classList.remove('active');
+            searchClose.classList.remove('active');
+            searchResults.classList.remove('active');
+            searchInput.value = '';
+            searchActive = false;
+        }
+        
+        // Search input event listener
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase();
+            const searchResults = document.getElementById('searchResults');
+            
+            if (query.length < 2) {
+                searchResults.classList.remove('active');
+                return;
+            }
+            
+            // Mock search results
+            const mockResults = [
+                { name: 'karmandgroup', avatar: 'K', transactions: '4,423', completion: '96.61%', price: 'د.ع 1,402.19' },
+                { name: 'Mustafa-Trader', avatar: 'M', transactions: '2,156', completion: '94.23%', price: 'د.ع 1,398.50' },
+                { name: 'بيرو', avatar: 'ب', transactions: '3,891', completion: '98.12%', price: 'د.ع 1,405.75' },
+                { name: 'aliraqtrader', avatar: 'A', transactions: '1,234', completion: '95.67%', price: 'د.ع 1,400.00' },
+                { name: 'baghdad_trader', avatar: 'B', transactions: '5,678', completion: '97.89%', price: 'د.ع 1,403.25' }
+            ];
+            
+            const filteredResults = mockResults.filter(result => 
+                result.name.toLowerCase().includes(query)
+            );
+            
+            if (filteredResults.length > 0) {
+                searchResults.innerHTML = filteredResults.map(result => `
+                    <div class="search-result-item" onclick="selectMerchant('${result.name}')">
+                        <div class="result-avatar">${result.avatar}</div>
+                        <div class="result-info">
+                            <div class="result-name">${result.name}</div>
+                            <div class="result-details">${result.transactions} transactions • ${result.completion} completion • ${result.price}</div>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                searchResults.innerHTML = '<div class="no-results">No merchants found</div>';
+            }
+            
+            searchResults.classList.add('active');
+        });
+        
+        function selectMerchant(merchantName) {
+            // Scroll to merchant in the list
+            const merchantCards = document.querySelectorAll('.merchant-card');
+            merchantCards.forEach(card => {
+                const nameElement = card.querySelector('.merchant-name');
+                if (nameElement && nameElement.textContent === merchantName) {
+                    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    card.style.border = '2px solid var(--color-buy)';
+                    setTimeout(() => {
+                        card.style.border = '1px solid var(--border-color)';
+                    }, 3000);
+                }
+            });
+            closeSearch();
+        }
+        
+        // Close search when clicking outside
+        document.addEventListener('click', function(e) {
+            const searchContainer = document.querySelector('.search-container');
+            const searchResults = document.getElementById('searchResults');
+            
+            if (!searchContainer.contains(e.target) && searchActive) {
+                closeSearch();
+            }
+        });
+        
+        // Tab switching
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        
+        // Buy/Sell tab switching
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        
+        // Bottom navigation
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Handle navigation based on which tab was clicked
+                const navLabel = this.querySelector('.nav-label').textContent;
+                if (navLabel === 'Profile') {
+                    window.location.href = 'profile.html';
+                }
+                // Add more navigation handlers here for other tabs as needed
+            });
+        });
+        
+        // Initialize language manager
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof initializeLanguageManager === 'function') {
+                initializeLanguageManager('app');
+            }
+        });
+
+        function openQRScanner() {
+            window.location.href = 'qr.html';
+        }
+        
+        // Language and Currency Toggle
+        let currentLanguage = 'en';
+        let currentCurrency = 'USD';
+        
+        function toggleLanguageCurrency() {
+            const toggleBtn = document.getElementById('langCurrencyToggle');
+            const toggleText = document.getElementById('toggleText');
+            const body = document.body;
+            
+            if (currentLanguage === 'en') {
+                // Switch to Arabic and IQD
+                currentLanguage = 'ar';
+                currentCurrency = 'IQD';
+                body.setAttribute('dir', 'rtl');
+                body.classList.add('rtl');
+                toggleText.textContent = 'عربي/د.ع';
+                toggleBtn.classList.add('active');
+                
+                // Update all text content to Arabic
+                updateTextToArabic();
+                updateCurrencyToIQD();
+            } else {
+                // Switch to English and USD
+                currentLanguage = 'en';
+                currentCurrency = 'USD';
+                body.removeAttribute('dir');
+                body.classList.remove('rtl');
+                toggleText.textContent = 'EN/USD';
+                toggleBtn.classList.remove('active');
+                
+                // Update all text content to English
+                updateTextToEnglish();
+                updateCurrencyToUSD();
+            }
+            
+            // Save preferences to localStorage
+            localStorage.setItem('language', currentLanguage);
+            localStorage.setItem('currency', currentCurrency);
+        }
+        
+        function updateTextToArabic() {
+            // Update navigation tabs
+            const navTabs = document.querySelectorAll('.nav-tab');
+            navTabs[0].textContent = 'P2P';
+            navTabs[1].textContent = 'سريع';
+            navTabs[2].textContent = 'كتلة تجارة';
+            
+            // Update buy/sell tabs
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            tabBtns[0].textContent = 'شراء';
+            tabBtns[1].textContent = 'بيع';
+            
+            // Update filter dropdowns
+            const filterDropdowns = document.querySelectorAll('.filter-dropdown span');
+            if (filterDropdowns[1]) filterDropdowns[1].textContent = 'المبلغ';
+            if (filterDropdowns[2]) filterDropdowns[2].textContent = 'طرق الدفع';
+            
+            // Update search placeholder
+            document.getElementById('searchInput').placeholder = 'البحث عن التجار...';
+            
+            // Update banner title
+            const bannerTitle = document.querySelector('.banner-title');
+            if (bannerTitle) bannerTitle.textContent = 'تداول أذكى مع P2P API';
+            
+            // Update bottom navigation
+            const navLabels = document.querySelectorAll('.nav-label');
+            navLabels[0].textContent = 'P2P';
+            navLabels[1].textContent = 'الطلبات';
+            navLabels[2].textContent = 'الإعلانات';
+            navLabels[3].textContent = 'الدردشة';
+            navLabels[4].textContent = 'الملف الشخصي';
+            
+            // Update merchant details
+            updateMerchantDetailsToArabic();
+        }
+        
+        function updateTextToEnglish() {
+            // Update navigation tabs
+            const navTabs = document.querySelectorAll('.nav-tab');
+            navTabs[0].textContent = 'P2P';
+            navTabs[1].textContent = 'Express';
+            navTabs[2].textContent = 'Block trade';
+            
+            // Update buy/sell tabs
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            tabBtns[0].textContent = 'Buy';
+            tabBtns[1].textContent = 'Sell';
+            
+            // Update filter dropdowns
+            const filterDropdowns = document.querySelectorAll('.filter-dropdown span');
+            if (filterDropdowns[1]) filterDropdowns[1].textContent = 'Amount';
+            if (filterDropdowns[2]) filterDropdowns[2].textContent = 'Payment methods';
+            
+            // Update search placeholder
+            document.getElementById('searchInput').placeholder = 'Search merchants...';
+            
+            // Update banner title
+            const bannerTitle = document.querySelector('.banner-title');
+            if (bannerTitle) bannerTitle.textContent = 'Trade smarter with P2P API';
+            
+            // Update bottom navigation
+            const navLabels = document.querySelectorAll('.nav-label');
+            navLabels[0].textContent = 'P2P';
+            navLabels[1].textContent = 'Orders';
+            navLabels[2].textContent = 'Ads';
+            navLabels[3].textContent = 'Chat';
+            navLabels[4].textContent = 'Profile';
+            
+            // Update merchant details
+            updateMerchantDetailsToEnglish();
+        }
+        
+        function updateCurrencyToIQD() {
+            // Update currency dropdown
+            const currencyDropdown = document.querySelector('.currency-dropdown span');
+            if (currencyDropdown) currencyDropdown.textContent = 'د.ع';
+            
+            // Update price displays
+            const priceAmounts = document.querySelectorAll('.price-amount');
+            priceAmounts.forEach(price => {
+                if (price.textContent.includes('$')) {
+                    price.textContent = price.textContent.replace('$', 'د.ع ');
+                }
+            });
+            
+            // Update order limits
+            const orderLimits = document.querySelectorAll('.detail-value');
+            orderLimits.forEach(limit => {
+                if (limit.textContent.includes('USD')) {
+                    limit.textContent = limit.textContent.replace('USD', 'د.ع');
+                }
+            });
+        }
+        
+        function updateCurrencyToUSD() {
+            // Update currency dropdown
+            const currencyDropdown = document.querySelector('.currency-dropdown span');
+            if (currencyDropdown) currencyDropdown.textContent = 'USD';
+            
+            // Update price displays
+            const priceAmounts = document.querySelectorAll('.price-amount');
+            priceAmounts.forEach(price => {
+                if (price.textContent.includes('د.ع')) {
+                    price.textContent = price.textContent.replace('د.ع ', '$');
+                }
+            });
+            
+            // Update order limits
+            const orderLimits = document.querySelectorAll('.detail-value');
+            orderLimits.forEach(limit => {
+                if (limit.textContent.includes('د.ع')) {
+                    limit.textContent = limit.textContent.replace('د.ع', 'USD');
+                }
+            });
+        }
+        
+        function updateMerchantDetailsToArabic() {
+            // Update detail labels
+            const detailItems = document.querySelectorAll('.detail-item');
+            detailItems.forEach(item => {
+                if (item.textContent === 'Available:') item.textContent = 'متاح:';
+                if (item.textContent === 'Order limit:') item.textContent = 'حد الطلب:';
+                if (item.textContent === 'Payment:') item.textContent = 'الدفع:';
+            });
+            
+            // Update action buttons
+            const buyBtns = document.querySelectorAll('.buy-btn');
+            buyBtns.forEach(btn => {
+                btn.textContent = 'شراء';
+            });
+        }
+        
+        function updateMerchantDetailsToEnglish() {
+            // Update detail labels
+            const detailItems = document.querySelectorAll('.detail-item');
+            detailItems.forEach(item => {
+                if (item.textContent === 'متاح:') item.textContent = 'Available:';
+                if (item.textContent === 'حد الطلب:') item.textContent = 'Order limit:';
+                if (item.textContent === 'الدفع:') item.textContent = 'Payment:';
+            });
+            
+            // Update action buttons
+            const buyBtns = document.querySelectorAll('.buy-btn');
+            buyBtns.forEach(btn => {
+                btn.textContent = 'Buy';
+            });
+        }
+        
+        // Initialize language and currency on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load saved preferences
+            const savedLanguage = localStorage.getItem('language') || 'en';
+            const savedCurrency = localStorage.getItem('currency') || 'USD';
+            
+            if (savedLanguage === 'ar') {
+                currentLanguage = 'ar';
+                currentCurrency = savedCurrency;
+                toggleLanguageCurrency(); // This will apply the Arabic settings
+            }
+            
+            // Initialize language manager
+            if (typeof initializeLanguageManager === 'function') {
+                initializeLanguageManager('app');
+            }
+        });
+
+        // Currency dropdown functionality
+        let currencyDropdownActive = false;
+        let selectedCurrency = 'IQD';
+        
+        function toggleCurrencyDropdown() {
+            const dropdown = document.querySelector('.currency-dropdown');
+            const options = document.getElementById('currencyOptions');
+            
+            if (currencyDropdownActive) {
+                dropdown.classList.remove('active');
+                currencyDropdownActive = false;
+            } else {
+                dropdown.classList.add('active');
+                currencyDropdownActive = true;
+            }
+        }
+        
+        function selectCurrency(currencyCode, currencyName) {
+            // Update selected currency
+            selectedCurrency = currencyCode;
+            document.getElementById('selectedCurrency').textContent = currencyCode;
+            
+            // Update all currency options
+            document.querySelectorAll('.currency-option').forEach(option => {
+                option.classList.remove('selected');
+                if (option.getAttribute('data-currency') === currencyCode) {
+                    option.classList.add('selected');
+                }
+            });
+            
+            // Close dropdown
+            document.querySelector('.currency-dropdown').classList.remove('active');
+            currencyDropdownActive = false;
+            
+            // Update prices based on selected currency
+            updatePricesForCurrency(currencyCode);
+            
+            // Save preference
+            localStorage.setItem('selectedCurrency', currencyCode);
+            
+            // Show notification
+            showCurrencyNotification(currencyCode, currencyName);
+        }
+        
+        function updatePricesForCurrency(currencyCode) {
+            const priceAmounts = document.querySelectorAll('.price-amount');
+            const priceLabels = document.querySelectorAll('.price-label');
+            
+            // Mock exchange rates (in real app, these would come from API)
+            const exchangeRates = {
+                'IQD': 1,
+                'USD': 0.0007,
+                'EUR': 0.0006,
+                'GBP': 0.0005,
+                'JPY': 0.1,
+                'CNY': 0.005,
+                'AED': 0.0026,
+                'SAR': 0.0026,
+                'KWD': 0.0002,
+                'QAR': 0.0026,
+                'BHD': 0.0003,
+                'OMR': 0.0003
+            };
+            
+            const currencySymbols = {
+                'IQD': 'د.ع',
+                'USD': '$',
+                'EUR': '€',
+                'GBP': '£',
+                'JPY': '¥',
+                'CNY': '¥',
+                'AED': 'د.إ',
+                'SAR': 'ر.س',
+                'KWD': 'د.ك',
+                'QAR': 'ر.ق',
+                'BHD': 'د.ب',
+                'OMR': 'ر.ع'
+            };
+            
+            priceAmounts.forEach((price, index) => {
+                const basePrice = 1402.19; // Base price in IQD
+                const convertedPrice = (basePrice * exchangeRates[currencyCode]).toFixed(2);
+                const symbol = currencySymbols[currencyCode];
+                
+                price.textContent = `${symbol} ${convertedPrice}`;
+            });
+            
+            priceLabels.forEach(label => {
+                label.textContent = `${currencyCode}/USDT`;
+            });
+        }
+        
+        function showCurrencyNotification(currencyCode, currencyName) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--bg-card);
+                color: var(--text-primary);
+                padding: 12px 20px;
+                border-radius: 8px;
+                border-left: 4px solid var(--color-buy);
+                z-index: 10000;
+                font-size: 14px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+            `;
+            notification.textContent = `Currency changed to ${currencyCode} (${currencyName})`;
+            
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            const dropdown = document.querySelector('.currency-dropdown');
+            if (!dropdown.contains(e.target) && currencyDropdownActive) {
+                dropdown.classList.remove('active');
+                currencyDropdownActive = false;
+            }
+        });
+        
+        // Initialize currency on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedCurrency = localStorage.getItem('selectedCurrency') || 'IQD';
+            if (savedCurrency !== 'IQD') {
+                selectCurrency(savedCurrency, getCurrencyName(savedCurrency));
+            }
+        });
+        
+        function getCurrencyName(currencyCode) {
+            const currencyNames = {
+                'IQD': 'Iraqi Dinar',
+                'USD': 'US Dollar',
+                'EUR': 'Euro',
+                'GBP': 'British Pound',
+                'JPY': 'Japanese Yen',
+                'CNY': 'Chinese Yuan',
+                'AED': 'UAE Dirham',
+                'SAR': 'Saudi Riyal',
+                'KWD': 'Kuwaiti Dinar',
+                'QAR': 'Qatari Riyal',
+                'BHD': 'Bahraini Dinar',
+                'OMR': 'Omani Rial'
+            };
+            return currencyNames[currencyCode] || currencyCode;
+        }
+
+        // Filter overlay functionality
+        let currentSortOption = 'recommended';
+        let currentAdType = 'eligible-ads';
+        
+        function openFilter() {
+            const overlay = document.getElementById('filterOverlay');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeFilter() {
+            const overlay = document.getElementById('filterOverlay');
+            overlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+        
+        function selectSortOption(option) {
+            // Remove checked from all sort options
+            document.querySelectorAll('[id^="sort"]').forEach(checkbox => {
+                checkbox.classList.remove('checked');
+            });
+            
+            // Add checked to selected option
+            const selectedCheckbox = document.getElementById(`sort${option.charAt(0).toUpperCase() + option.slice(1).replace(/-([a-z])/g, (g) => g[1].toUpperCase())}`);
+            if (selectedCheckbox) {
+                selectedCheckbox.classList.add('checked');
+            }
+            
+            currentSortOption = option;
+        }
+        
+        function selectAdType(type) {
+            // Remove checked from all ad type options
+            document.querySelectorAll('[id^="adType"]').forEach(radio => {
+                radio.classList.remove('checked');
+            });
+            
+            // Add checked to selected option
+            const selectedRadio = document.getElementById(`adType${type.charAt(0).toUpperCase() + type.slice(1).replace(/-([a-z])/g, (g) => g[1].toUpperCase())}`);
+            if (selectedRadio) {
+                selectedRadio.classList.add('checked');
+            }
+            
+            currentAdType = type;
+        }
+        
+        function resetFilters() {
+            // Reset to default values
+            selectSortOption('recommended');
+            selectAdType('eligible-ads');
+            
+            // Show notification
+            showFilterNotification('Filters reset to default');
+        }
+        
+        function applyFilters() {
+            // Apply the selected filters
+            applyFiltersToResults();
+            
+            // Close the filter overlay
+            closeFilter();
+            
+            // Show notification
+            showFilterNotification(`Applied: ${getSortOptionName(currentSortOption)} • ${getAdTypeName(currentAdType)}`);
+        }
+        
+        function applyFiltersToResults() {
+            // Mock filter application - in real app, this would filter the merchant results
+            console.log('Applying filters:', {
+                sortBy: currentSortOption,
+                adType: currentAdType
+            });
+            
+            // Here you would typically:
+            // 1. Filter the merchant list based on selected criteria
+            // 2. Sort the results based on selected sort option
+            // 3. Update the UI with filtered results
+        }
+        
+        function getSortOptionName(option) {
+            const names = {
+                'recommended': 'Recommended',
+                'price-low': 'Price: Low to High',
+                'completion-rate': 'Completion Rate',
+                'completed-orders': 'Completed Orders'
+            };
+            return names[option] || option;
+        }
+        
+        function getAdTypeName(type) {
+            const names = {
+                'verified-only': 'Verified Only',
+                'eligible-ads': 'Eligible Ads',
+                'no-verification': 'No Verification Required'
+            };
+            return names[type] || type;
+        }
+        
+        function showFilterNotification(message) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--bg-card);
+                color: var(--text-primary);
+                padding: 12px 20px;
+                border-radius: 8px;
+                border-left: 4px solid var(--color-buy);
+                z-index: 10000;
+                font-size: 14px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+        
+        // Close filter overlay when clicking outside
+        document.getElementById('filterOverlay').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeFilter();
+            }
+        });
+        
+        // Initialize filter state
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set default selections
+            selectSortOption('recommended');
+            selectAdType('eligible-ads');
+        });
+
+        // Payment methods overlay functionality
+        let selectedPaymentMethod = 'all';
+        let paymentMethods = [
+            { id: 'all', name: 'All', icon: 'fas fa-globe', type: 'checkbox' },
+            { id: 'al-rafdin', name: 'Al-Rafdin QiServices', icon: 'fas fa-university', type: 'radio' },
+            { id: 'western-union', name: 'Western Union', icon: 'fas fa-money-bill-wave', type: 'radio' },
+            { id: 'zain-cash', name: 'Zain Cash', icon: 'fas fa-mobile-alt', type: 'radio' },
+            { id: 'fib', name: 'First Iraqi Bank (FIB)', icon: 'fas fa-university', type: 'radio' },
+            { id: 'zain-cash-business', name: 'Zain Cash - Business', icon: 'fas fa-briefcase', type: 'radio' },
+            { id: 'fast-pay', name: 'Fast Pay', icon: 'fas fa-bolt', type: 'radio' },
+            { id: 'moneygram', name: 'MoneyGram', icon: 'fas fa-exchange-alt', type: 'radio' },
+            { id: 'paypal', name: 'PayPal', icon: 'fab fa-paypal', type: 'radio' },
+            { id: 'bank-transfer', name: 'Bank Transfer', icon: 'fas fa-university', type: 'radio' },
+            { id: 'cash', name: 'Cash', icon: 'fas fa-money-bill', type: 'radio' }
+        ];
+        
+        function openPaymentMethods() {
+            const overlay = document.getElementById('paymentOverlay');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            // Focus on search input
+            setTimeout(() => {
+                document.getElementById('paymentSearchInput').focus();
+            }, 300);
+        }
+        
+        function closePaymentMethods() {
+            const overlay = document.getElementById('paymentOverlay');
+            overlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            
+            // Clear search
+            document.getElementById('paymentSearchInput').value = '';
+            filterPaymentMethods('');
+        }
+        
+        function selectPaymentMethod(methodId) {
+            if (methodId === 'all') {
+                // Toggle "All" checkbox
+                const allCheckbox = document.getElementById('paymentAll');
+                const isChecked = allCheckbox.classList.contains('checked');
+                
+                if (isChecked) {
+                    allCheckbox.classList.remove('checked');
+                    selectedPaymentMethod = '';
+                } else {
+                    allCheckbox.classList.add('checked');
+                    selectedPaymentMethod = 'all';
+                    
+                    // Uncheck all radio buttons
+                    document.querySelectorAll('[id^="payment"]:not(#paymentAll)').forEach(radio => {
+                        radio.classList.remove('checked');
+                    });
+                }
+            } else {
+                // Select specific payment method
+                selectedPaymentMethod = methodId;
+                
+                // Uncheck "All" checkbox
+                document.getElementById('paymentAll').classList.remove('checked');
+                
+                // Uncheck all radio buttons
+                document.querySelectorAll('[id^="payment"]:not(#paymentAll)').forEach(radio => {
+                    radio.classList.remove('checked');
+                });
+                
+                // Check selected radio button
+                const selectedRadio = document.getElementById(`payment${methodId.charAt(0).toUpperCase() + methodId.slice(1).replace(/-([a-z])/g, (g) => g[1].toUpperCase())}`);
+                if (selectedRadio) {
+                    selectedRadio.classList.add('checked');
+                }
+            }
+        }
+        
+        function confirmPaymentMethod() {
+            if (selectedPaymentMethod) {
+                // Update the payment method display in the main interface
+                updatePaymentMethodDisplay(selectedPaymentMethod);
+                
+                // Close the overlay
+                closePaymentMethods();
+                
+                // Show notification
+                showPaymentNotification(`Payment method: ${getPaymentMethodName(selectedPaymentMethod)}`);
+            } else {
+                showPaymentNotification('Please select a payment method');
+            }
+        }
+        
+        function updatePaymentMethodDisplay(methodId) {
+            const methodName = getPaymentMethodName(methodId);
+            const paymentMethodDisplay = document.querySelector('.payment-method-selector .selected-option');
+            if (paymentMethodDisplay) {
+                paymentMethodDisplay.textContent = methodName;
+            }
+        }
+        
+        function getPaymentMethodName(methodId) {
+            const method = paymentMethods.find(m => m.id === methodId);
+            return method ? method.name : methodId;
+        }
+        
+        function filterPaymentMethods(searchTerm) {
+            const paymentOptions = document.querySelectorAll('.payment-option');
+            
+            paymentOptions.forEach(option => {
+                const methodName = option.querySelector('.payment-name').textContent.toLowerCase();
+                const shouldShow = methodName.includes(searchTerm.toLowerCase());
+                option.style.display = shouldShow ? 'flex' : 'none';
+            });
+        }
+        
+        function showPaymentNotification(message) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--bg-card);
+                color: var(--text-primary);
+                padding: 12px 20px;
+                border-radius: 8px;
+                border-left: 4px solid var(--color-buy);
+                z-index: 10000;
+                font-size: 14px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+        
+        // Search functionality
+        document.getElementById('paymentSearchInput').addEventListener('input', function(e) {
+            filterPaymentMethods(e.target.value);
+        });
+        
+        // Close payment overlay when clicking outside
+        document.getElementById('paymentOverlay').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePaymentMethods();
+            }
+        });
+        
+        // Initialize payment methods state
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set default selection
+            selectPaymentMethod('all');
+        });
+
+        // Amount input modal functionality
+        let currentAmount = '';
+        let isKeyboardArabic = false;
+        const minAmount = 1300.000;
+        const maxAmount = 7998113.64;
+        
+        function openAmountModal() {
+            const overlay = document.getElementById('amountOverlay');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            // Focus on amount input
+            setTimeout(() => {
+                document.getElementById('amountInput').focus();
+            }, 300);
+        }
+        
+        function closeAmountModal() {
+            const overlay = document.getElementById('amountOverlay');
+            overlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            
+            // Reset amount
+            resetAmount();
+        }
+        
+        function addToAmount(value) {
+            const amountInput = document.getElementById('amountInput');
+            
+            // Handle decimal point
+            if (value === '.') {
+                if (currentAmount.includes('.')) {
+                    return; // Already has decimal point
+                }
+                if (currentAmount === '') {
+                    currentAmount = '0';
+                }
+            }
+            
+            // Add the value
+            currentAmount += value;
+            
+            // Format the amount with commas
+            const formattedAmount = formatAmount(currentAmount);
+            amountInput.value = formattedAmount;
+            
+            // Update placeholder if empty
+            if (currentAmount === '') {
+                amountInput.placeholder = 'Min 1,300.000';
+            }
+        }
+        
+        function deleteFromAmount() {
+            if (currentAmount.length > 0) {
+                currentAmount = currentAmount.slice(0, -1);
+                const amountInput = document.getElementById('amountInput');
+                
+                if (currentAmount === '') {
+                    amountInput.value = '';
+                    amountInput.placeholder = 'Min 1,300.000';
+                } else {
+                    amountInput.value = formatAmount(currentAmount);
+                }
+            }
+        }
+        
+        function resetAmount() {
+            currentAmount = '';
+            const amountInput = document.getElementById('amountInput');
+            amountInput.value = '';
+            amountInput.placeholder = 'Min 1,300.000';
+        }
+        
+        function confirmAmount() {
+            const amount = parseFloat(currentAmount);
+            
+            if (isNaN(amount) || amount === 0) {
+                showAmountNotification('Please enter a valid amount');
+                return;
+            }
+            
+            if (amount < minAmount) {
+                showAmountNotification(`Minimum amount is ${formatAmount(minAmount.toString())} IQD`);
+                return;
+            }
+            
+            if (amount > maxAmount) {
+                showAmountNotification(`Maximum amount is ${formatAmount(maxAmount.toString())} IQD`);
+                return;
+            }
+            
+            // Update the amount display in the main interface
+            updateAmountDisplay(amount);
+            
+            // Close the modal
+            closeAmountModal();
+            
+            // Show notification
+            showAmountNotification(`Amount set: ${formatAmount(amount.toString())} IQD`);
+        }
+        
+        function formatAmount(amount) {
+            // Remove any existing commas and format with new ones
+            const cleanAmount = amount.replace(/,/g, '');
+            const parts = cleanAmount.split('.');
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            return parts.join('.');
+        }
+        
+        function updateAmountDisplay(amount) {
+            const amountDisplay = document.querySelector('.filter-dropdown[onclick="openAmountModal()"] span');
+            if (amountDisplay) {
+                amountDisplay.textContent = formatAmount(amount.toString());
+            }
+        }
+        
+        function toggleKeyboardLanguage() {
+            isKeyboardArabic = !isKeyboardArabic;
+            const languageBtn = document.querySelector('.keypad-btn.language i');
+            
+            if (isKeyboardArabic) {
+                languageBtn.className = 'fas fa-language';
+                showAmountNotification('Keyboard: Arabic');
+            } else {
+                languageBtn.className = 'fas fa-globe';
+                showAmountNotification('Keyboard: English');
+            }
+        }
+        
+        function showAmountNotification(message) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--bg-card);
+                color: var(--text-primary);
+                padding: 12px 20px;
+                border-radius: 8px;
+                border-left: 4px solid var(--color-buy);
+                z-index: 10000;
+                font-size: 14px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+        
+        // Close amount overlay when clicking outside
+        document.getElementById('amountOverlay').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeAmountModal();
+            }
+        });
+        
+        // Initialize amount modal state
+        document.addEventListener('DOMContentLoaded', function() {
+            // Reset amount on page load
+            resetAmount();
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+

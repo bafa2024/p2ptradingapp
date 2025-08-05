@@ -1,0 +1,951 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IQX Admin - Permissions Management</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Design System Variables */
+        :root {
+            /* Colors */
+            --bg-primary: #0B0E11;
+            --bg-secondary: #1A1D21;
+            --bg-card: #242530;
+            --bg-elevated: #2B2F36;
+            --border-color: #2B2F36;
+            
+            --text-primary: #FFFFFF;
+            --text-secondary: #B7BDC6;
+            --text-muted: #848E9C;
+            
+            --color-buy: #00D395;
+            --color-sell: #F6465D;
+            --color-warning: #FFA500;
+            --color-info: #3861FB;
+            --color-success: #00D395;
+            --color-danger: #F6465D;
+        }
+        
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 280px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        
+        .sidebar-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-buy);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .admin-info {
+            margin-top: 16px;
+            padding: 16px;
+            background: var(--bg-card);
+            border-radius: 12px;
+        }
+        
+        .admin-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--color-buy) 0%, #00B583 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+            margin-bottom: 12px;
+        }
+        
+        .admin-name {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .admin-role {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .nav-menu {
+            padding: 16px 0;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 24px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+        
+        .nav-item:hover {
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+        }
+        
+        .nav-item.active {
+            background: rgba(0, 211, 149, 0.1);
+            color: var(--color-buy);
+            border-left-color: var(--color-buy);
+        }
+        
+        .nav-item i {
+            width: 20px;
+            font-size: 16px;
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            padding: 24px;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+        
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .header-btn {
+            padding: 8px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .header-btn:hover {
+            border-color: var(--color-buy);
+            color: var(--color-buy);
+        }
+        
+        .header-btn.primary {
+            background: var(--color-buy);
+            border-color: var(--color-buy);
+            color: white;
+        }
+        
+        .header-btn.primary:hover {
+            background: #00B583;
+            border-color: #00B583;
+        }
+        
+        /* Content Cards */
+        .content-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        /* Permission Grid */
+        .permission-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+        
+        .permission-card {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+        }
+        
+        .permission-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .permission-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .permission-toggle {
+            position: relative;
+            width: 50px;
+            height: 24px;
+            background: var(--border-color);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .permission-toggle.active {
+            background: var(--color-buy);
+        }
+        
+        .permission-toggle::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        
+        .permission-toggle.active::after {
+            transform: translateX(26px);
+        }
+        
+        .permission-desc {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+        
+        .permission-users {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        /* Admin Users Table */
+        .table-container {
+            background: var(--bg-elevated);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .table {
+            margin: 0;
+            color: var(--text-primary);
+        }
+        
+        .table th {
+            background: var(--bg-card);
+            border: none;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 14px;
+            padding: 16px;
+        }
+        
+        .table td {
+            border: none;
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px;
+            vertical-align: middle;
+        }
+        
+        .table tbody tr:hover {
+            background: var(--bg-card);
+        }
+        
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--color-info) 0%, #2952E3 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: white;
+        }
+        
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        
+        .status-badge.active {
+            background: rgba(0, 211, 149, 0.2);
+            color: var(--color-success);
+        }
+        
+        .status-badge.inactive {
+            background: rgba(246, 70, 93, 0.2);
+            color: var(--color-danger);
+        }
+        
+        .status-badge.pending {
+            background: rgba(255, 165, 0, 0.2);
+            color: var(--color-warning);
+        }
+        
+        .action-btn {
+            padding: 6px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 4px;
+        }
+        
+        .action-btn:hover {
+            border-color: var(--color-buy);
+            color: var(--color-buy);
+        }
+        
+        .action-btn.danger:hover {
+            border-color: var(--color-danger);
+            color: var(--color-danger);
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        
+        .modal-content {
+            background: var(--bg-card);
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 500px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .modal-header {
+            padding: 24px 24px 0;
+            border-bottom: none;
+        }
+        
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .modal-body {
+            padding: 24px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--color-buy);
+        }
+        
+        .modal-footer {
+            padding: 0 24px 24px;
+            border-top: none;
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+        
+        .btn-secondary {
+            background: var(--bg-elevated);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+        
+        .btn-primary {
+            background: var(--color-buy);
+            color: white;
+        }
+        
+        .btn-danger {
+            background: var(--color-danger);
+            color: white;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .permission-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .page-header {
+                flex-direction: column;
+                gap: 16px;
+                align-items: flex-start;
+            }
+            
+            .header-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-cube"></i>
+                <span>IQX Admin</span>
+            </div>
+        </div>
+        
+        <div class="admin-info">
+            <div class="admin-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="admin-name">Admin User</div>
+            <div class="admin-role">Super Administrator</div>
+        </div>
+        
+        <nav class="nav-menu">
+            <a href="index.html" class="nav-item">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="admin-users.html" class="nav-item">
+                <i class="fas fa-users"></i>
+                <span>Users</span>
+            </a>
+            <a href="admin-trades.html" class="nav-item">
+                <i class="fas fa-exchange-alt"></i>
+                <span>Trades</span>
+            </a>
+            <a href="admin-disputes.html" class="nav-item">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>Disputes</span>
+            </a>
+            <a href="admin-wallet.html" class="nav-item">
+                <i class="fas fa-wallet"></i>
+                <span>Wallet</span>
+            </a>
+            <a href="admin-permissions.html" class="nav-item active">
+                <i class="fas fa-shield-alt"></i>
+                <span>Permissions</span>
+            </a>
+            <a href="admin-settings.html" class="nav-item">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+            <a href="admin-support.html" class="nav-item">
+                <i class="fas fa-headset"></i>
+                <span>Support</span>
+            </a>
+            <a href="admin-reports.html" class="nav-item">
+                <i class="fas fa-chart-bar"></i>
+                <span>Reports</span>
+            </a>
+            <a href="../mobile-app/index.html" class="nav-item">
+                <i class="fas fa-mobile-alt"></i>
+                <span>Mobile App</span>
+            </a>
+        </nav>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">Permissions Management</h1>
+                <p style="color: var(--text-muted); margin-top: 4px;">Manage admin login grants and system permissions</p>
+            </div>
+            <div class="header-actions">
+                <button class="header-btn" onclick="addNewAdmin()">
+                    <i class="fas fa-plus"></i>
+                    <span>Add Admin</span>
+                </button>
+                <button class="header-btn primary" onclick="savePermissions()">
+                    <i class="fas fa-save"></i>
+                    <span>Save Changes</span>
+                </button>
+                <button class="header-btn" onclick="logout()" style="background: var(--color-danger); border-color: var(--color-danger);">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- System Permissions -->
+        <div class="content-card">
+            <div class="card-header">
+                <div class="card-title">System Permissions</div>
+                <div style="color: var(--text-muted); font-size: 14px;">Configure global system permissions</div>
+            </div>
+            
+            <div class="permission-grid">
+                <div class="permission-card">
+                    <div class="permission-header">
+                        <div class="permission-title">User Management</div>
+                        <div class="permission-toggle active" onclick="togglePermission(this)"></div>
+                    </div>
+                    <div class="permission-desc">Allow admins to view, edit, and manage user accounts</div>
+                    <div class="permission-users">Granted to: 5 admins</div>
+                </div>
+                
+                <div class="permission-card">
+                    <div class="permission-header">
+                        <div class="permission-title">Trade Management</div>
+                        <div class="permission-toggle active" onclick="togglePermission(this)"></div>
+                    </div>
+                    <div class="permission-desc">Allow admins to monitor and control trading activities</div>
+                    <div class="permission-users">Granted to: 3 admins</div>
+                </div>
+                
+                <div class="permission-card">
+                    <div class="permission-header">
+                        <div class="permission-title">Financial Operations</div>
+                        <div class="permission-toggle" onclick="togglePermission(this)"></div>
+                    </div>
+                    <div class="permission-desc">Allow admins to manage wallets, withdrawals, and fees</div>
+                    <div class="permission-users">Granted to: 2 admins</div>
+                </div>
+                
+                <div class="permission-card">
+                    <div class="permission-header">
+                        <div class="permission-title">System Settings</div>
+                        <div class="permission-toggle active" onclick="togglePermission(this)"></div>
+                    </div>
+                    <div class="permission-desc">Allow admins to modify platform configuration</div>
+                    <div class="permission-users">Granted to: 1 admin</div>
+                </div>
+                
+                <div class="permission-card">
+                    <div class="permission-header">
+                        <div class="permission-title">Support Management</div>
+                        <div class="permission-toggle active" onclick="togglePermission(this)"></div>
+                    </div>
+                    <div class="permission-desc">Allow admins to handle customer support tickets</div>
+                    <div class="permission-users">Granted to: 4 admins</div>
+                </div>
+                
+                <div class="permission-card">
+                    <div class="permission-header">
+                        <div class="permission-title">Reports & Analytics</div>
+                        <div class="permission-toggle active" onclick="togglePermission(this)"></div>
+                    </div>
+                    <div class="permission-desc">Allow admins to access detailed reports and analytics</div>
+                    <div class="permission-users">Granted to: 3 admins</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Admin Users -->
+        <div class="content-card">
+            <div class="card-header">
+                <div class="card-title">Admin Users</div>
+                <div style="color: var(--text-muted); font-size: 14px;">Manage admin accounts and their permissions</div>
+            </div>
+            
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Admin</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Last Login</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <div class="user-avatar">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <div>
+                                        <div style="font-weight: 600;">John Admin</div>
+                                        <div style="font-size: 12px; color: var(--text-muted);">Super Admin</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>john.admin@IQX.com</td>
+                            <td>Super Administrator</td>
+                            <td><span class="status-badge active">Active</span></td>
+                            <td>2 hours ago</td>
+                            <td>
+                                <button class="action-btn" onclick="editAdmin(1)">Edit</button>
+                                <button class="action-btn danger" onclick="revokeAccess(1)">Revoke</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <div class="user-avatar">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <div>
+                                        <div style="font-weight: 600;">Sarah Manager</div>
+                                        <div style="font-size: 12px; color: var(--text-muted);">Support Manager</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>sarah.manager@IQX.com</td>
+                            <td>Support Manager</td>
+                            <td><span class="status-badge active">Active</span></td>
+                            <td>1 day ago</td>
+                            <td>
+                                <button class="action-btn" onclick="editAdmin(2)">Edit</button>
+                                <button class="action-btn danger" onclick="revokeAccess(2)">Revoke</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <div class="user-avatar">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <div>
+                                        <div style="font-weight: 600;">Mike Finance</div>
+                                        <div style="font-size: 12px; color: var(--text-muted);">Finance Admin</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>mike.finance@IQX.com</td>
+                            <td>Finance Administrator</td>
+                            <td><span class="status-badge inactive">Inactive</span></td>
+                            <td>1 week ago</td>
+                            <td>
+                                <button class="action-btn" onclick="editAdmin(3)">Edit</button>
+                                <button class="action-btn danger" onclick="revokeAccess(3)">Revoke</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <div class="user-avatar">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <div>
+                                        <div style="font-weight: 600;">Lisa Support</div>
+                                        <div style="font-size: 12px; color: var(--text-muted);">Support Agent</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>lisa.support@IQX.com</td>
+                            <td>Support Agent</td>
+                            <td><span class="status-badge active">Active</span></td>
+                            <td>30 minutes ago</td>
+                            <td>
+                                <button class="action-btn" onclick="editAdmin(4)">Edit</button>
+                                <button class="action-btn danger" onclick="revokeAccess(4)">Revoke</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add/Edit Admin Modal -->
+    <div id="adminModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Add New Admin</h5>
+            </div>
+            <div class="modal-body">
+                <form id="adminForm">
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="adminName" placeholder="Enter full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="adminEmail" placeholder="Enter email address" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Role</label>
+                        <select class="form-control" id="adminRole" required>
+                            <option value="">Select role</option>
+                            <option value="super_admin">Super Administrator</option>
+                            <option value="support_manager">Support Manager</option>
+                            <option value="finance_admin">Finance Administrator</option>
+                            <option value="support_agent">Support Agent</option>
+                            <option value="moderator">Moderator</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Permissions</label>
+                        <div style="margin-top: 8px;">
+                            <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                                <input type="checkbox" checked> User Management
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                                <input type="checkbox" checked> Trade Management
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                                <input type="checkbox"> Financial Operations
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                                <input type="checkbox" checked> Support Management
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                                <input type="checkbox" checked> Reports & Analytics
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="saveAdmin()">Save Admin</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Check authentication
+        function checkAuth() {
+            const isAuthenticated = sessionStorage.getItem('adminAuthenticated');
+            if (!isAuthenticated) {
+                window.location.href = '../mobile-app/index.html';
+            }
+        }
+        
+        // Logout function
+        function logout() {
+            sessionStorage.removeItem('adminAuthenticated');
+            window.location.href = '../mobile-app/index.html';
+        }
+        
+        // Toggle permission
+        function togglePermission(element) {
+            element.classList.toggle('active');
+        }
+        
+        // Save permissions
+        function savePermissions() {
+            showNotification('Permissions saved successfully');
+        }
+        
+        // Add new admin
+        function addNewAdmin() {
+            document.getElementById('modalTitle').textContent = 'Add New Admin';
+            document.getElementById('adminForm').reset();
+            document.getElementById('adminModal').style.display = 'block';
+        }
+        
+        // Edit admin
+        function editAdmin(id) {
+            document.getElementById('modalTitle').textContent = 'Edit Admin';
+            // Populate form with admin data (simulated)
+            document.getElementById('adminName').value = 'Admin Name';
+            document.getElementById('adminEmail').value = 'admin@example.com';
+            document.getElementById('adminRole').value = 'support_manager';
+            document.getElementById('adminModal').style.display = 'block';
+        }
+        
+        // Revoke access
+        function revokeAccess(id) {
+            if (confirm('Are you sure you want to revoke access for this admin?')) {
+                showNotification('Access revoked successfully');
+            }
+        }
+        
+        // Save admin
+        function saveAdmin() {
+            const name = document.getElementById('adminName').value;
+            const email = document.getElementById('adminEmail').value;
+            const role = document.getElementById('adminRole').value;
+            
+            if (!name || !email || !role) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            showNotification('Admin saved successfully');
+            closeModal();
+        }
+        
+        // Close modal
+        function closeModal() {
+            document.getElementById('adminModal').style.display = 'none';
+        }
+        
+        // Show notification
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--color-buy);
+                color: white;
+                padding: 12px 24px;
+                border-radius: 8px;
+                font-weight: 600;
+                z-index: 1000;
+                animation: slideIn 0.3s ease-out;
+            `;
+            notification.textContent = message;
+            
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideIn {
+                    from {
+                        transform: translateX(100%);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+                style.remove();
+            }, 3000);
+        }
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('adminModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
+        });
+    </script>
+</body>
+</html> 
+
+
+
+
+
+
+
+
+

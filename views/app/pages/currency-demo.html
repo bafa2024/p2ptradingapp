@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Switching Demo - IQX</title>
+    
+    <!-- Font System -->
+    <link rel="stylesheet" href="css/fonts.css">
+    
+    <!-- Language Support -->
+    <link rel="stylesheet" href="css/rtl.css">
+    <script src="js/language.js"></script>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Design System Variables */
+        :root {
+            --color-primary: #6366f1;
+            --color-secondary: #8b5cf6;
+            --color-success: #10b981;
+            --color-warning: #f59e0b;
+            --color-danger: #ef4444;
+            --color-buy: #10b981;
+            --color-sell: #ef4444;
+            
+            --bg-primary: #0f0f23;
+            --bg-secondary: #1a1a2e;
+            --bg-card: #16213e;
+            --bg-elevated: #0f3460;
+            
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --text-success: #10b981;
+            --text-warning: #f59e0b;
+            --text-danger: #ef4444;
+            
+            --border-color: #27272a;
+            --border-light: #3f3f46;
+            
+            --radius-sm: 6px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+        }
+        
+        body {
+            font-family: var(--font-body-en), -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .demo-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .demo-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .demo-title {
+            font-family: var(--font-heading-en);
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .demo-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        
+        .controls-section {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .controls-title {
+            font-family: var(--font-heading-en);
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+        
+        .language-switcher {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .lang-btn {
+            padding: 10px 20px;
+            border: 2px solid var(--border-color);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: var(--font-body-en);
+        }
+        
+        .lang-btn.active {
+            background: var(--color-primary);
+            border-color: var(--color-primary);
+        }
+        
+        .lang-btn:hover {
+            background: var(--color-primary);
+            border-color: var(--color-primary);
+        }
+        
+        .demo-section {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-family: var(--font-heading-en);
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            color: var(--color-primary);
+        }
+        
+        .currency-display {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            margin-bottom: 10px;
+        }
+        
+        .currency-label {
+            font-weight: 500;
+        }
+        
+        .currency-value {
+            font-family: var(--font-numbers-en);
+            font-weight: 600;
+            color: var(--color-success);
+        }
+        
+        .balance-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .balance-card {
+            background: var(--bg-secondary);
+            padding: 15px;
+            border-radius: var(--radius-md);
+            text-align: center;
+        }
+        
+        .balance-amount {
+            font-family: var(--font-numbers-en);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-success);
+            margin-bottom: 5px;
+        }
+        
+        .balance-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .price-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .price-card {
+            background: var(--bg-secondary);
+            padding: 15px;
+            border-radius: var(--radius-md);
+            text-align: center;
+        }
+        
+        .price-amount {
+            font-family: var(--font-numbers-en);
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .price-pair {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--color-success);
+            margin-right: 8px;
+        }
+        
+        .demo-note {
+            background: var(--bg-elevated);
+            border-left: 4px solid var(--color-primary);
+            padding: 15px;
+            border-radius: var(--radius-md);
+            margin-top: 20px;
+        }
+        
+        .demo-note h4 {
+            margin: 0 0 10px 0;
+            color: var(--color-primary);
+        }
+        
+        .demo-note p {
+            margin: 0;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        /* RTL Adjustments */
+        [dir="rtl"] .demo-title {
+            font-family: var(--font-heading-ar);
+        }
+        
+        [dir="rtl"] .controls-title,
+        [dir="rtl"] .section-title {
+            font-family: var(--font-heading-ar);
+        }
+        
+        [dir="rtl"] .lang-btn {
+            font-family: var(--font-body-ar);
+        }
+        
+        [dir="rtl"] .currency-value,
+        [dir="rtl"] .balance-amount,
+        [dir="rtl"] .price-amount {
+            font-family: var(--font-numbers-ar);
+        }
+        
+        [dir="rtl"] .currency-label,
+        [dir="rtl"] .balance-label,
+        [dir="rtl"] .price-pair {
+            font-family: var(--font-body-ar);
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <div class="demo-header">
+            <h1 class="demo-title" data-i18n="currency_demo_title">Currency Switching Demo</h1>
+            <p class="demo-subtitle" data-i18n="currency_demo_subtitle">Switch between English and Arabic to see currency changes</p>
+        </div>
+        
+        <div class="controls-section">
+            <h3 class="controls-title" data-i18n="language_controls">Language Controls</h3>
+            <div class="language-switcher">
+                <button class="lang-btn active" onclick="switchToEnglish()">
+                    <i class="fas fa-globe"></i> English
+                </button>
+                <button class="lang-btn" onclick="switchToArabic()">
+                    <i class="fas fa-globe"></i> العربية
+                </button>
+            </div>
+            <p data-i18n="currency_note">Note: Currency automatically changes when language is switched</p>
+        </div>
+        
+        <div class="demo-section">
+            <h3 class="section-title" data-i18n="current_currency">Current Currency Display</h3>
+            <div class="currency-display">
+                <span class="currency-label" data-i18n="selected_currency">Selected Currency:</span>
+                <span class="currency-value" id="current-currency-display">USD</span>
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h3 class="section-title" data-i18n="balance_display">Balance Display</h3>
+            <div class="balance-section">
+                <div class="balance-card">
+                    <div class="balance-amount" id="balance-usd">$1,250.00</div>
+                    <div class="balance-label" data-i18n="available_balance">Available Balance</div>
+                </div>
+                <div class="balance-card">
+                    <div class="balance-amount" id="balance-iqd">1,850,000 IQD</div>
+                    <div class="balance-label" data-i18n="frozen_balance">Frozen Balance</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h3 class="section-title" data-i18n="market_prices">Market Prices</h3>
+            <div class="price-section">
+                <div class="price-card">
+                    <div class="price-amount" id="usdt-price">1,480 IQD</div>
+                    <div class="price-pair">USDT/IQD</div>
+                </div>
+                <div class="price-card">
+                    <div class="price-amount" id="trx-price">0.085 USD</div>
+                    <div class="price-pair">TRX/USD</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h3 class="section-title" data-i18n="transaction_example">Transaction Example</h3>
+            <div class="currency-display">
+                <span class="currency-label" data-i18n="transaction_amount">Transaction Amount:</span>
+                <span class="currency-value" id="transaction-amount">$500.00</span>
+            </div>
+            <div class="currency-display">
+                <span class="currency-label" data-i18n="transaction_fee">Transaction Fee:</span>
+                <span class="currency-value" id="transaction-fee">$2.50</span>
+            </div>
+        </div>
+        
+        <div class="demo-note">
+            <h4 data-i18n="how_it_works">How It Works</h4>
+            <p data-i18n="demo_explanation">
+                When you switch from English to Arabic, the currency automatically changes from USD to IQD (Iraqi Dinar). 
+                This includes all balance displays, prices, and transaction amounts. The change is persistent and saved to localStorage.
+            </p>
+        </div>
+    </div>
+    
+    <script>
+        // Initialize language manager
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.LanguageManager) {
+                window.languageManager = new LanguageManager();
+            }
+        });
+        
+        function switchToEnglish() {
+            // Update button states
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Set language to English
+            if (window.languageManager) {
+                window.languageManager.setLanguage('en');
+            }
+            
+            // Update currency displays
+            updateCurrencyDisplays('USD');
+        }
+        
+        function switchToArabic() {
+            // Update button states
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Set language to Arabic
+            if (window.languageManager) {
+                window.languageManager.setLanguage('ar');
+            }
+            
+            // Update currency displays
+            updateCurrencyDisplays('IQD');
+        }
+        
+        function updateCurrencyDisplays(currency) {
+            // Update current currency display
+            document.getElementById('current-currency-display').textContent = currency;
+            
+            if (currency === 'USD') {
+                // Update balance displays
+                document.getElementById('balance-usd').textContent = '$1,250.00';
+                document.getElementById('balance-iqd').textContent = '$850.00';
+                
+                // Update prices
+                document.getElementById('usdt-price').textContent = '$1.00';
+                document.getElementById('trx-price').textContent = '$0.085';
+                
+                // Update transaction amounts
+                document.getElementById('transaction-amount').textContent = '$500.00';
+                document.getElementById('transaction-fee').textContent = '$2.50';
+            } else {
+                // Update balance displays
+                document.getElementById('balance-usd').textContent = '1,850,000 IQD';
+                document.getElementById('balance-iqd').textContent = '1,258,000 IQD';
+                
+                // Update prices
+                document.getElementById('usdt-price').textContent = '1,480 IQD';
+                document.getElementById('trx-price').textContent = '0.126 IQD';
+                
+                // Update transaction amounts
+                document.getElementById('transaction-amount').textContent = '740,000 IQD';
+                document.getElementById('transaction-fee').textContent = '3,700 IQD';
+            }
+        }
+        
+        // Add translations for demo page
+        if (window.languageManager) {
+            // Add English translations
+            window.languageManager.translations.en.currency_demo_title = 'Currency Switching Demo';
+            window.languageManager.translations.en.currency_demo_subtitle = 'Switch between English and Arabic to see currency changes';
+            window.languageManager.translations.en.language_controls = 'Language Controls';
+            window.languageManager.translations.en.currency_note = 'Note: Currency automatically changes when language is switched';
+            window.languageManager.translations.en.current_currency = 'Current Currency Display';
+            window.languageManager.translations.en.selected_currency = 'Selected Currency:';
+            window.languageManager.translations.en.balance_display = 'Balance Display';
+            window.languageManager.translations.en.available_balance = 'Available Balance';
+            window.languageManager.translations.en.frozen_balance = 'Frozen Balance';
+            window.languageManager.translations.en.market_prices = 'Market Prices';
+            window.languageManager.translations.en.transaction_example = 'Transaction Example';
+            window.languageManager.translations.en.transaction_amount = 'Transaction Amount:';
+            window.languageManager.translations.en.transaction_fee = 'Transaction Fee:';
+            window.languageManager.translations.en.how_it_works = 'How It Works';
+            window.languageManager.translations.en.demo_explanation = 'When you switch from English to Arabic, the currency automatically changes from USD to IQD (Iraqi Dinar). This includes all balance displays, prices, and transaction amounts. The change is persistent and saved to localStorage.';
+            
+            // Add Arabic translations
+            window.languageManager.translations.ar.currency_demo_title = 'تجربة تبديل العملة';
+            window.languageManager.translations.ar.currency_demo_subtitle = 'بدّل بين الإنجليزية والعربية لرؤية تغييرات العملة';
+            window.languageManager.translations.ar.language_controls = 'أدوات التحكم باللغة';
+            window.languageManager.translations.ar.currency_note = 'ملاحظة: العملة تتغير تلقائياً عند تغيير اللغة';
+            window.languageManager.translations.ar.current_currency = 'عرض العملة الحالية';
+            window.languageManager.translations.ar.selected_currency = 'العملة المختارة:';
+            window.languageManager.translations.ar.balance_display = 'عرض الرصيد';
+            window.languageManager.translations.ar.available_balance = 'الرصيد المتاح';
+            window.languageManager.translations.ar.frozen_balance = 'الرصيد المجمد';
+            window.languageManager.translations.ar.market_prices = 'أسعار السوق';
+            window.languageManager.translations.ar.transaction_example = 'مثال على المعاملة';
+            window.languageManager.translations.ar.transaction_amount = 'مبلغ المعاملة:';
+            window.languageManager.translations.ar.transaction_fee = 'رسوم المعاملة:';
+            window.languageManager.translations.ar.how_it_works = 'كيف يعمل';
+            window.languageManager.translations.ar.demo_explanation = 'عندما تنتقل من الإنجليزية إلى العربية، تتغير العملة تلقائياً من الدولار الأمريكي إلى الدينار العراقي. وهذا يشمل جميع عروض الأرصدة والأسعار ومبالغ المعاملات. التغيير دائم ويتم حفظه في localStorage.';
+        }
+    </script>
+</body>
+</html> 

@@ -1,0 +1,725 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>IQX - User Center</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Font System -->
+    <link rel="stylesheet" href="css/fonts.css">
+    
+    <style>
+        /* Design System Variables */
+        :root {
+            /* Colors */
+            --bg-primary: #0B0E11;
+            --bg-secondary: #1A1D21;
+            --bg-card: #242530;
+            --bg-elevated: #2B2F36;
+            --border-color: #2B2F36;
+            
+            --text-primary: #FFFFFF;
+            --text-secondary: #B7BDC6;
+            --text-muted: #848E9C;
+            
+            --color-buy: #3B82F6;
+            --color-sell: #F6465D;
+            --color-warning: #FFA500;
+            --color-info: #3861FB;
+            --color-success: #10B981;
+            --color-danger: #EF4444;
+        }
+        
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
+        body {
+            font-family: var(--font-body-en), -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
+        
+        /* Status Bar */
+        .status-bar {
+            background: var(--bg-primary);
+            padding: 8px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        /* Header */
+        .app-header {
+            background: var(--bg-secondary);
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .back-btn {
+            color: var(--text-primary);
+            font-size: 20px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        
+        .back-btn:hover {
+            color: var(--color-buy);
+        }
+        
+        .header-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .header-action {
+            color: var(--text-secondary);
+            font-size: 20px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        
+        .header-action:hover {
+            color: var(--color-buy);
+        }
+        
+        /* Profile Section */
+        .profile-section {
+            padding: 24px 16px;
+            text-align: center;
+        }
+        
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--color-buy) 0%, #1D4ED8 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 32px;
+            color: white;
+            font-weight: 600;
+            position: relative;
+        }
+        
+        .profile-avatar::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            background: linear-gradient(135deg, var(--color-success) 0%, var(--color-buy) 100%);
+            border-radius: 50%;
+            z-index: -1;
+        }
+        
+        .profile-name {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .profile-email {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+        
+        .edit-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .edit-btn:hover {
+            border-color: var(--color-buy);
+        }
+        
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            background: var(--bg-secondary);
+            margin: 0 16px 24px;
+            border-radius: 8px;
+            padding: 4px;
+        }
+        
+        .nav-tab {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: none;
+            color: var(--text-muted);
+            font-weight: 500;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+        
+        .nav-tab.active {
+            background: var(--color-buy);
+            color: white;
+        }
+        
+        /* Profile Details */
+        .profile-details {
+            padding: 0 16px;
+        }
+        
+        .detail-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+        
+        .detail-item:hover {
+            border-color: var(--color-buy);
+        }
+        
+        .detail-left {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        
+        .detail-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        .detail-value {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        .detail-value.verified {
+            color: var(--color-success);
+        }
+        
+        .detail-value.danger {
+            color: var(--color-danger);
+        }
+        
+        .detail-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .detail-icon {
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+        
+        .copy-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 16px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        
+        .copy-btn:hover {
+            color: var(--color-buy);
+        }
+        
+        .arrow-icon {
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 8px 0;
+            display: flex;
+            justify-content: space-around;
+            z-index: 1000;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 12px;
+            transition: color 0.2s ease;
+        }
+        
+        .nav-item.active {
+            color: var(--color-buy);
+        }
+        
+        .nav-icon {
+            font-size: 20px;
+        }
+        
+        .qr-transfer-btn {
+            background: linear-gradient(135deg, var(--color-info), #5B7BF7);
+            color: white;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            margin: -10px 0;
+            box-shadow: 0 4px 12px rgba(56, 97, 251, 0.3);
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .qr-transfer-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(56, 97, 251, 0.4);
+        }
+        
+        /* Responsive */
+        @media (max-width: 480px) {
+            .nav-tabs {
+                margin: 0 12px 20px;
+            }
+            
+            .nav-tab {
+                font-size: 12px;
+                padding: 10px;
+            }
+            
+            .profile-section {
+                padding: 16px 12px;
+            }
+            
+            .profile-avatar {
+                width: 60px;
+                height: 60px;
+                font-size: 24px;
+                margin-bottom: 12px;
+            }
+            
+            .profile-name {
+                font-size: 18px;
+            }
+            
+            .profile-email {
+            font-size: 13px;
+            }
+            
+            .edit-btn {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+            
+            .profile-details {
+                padding: 0 12px;
+            }
+            
+            .detail-item {
+                padding: 12px;
+                margin-bottom: 8px;
+                border-radius: 8px;
+            }
+            
+            .detail-label {
+                font-size: 12px;
+            }
+            
+            .detail-value {
+                font-size: 14px;
+            }
+            
+            .detail-icon {
+                font-size: 14px;
+            }
+            
+            .arrow-icon {
+                font-size: 14px;
+            }
+            
+            .copy-btn {
+                font-size: 14px;
+            }
+            
+            .bottom-nav {
+                padding: 6px 0;
+            }
+            
+            .nav-item {
+                font-size: 10px;
+                gap: 2px;
+            }
+            
+            .nav-icon {
+            font-size: 18px;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            .nav-tabs {
+                margin: 0 8px 16px;
+            }
+            
+            .nav-tab {
+                font-size: 11px;
+                padding: 8px;
+            }
+            
+            .profile-section {
+                padding: 12px 8px;
+            }
+            
+            .profile-avatar {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+                margin-bottom: 10px;
+            }
+            
+            .profile-name {
+                font-size: 16px;
+            }
+            
+            .profile-email {
+                font-size: 12px;
+            }
+            
+            .edit-btn {
+                padding: 5px 10px;
+                font-size: 11px;
+            }
+            
+            .profile-details {
+                padding: 0 8px;
+            }
+            
+            .detail-item {
+                padding: 10px;
+                margin-bottom: 6px;
+            }
+            
+            .detail-label {
+            font-size: 11px;
+            }
+            
+            .detail-value {
+                font-size: 13px;
+            }
+            
+            .detail-icon {
+                font-size: 12px;
+            }
+            
+            .arrow-icon {
+                font-size: 12px;
+            }
+            
+            .copy-btn {
+                font-size: 12px;
+            }
+            
+            .nav-item {
+                font-size: 9px;
+            }
+            
+            .nav-icon {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+   
+
+        <!-- Header -->
+    <div class="app-header">
+            
+
+    <!-- Profile Section -->
+    <div class="profile-section">
+        <div class="profile-avatar">W</div>
+        <h2 class="profile-name">Walid gs</h2>
+        <p class="profile-email">wal***@gmail.com</p>
+        <button class="edit-btn">
+            <i class="fas fa-edit"></i>
+            Edit
+        </button>
+        </div>
+        
+    <!-- Navigation Tabs -->
+    <div class="nav-tabs">
+        <button class="nav-tab active">Profile</button>
+        <button class="nav-tab">Security</button>
+        <button class="nav-tab">Preferences</button>
+        <button class="nav-tab">Notifications</button>
+        </div>
+        
+    <!-- Profile Details -->
+    <div class="profile-details">
+        <!-- Identity Verification -->
+        <div class="detail-item">
+            <div class="detail-left">
+                <div class="detail-label">Identity verification</div>
+                <div class="detail-value verified">Verified</div>
+                    </div>
+            <div class="detail-right">
+                <i class="arrow-icon fas fa-chevron-right"></i>
+                </div>
+            </div>
+            
+        <!-- Country/Region -->
+        <div class="detail-item">
+            <div class="detail-left">
+                <div class="detail-label">Country/Region</div>
+                <div class="detail-value">Iraq</div>
+                        </div>
+            <div class="detail-right">
+                <i class="arrow-icon fas fa-chevron-right"></i>
+                    </div>
+                </div>
+                
+        <!-- Trading Fee Tier -->
+        <div class="detail-item">
+            <div class="detail-left">
+                <div class="detail-label">Trading fee tier</div>
+                <div class="detail-value">Regular user</div>
+                        </div>
+            <div class="detail-right">
+                <i class="arrow-icon fas fa-chevron-right"></i>
+                    </div>
+                </div>
+                
+        <!-- UID -->
+        <div class="detail-item">
+            <div class="detail-left">
+                <div class="detail-label">UID</div>
+                <div class="detail-value">426827289498965608</div>
+                        </div>
+            <div class="detail-right">
+                <button class="copy-btn">
+                    <i class="fas fa-copy"></i>
+                </button>
+                    </div>
+                </div>
+                
+        <!-- Connected Accounts -->
+        <div class="detail-item">
+            <div class="detail-left">
+                <div class="detail-label">Connected accounts</div>
+                        </div>
+            <div class="detail-right">
+                <i class="arrow-icon fas fa-chevron-right"></i>
+                </div>
+            </div>
+            
+        <!-- Wallet Connect -->
+        <div class="detail-item">
+            <div class="detail-left">
+                <div class="detail-label">Wallet Connect</div>
+                        </div>
+            <div class="detail-right">
+                <i class="arrow-icon fas fa-chevron-right"></i>
+                    </div>
+                </div>
+                
+        <!-- Switch Accounts -->
+        <div class="detail-item">
+            <div class="detail-left">
+                <div class="detail-label">Switch accounts</div>
+                        </div>
+            <div class="detail-right">
+                <i class="arrow-icon fas fa-chevron-right"></i>
+                    </div>
+                </div>
+                
+        <!-- Log Out -->
+        <div class="detail-item">
+            <div class="detail-left">
+                <div class="detail-label">Log out</div>
+                        </div>
+            <div class="detail-right">
+                <div class="detail-value danger">Log out</div>
+                <i class="arrow-icon fas fa-chevron-right"></i>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+            <a href="markets.html" class="nav-item">
+            <i class="nav-icon fas fa-exchange-alt"></i>
+            <span>P2P</span>
+            </a>
+            <a href="wallet.html" class="nav-item">
+            <i class="nav-icon fas fa-wallet"></i>
+                <span>Wallet</span>
+            </a>
+        <a href="qr-scanner.html" class="nav-item qr-transfer-btn">
+            <i class="nav-icon fas fa-qrcode"></i>
+            <span>Transfer</span>
+        </a>
+        <a href="myqr.html" class="nav-item">
+            <i class="nav-icon fas fa-qrcode"></i>
+            <span>My QR</span>
+        </a>
+        <a href="profile.html" class="nav-item active">
+            <i class="nav-icon fas fa-user"></i>
+            <span>Profile</span>
+        </a>
+        </div>
+    
+    <script>
+        // Tab switching
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Bottom navigation
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                
+                // If it's the current page (profile.html), prevent navigation and just update active state
+                if (href === 'profile.html') {
+                    e.preventDefault();
+                    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                }
+                // For other pages, allow navigation but update active state if needed
+                else {
+                    // Remove active class from current page
+                    document.querySelectorAll('.nav-item').forEach(i => {
+                        if (i.getAttribute('href') === 'profile.html') {
+                            i.classList.remove('active');
+                        }
+                    });
+                }
+            });
+        });
+
+        // Copy UID
+        document.querySelector('.copy-btn').addEventListener('click', function() {
+            const uid = '426827289498965608';
+            navigator.clipboard.writeText(uid).then(() => {
+                // Show success feedback
+                this.innerHTML = '<i class="fas fa-check"></i>';
+                setTimeout(() => {
+                    this.innerHTML = '<i class="fas fa-copy"></i>';
+                }, 2000);
+            });
+        });
+
+        // Detail item click handlers
+        document.querySelectorAll('.detail-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const label = this.querySelector('.detail-label').textContent;
+                
+                // Handle different actions based on label
+                switch(label) {
+                    case 'Identity verification':
+                        // Navigate to verification page
+                        console.log('Navigate to verification page');
+                        break;
+                    case 'Country/Region':
+                        // Show country selector
+                        console.log('Show country selector');
+                        break;
+                    case 'Trading fee tier':
+                        // Show fee tier information
+                        console.log('Show fee tier info');
+                        break;
+                    case 'Connected accounts':
+                        // Navigate to connected accounts
+                        console.log('Navigate to connected accounts');
+                        break;
+                    case 'Wallet Connect':
+                        // Show wallet connect options
+                        console.log('Show wallet connect options');
+                        break;
+                    case 'Switch accounts':
+                        // Show account switcher
+                        console.log('Show account switcher');
+                        break;
+                    case 'Log out':
+                        // Confirm logout
+                        if (confirm('Are you sure you want to log out?')) {
+                            console.log('Logging out...');
+                            // Redirect to login page
+                            window.location.href = 'index.html';
+                        }
+                        break;
+                }
+            });
+        });
+
+        // Edit profile button
+        document.querySelector('.edit-btn').addEventListener('click', function() {
+            console.log('Edit profile clicked');
+            // Navigate to edit profile page or show edit modal
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+

@@ -1,0 +1,30 @@
+{
+  "name": "iqx-p2p-trading-platform",
+  "version": "1.0.0",
+  "description": "IQX P2P Trading Platform with dynamic routing",
+  "main": "services/server.js",
+  "scripts": {
+    "start": "node services/server.js",
+    "dev": "nodemon services/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "p2p",
+    "trading",
+    "cryptocurrency",
+    "express",
+    "nodejs"
+  ],
+  "author": "IQX Team",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  }
+} 

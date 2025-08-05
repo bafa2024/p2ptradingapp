@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title data-i18n="iqx">IQX - Language Demo</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Language Support -->
+    <link rel="stylesheet" href="css/rtl.css">
+    <script src="js/language.js"></script>
+    
+    <style>
+        /* Design System Variables */
+        :root {
+            /* Colors */
+            --bg-primary: #0B0E11;
+            --bg-secondary: #1A1D21;
+            --bg-card: #242530;
+            --bg-elevated: #2B2F36;
+            --border-color: #2B2F36;
+            
+            --text-primary: #FFFFFF;
+            --text-secondary: #B7BDC6;
+            --text-muted: #848E9C;
+            
+            --color-buy: #3B82F6;
+            --color-sell: #F6465D;
+            --color-warning: #FFA500;
+            --color-info: #3861FB;
+            --color-success: #10B981;
+            
+            /* Spacing */
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+        }
+        
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        /* Header */
+        .demo-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .demo-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--color-buy);
+        }
+        
+        .demo-subtitle {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+        
+        /* Language Switcher */
+        .language-switcher {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+        
+        .language-btn {
+            background: var(--bg-elevated);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 12px 24px;
+            color: var(--text-secondary);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0 8px;
+        }
+        
+        .language-btn:hover {
+            background: var(--color-buy);
+            color: white;
+            border-color: var(--color-buy);
+            transform: translateY(-2px);
+        }
+        
+        .language-btn.active {
+            background: var(--color-buy);
+            color: white;
+            border-color: var(--color-buy);
+        }
+        
+        .language-icon {
+            font-size: 18px;
+        }
+        
+        /* Demo Sections */
+        .demo-section {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+        
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .demo-card {
+            background: var(--bg-elevated);
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+        
+        .card-content {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        /* Navigation Demo */
+        .nav-demo {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 16px;
+        }
+        
+        .nav-tab {
+            color: var(--text-muted);
+            font-weight: 500;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            border: none;
+            background: none;
+            padding: 0;
+        }
+        
+        .nav-tab.active {
+            color: var(--text-primary);
+        }
+        
+        /* Form Demo */
+        .form-demo {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        .form-input {
+            width: 100%;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--color-buy);
+        }
+        
+        .btn {
+            background: var(--color-buy);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .btn:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+        }
+        
+        /* Status Indicators */
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+        }
+        
+        .status-item {
+            background: var(--bg-elevated);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+        
+        .status-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        
+        .status-text {
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .status-success .status-icon {
+            color: var(--color-success);
+        }
+        
+        .status-warning .status-icon {
+            color: var(--color-warning);
+        }
+        
+        .status-error .status-icon {
+            color: var(--color-sell);
+        }
+        
+        .status-info .status-icon {
+            color: var(--color-info);
+        }
+        
+        /* Responsive */
+        @media (max-width: 480px) {
+            .demo-title {
+                font-size: 24px;
+            }
+            
+            .demo-subtitle {
+                font-size: 14px;
+            }
+            
+            .language-btn {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+            
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .status-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="demo-header">
+        <h1 class="demo-title" data-i18n="iqx">IQX</h1>
+        <p class="demo-subtitle" data-i18n="p2p_trading">P2P Trading Platform - Language Demo</p>
+        
+        <!-- Language Switcher -->
+        <div class="language-switcher">
+            <button class="language-btn active" onclick="setLanguage('en')">
+                <i class="language-icon fas fa-flag"></i>
+                <span data-i18n="english">English</span>
+            </button>
+            <button class="language-btn" onclick="setLanguage('ar')">
+                <i class="language-icon fas fa-flag"></i>
+                <span data-i18n="arabic">العربية</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Navigation Demo -->
+    <div class="demo-section">
+        <h2 class="section-title" data-i18n="navigation">Navigation</h2>
+        <div class="nav-demo">
+            <div class="nav-tabs">
+                <button class="nav-tab active" data-i18n="nav_p2p">P2P</button>
+                <button class="nav-tab" data-i18n="nav_wallet">Wallet</button>
+                <button class="nav-tab" data-i18n="nav_profile">Profile</button>
+            </div>
+            <p data-i18n="navigation_description">This demonstrates how navigation elements adapt to different languages and RTL layout.</p>
+        </div>
+    </div>
+
+    <!-- Trading Demo -->
+    <div class="demo-section">
+        <h2 class="section-title" data-i18n="trading_features">Trading Features</h2>
+        <div class="demo-grid">
+            <div class="demo-card">
+                <h3 class="card-title" data-i18n="buy">Buy</h3>
+                <p class="card-content" data-i18n="buy_description">Purchase cryptocurrencies with local payment methods.</p>
+            </div>
+            <div class="demo-card">
+                <h3 class="card-title" data-i18n="sell">Sell</h3>
+                <p class="card-content" data-i18n="sell_description">Sell your cryptocurrencies for local currency.</p>
+            </div>
+            <div class="demo-card">
+                <h3 class="card-title" data-i18n="wallet">Wallet</h3>
+                <p class="card-content" data-i18n="wallet_description">Secure digital wallet for your assets.</p>
+            </div>
+            <div class="demo-card">
+                <h3 class="card-title" data-i18n="transfer">Transfer</h3>
+                <p class="card-content" data-i18n="transfer_description">Quick and secure transfers between users.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Form Demo -->
+    <div class="demo-section">
+        <h2 class="section-title" data-i18n="forms">Forms & Inputs</h2>
+        <div class="form-demo">
+            <div class="form-group">
+                <label class="form-label" data-i18n="email">Email</label>
+                <input type="email" class="form-input" data-i18n-placeholder="email_placeholder" placeholder="Enter your email">
+            </div>
+            <div class="form-group">
+                <label class="form-label" data-i18n="password">Password</label>
+                <input type="password" class="form-input" data-i18n-placeholder="password_placeholder" placeholder="Enter your password">
+            </div>
+            <div class="form-group">
+                <label class="form-label" data-i18n="amount">Amount</label>
+                <input type="number" class="form-input" data-i18n-placeholder="amount_placeholder" placeholder="Enter amount">
+            </div>
+            <button class="btn" data-i18n="submit">Submit</button>
+        </div>
+    </div>
+
+    <!-- Status Demo -->
+    <div class="demo-section">
+        <h2 class="section-title" data-i18n="status_indicators">Status Indicators</h2>
+        <div class="status-grid">
+            <div class="status-item status-success">
+                <div class="status-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="status-text" data-i18n="success">Success</div>
+            </div>
+            <div class="status-item status-warning">
+                <div class="status-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="status-text" data-i18n="warning">Warning</div>
+            </div>
+            <div class="status-item status-error">
+                <div class="status-icon">
+                    <i class="fas fa-times-circle"></i>
+                </div>
+                <div class="status-text" data-i18n="error">Error</div>
+            </div>
+            <div class="status-item status-info">
+                <div class="status-icon">
+                    <i class="fas fa-info-circle"></i>
+                </div>
+                <div class="status-text" data-i18n="info">Info</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Methods Demo -->
+    <div class="demo-section">
+        <h2 class="section-title" data-i18n="payment_methods">Payment Methods</h2>
+        <div class="demo-grid">
+            <div class="demo-card">
+                <h3 class="card-title" data-i18n="al_rafdin">Al-Rafdin</h3>
+                <p class="card-content" data-i18n="bank_transfer">Bank Transfer</p>
+            </div>
+            <div class="demo-card">
+                <h3 class="card-title" data-i18n="zain_cash">Zain Cash</h3>
+                <p class="card-content" data-i18n="mobile_payment">Mobile Payment</p>
+            </div>
+            <div class="demo-card">
+                <h3 class="card-title" data-i18n="western_union">Western Union</h3>
+                <p class="card-content" data-i18n="money_transfer">Money Transfer</p>
+            </div>
+            <div class="demo-card">
+                <h3 class="card-title" data-i18n="cash">Cash</h3>
+                <p class="card-content" data-i18n="cash_payment">Cash Payment</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Language switching functionality
+        function setLanguage(lang) {
+            // Update active button
+            document.querySelectorAll('.language-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.closest('.language-btn').classList.add('active');
+            
+            // Set language
+            languageManager.setLanguage(lang);
+        }
+
+        // Tab switching
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set initial active language button
+            const currentLang = languageManager.currentLanguage;
+            document.querySelectorAll('.language-btn').forEach(btn => {
+                if (btn.textContent.includes(currentLang === 'en' ? 'English' : 'العربية')) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

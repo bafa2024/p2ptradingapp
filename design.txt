@@ -1,4 +1,4 @@
-P2P Crypto Trading App - UI/UX Design Specification
+﻿P2P Crypto Trading App - UI/UX Design Specification
 1. Design System
 1.1 Color Palette
 Primary Colors:
@@ -454,4 +454,8 @@ Each component should include:
 •	Animation details
 •	Implementation notes
 •	Accessibility requirements
+
+
+
+
 

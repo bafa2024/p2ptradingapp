@@ -1,0 +1,807 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IQX - QR Scanner</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Design System Variables */
+        :root {
+            /* Colors */
+            --bg-primary: #0B0E11;
+            --bg-secondary: #1A1D21;
+            --bg-card: #242530;
+            --bg-elevated: #2B2F36;
+            --border-color: #2B2F36;
+            
+            --text-primary: #FFFFFF;
+            --text-secondary: #B7BDC6;
+            --text-muted: #848E9C;
+            
+            --color-buy: #3B82F6;
+            --color-sell: #F6465D;
+            --color-warning: #FFA500;
+            --color-info: #3861FB;
+        }
+        
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        
+        /* Header */
+        .app-header {
+            background: var(--bg-secondary);
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .back-btn {
+            color: var(--text-primary);
+            font-size: 20px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        
+        .back-btn:hover {
+            color: var(--color-buy);
+        }
+        
+        .header-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .flash-btn {
+            color: var(--text-muted);
+            font-size: 18px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        
+        .flash-btn:hover {
+            color: var(--color-buy);
+        }
+        
+        .flash-btn.active {
+            color: var(--color-warning);
+        }
+        
+        /* Scanner Container */
+        .scanner-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #000;
+            z-index: 50;
+        }
+        
+        .scanner-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .scanner-frame {
+            width: 280px;
+            height: 280px;
+            border: 2px solid var(--color-buy);
+            border-radius: 16px;
+            position: relative;
+            background: transparent;
+        }
+        
+        .scanner-frame::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border: 2px solid rgba(0, 211, 149, 0.3);
+            border-radius: 16px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .scanner-corners {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .corner {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 3px solid var(--color-buy);
+        }
+        
+        .corner.top-left {
+            top: -3px;
+            left: -3px;
+            border-right: none;
+            border-bottom: none;
+        }
+        
+        .corner.top-right {
+            top: -3px;
+            right: -3px;
+            border-left: none;
+            border-bottom: none;
+        }
+        
+        .corner.bottom-left {
+            bottom: -3px;
+            left: -3px;
+            border-right: none;
+            border-top: none;
+        }
+        
+        .corner.bottom-right {
+            bottom: -3px;
+            right: -3px;
+            border-left: none;
+            border-top: none;
+        }
+        
+        .scanner-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--color-buy), transparent);
+            animation: scan 2s linear infinite;
+        }
+        
+        @keyframes scan {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
+        
+        /* Scanner Instructions */
+        .scanner-instructions {
+            position: absolute;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 16px 24px;
+            border-radius: 12px;
+            max-width: 300px;
+        }
+        
+        .instruction-text {
+            font-size: 14px;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+        
+        .instruction-subtext {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        /* Scanner Actions */
+        .scanner-actions {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            padding: 20px 16px;
+            display: flex;
+            gap: 12px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .action-btn {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .action-btn.primary {
+            background: linear-gradient(135deg, var(--color-buy) 0%, #1D4ED8 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+        
+        .action-btn.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 211, 149, 0.4);
+        }
+        
+        .action-btn.secondary {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+        
+        .action-btn.secondary:hover {
+            background: var(--bg-elevated);
+            border-color: var(--color-buy);
+            color: var(--color-buy);
+        }
+        
+        /* Result Modal */
+        .result-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .result-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .result-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            margin: 20px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .result-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--color-buy) 0%, #1D4ED8 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 28px;
+            color: white;
+        }
+        
+        .result-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .result-address {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            margin: 16px 0;
+            font-family: monospace;
+            font-size: 12px;
+            word-break: break-all;
+            color: var(--text-secondary);
+        }
+        
+        .result-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .result-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .result-btn.primary {
+            background: var(--color-buy);
+            color: white;
+        }
+        
+        .result-btn.secondary {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+        
+        /* Manual Input */
+        .manual-input {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg-primary);
+            z-index: 150;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .manual-input.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .manual-header {
+            background: var(--bg-secondary);
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .manual-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .manual-content {
+            flex: 1;
+            padding: 20px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .input-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        .input-field {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            color: var(--text-primary);
+            font-size: 16px;
+            font-family: monospace;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: var(--color-buy);
+            box-shadow: 0 0 0 3px rgba(0, 211, 149, 0.1);
+        }
+        
+        .manual-actions {
+            padding: 20px 16px;
+            display: flex;
+            gap: 12px;
+        }
+        
+        /* Responsive Design */
+        @media (min-width: 576px) {
+            .container-custom {
+                max-width: 540px;
+                margin: 0 auto;
+            }
+        }
+        
+        @media (min-width: 768px) {
+            .container-custom {
+                max-width: 600px;
+                margin: 0 auto;
+            }
+            
+            .scanner-frame {
+                width: 320px;
+                height: 320px;
+            }
+            
+            .scanner-instructions {
+                bottom: 140px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-custom">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <i class="fas fa-arrow-left back-btn" onclick="goBack()"></i>
+                    <h1 class="header-title">QR Scanner</h1>
+                </div>
+                <i class="fas fa-bolt flash-btn" onclick="toggleFlash()" id="flashBtn"></i>
+            </div>
+        </header>
+        
+        <!-- Scanner Container -->
+        <div class="scanner-container">
+            <div class="scanner-overlay">
+                <div class="scanner-frame">
+                    <div class="scanner-corners">
+                        <div class="corner top-left"></div>
+                        <div class="corner top-right"></div>
+                        <div class="corner bottom-left"></div>
+                        <div class="corner bottom-right"></div>
+                    </div>
+                    <div class="scanner-line"></div>
+                </div>
+            </div>
+            
+            <!-- Scanner Instructions -->
+            <div class="scanner-instructions">
+                <div class="instruction-text">Position QR code within the frame</div>
+                <div class="instruction-subtext">Scanning for crypto addresses...</div>
+            </div>
+            
+            <!-- Scanner Actions -->
+            <div class="scanner-actions">
+                <button class="action-btn secondary" onclick="showManualInput()">
+                    <i class="fas fa-keyboard"></i>
+                    <span>Manual Input</span>
+                </button>
+                <button class="action-btn primary" onclick="simulateScan()">
+                    <i class="fas fa-qrcode"></i>
+                    <span>Scan QR</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Result Modal -->
+        <div class="result-modal" id="resultModal">
+            <div class="result-card">
+                <div class="result-icon">
+                    <i class="fas fa-check"></i>
+                </div>
+                <div class="result-title">Address Scanned Successfully</div>
+                <div class="result-address" id="scannedAddress">
+                    TRC20: TQn9Y2khDD95J42FQtQTdwVrTyH1yWgZzK
+                </div>
+                <div class="result-actions">
+                    <button class="result-btn secondary" onclick="hideResult()">Scan Another</button>
+                    <button class="result-btn primary" onclick="copyAddress()">Copy Address</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Manual Input -->
+        <div class="manual-input" id="manualInput">
+            <div class="manual-header">
+                <i class="fas fa-arrow-left back-btn" onclick="hideManualInput()"></i>
+                <div class="manual-title">Manual Input</div>
+            </div>
+            
+            <div class="manual-content">
+                <div class="input-group">
+                    <label class="input-label">Crypto Address</label>
+                    <input type="text" class="input-field" placeholder="Enter TRC20 address..." id="addressInput">
+                </div>
+                
+                <div class="input-group">
+                    <label class="input-label">Address Type</label>
+                    <select class="input-field" id="addressType">
+                        <option value="TRC20">TRC20 (USDT)</option>
+                        <option value="BTC">Bitcoin</option>
+                        <option value="ETH">Ethereum</option>
+                        <option value="OTHER">Other</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label class="input-label">Amount (Optional)</label>
+                    <input type="number" class="input-field" placeholder="Enter amount..." id="amountInput">
+                </div>
+            </div>
+            
+            <div class="manual-actions">
+                <button class="action-btn secondary" onclick="hideManualInput()">Cancel</button>
+                <button class="action-btn primary" onclick="processManualInput()">Process</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        let flashActive = false;
+        let scanInterval;
+        
+        // Toggle flash
+        function toggleFlash() {
+            flashActive = !flashActive;
+            const flashBtn = document.getElementById('flashBtn');
+            
+            if (flashActive) {
+                flashBtn.classList.add('active');
+                showNotification('Flash enabled');
+            } else {
+                flashBtn.classList.remove('active');
+                showNotification('Flash disabled');
+            }
+        }
+        
+        // Simulate QR scan
+        function simulateScan() {
+            // Simulate scanning process
+            showNotification('Scanning...');
+            
+            setTimeout(() => {
+                const addresses = [
+                    'TQn9Y2khDD95J42FQtQTdwVrTyH1yWgZzK',
+                    '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa',
+                    '0x742d35Cc6634C0532925a3b8D4C9db96C4b4d8b6'
+                ];
+                
+                const randomAddress = addresses[Math.floor(Math.random() * addresses.length)];
+                document.getElementById('scannedAddress').textContent = randomAddress;
+                
+                showResult();
+            }, 2000);
+        }
+        
+        // Show result modal
+        function showResult() {
+            document.getElementById('resultModal').classList.add('show');
+        }
+        
+        // Hide result modal
+        function hideResult() {
+            document.getElementById('resultModal').classList.remove('show');
+        }
+        
+        // Copy address
+        function copyAddress() {
+            const address = document.getElementById('scannedAddress').textContent;
+            navigator.clipboard.writeText(address).then(() => {
+                showNotification('Address copied to clipboard');
+                hideResult();
+            }).catch(() => {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = address;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showNotification('Address copied to clipboard');
+                hideResult();
+            });
+        }
+        
+        // Show manual input
+        function showManualInput() {
+            document.getElementById('manualInput').classList.add('show');
+        }
+        
+        // Hide manual input
+        function hideManualInput() {
+            document.getElementById('manualInput').classList.remove('show');
+        }
+        
+        // Process manual input
+        function processManualInput() {
+            const address = document.getElementById('addressInput').value;
+            const type = document.getElementById('addressType').value;
+            const amount = document.getElementById('amountInput').value;
+            
+            if (!address) {
+                showNotification('Please enter a valid address');
+                return;
+            }
+            
+            // Validate address format
+            if (type === 'TRC20' && !address.startsWith('T')) {
+                showNotification('Invalid TRC20 address format');
+                return;
+            }
+            
+            if (type === 'BTC' && !address.startsWith('1') && !address.startsWith('3') && !address.startsWith('bc1')) {
+                showNotification('Invalid Bitcoin address format');
+                return;
+            }
+            
+            if (type === 'ETH' && !address.startsWith('0x')) {
+                showNotification('Invalid Ethereum address format');
+                return;
+            }
+            
+            // Update result modal
+            document.getElementById('scannedAddress').textContent = address;
+            hideManualInput();
+            showResult();
+            
+            showNotification('Address processed successfully');
+        }
+        
+        // Go back
+        function goBack() {
+            if (document.getElementById('manualInput').classList.contains('show')) {
+                hideManualInput();
+            } else if (document.getElementById('resultModal').classList.contains('show')) {
+                hideResult();
+            } else {
+                history.back();
+            }
+        }
+        
+        // Show notification
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: var(--color-buy);
+                color: white;
+                padding: 12px 24px;
+                border-radius: 8px;
+                font-weight: 600;
+                z-index: 1000;
+                animation: slideDown 0.3s ease-out;
+            `;
+            notification.textContent = message;
+            
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideDown {
+                    from {
+                        transform: translateX(-50%) translateY(-100%);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateX(-50%) translateY(0);
+                        opacity: 1;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+                style.remove();
+            }, 3000);
+        }
+        
+        // Start scanning animation
+        function startScanning() {
+            scanInterval = setInterval(() => {
+                // Simulate scanning process
+                const instructions = document.querySelector('.instruction-subtext');
+                const messages = [
+                    'Scanning for crypto addresses...',
+                    'Detecting QR code...',
+                    'Processing address...',
+                    'Validating format...'
+                ];
+                
+                const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+                instructions.textContent = randomMessage;
+            }, 3000);
+        }
+        
+        // Stop scanning animation
+        function stopScanning() {
+            if (scanInterval) {
+                clearInterval(scanInterval);
+            }
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            startScanning();
+            
+            // Handle keyboard events
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    goBack();
+                }
+            });
+            
+            // Handle camera permissions (simulated)
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(function(stream) {
+                        // Camera access granted
+                        showNotification('Camera access granted');
+                    })
+                    .catch(function(error) {
+                        // Camera access denied
+                        showNotification('Camera access required for scanning');
+                    });
+            }
+        });
+        
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', function() {
+            stopScanning();
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
