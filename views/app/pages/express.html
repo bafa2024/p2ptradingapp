@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title data-i18n="express">IQX - Express</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Font System -->
+    <link rel="stylesheet" href="css/fonts.css">
+    
+    <!-- Language Support -->
+    <link rel="stylesheet" href="css/rtl.css">
+    <script src="js/language.js"></script>
+    
+    <style>
+        /* Design System Variables */
+        :root {
+            /* Colors */
+            --bg-primary: #0B0E11;
+            --bg-secondary: #1A1D21;
+            --bg-card: #242530;
+            --bg-elevated: #2B2F36;
+            --border-color: #2B2F36;
+            
+            --text-primary: #FFFFFF;
+            --text-secondary: #B7BDC6;
+            --text-muted: #848E9C;
+            
+            --color-buy: #3B82F6;
+            --color-sell: #F6465D;
+            --color-warning: #FFA500;
+            --color-info: #3861FB;
+            --color-success: #3B82F6;
+            --color-verified: #8B5CF6;
+            --color-star: #F59E0B;
+        }
+        
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
+        body {
+            font-family: var(--font-body-en), -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
+        
+        /* Header */
+        .app-header {
+            background: var(--bg-secondary);
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+        
+        .history-btn {
+            color: var(--text-primary);
+            font-size: 20px;
+            cursor: pointer;
+        }
+        
+        /* Trading Tabs */
+        .trading-tabs {
+            background: var(--bg-secondary);
+            padding: 0 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .tabs-container {
+            display: flex;
+            gap: 24px;
+        }
+        
+        .tab-link {
+            padding: 16px 0;
+            color: var(--text-muted);
+            font-weight: 500;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .tab-link.active {
+            color: var(--color-buy);
+            border-bottom-color: var(--color-buy);
+        }
+        
+        /* Express Hero */
+        .express-hero {
+            padding: 24px 16px;
+            text-align: center;
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+        }
+        
+        .hero-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 16px;
+            background: var(--color-buy);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: white;
+        }
+        
+        .hero-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .hero-subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        /* Quick Buy/Sell */
+        .quick-trade {
+            padding: 0 16px 24px;
+        }
+        
+        .trade-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+        
+        .trade-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .trade-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .trade-toggle {
+            display: flex;
+            background: var(--bg-elevated);
+            border-radius: 8px;
+            padding: 4px;
+        }
+        
+        .toggle-btn {
+            padding: 8px 16px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+        
+        .toggle-btn.active.buy {
+            background: var(--color-buy);
+            color: white;
+        }
+        
+        .toggle-btn.active.sell {
+            background: var(--color-sell);
+            color: white;
+        }
+        
+        /* Currency Selector */
+        .currency-selector {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .currency-btn {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-elevated);
+            color: var(--text-secondary);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .currency-btn.active {
+            background: var(--color-info);
+            color: white;
+            border-color: var(--color-info);
+        }
+        
+        .currency-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--text-muted);
+        }
+        
+        /* Amount Input */
+        .amount-section {
+            margin-bottom: 20px;
+        }
+        
+        .amount-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .amount-input-wrapper {
+            position: relative;
+        }
+        
+        .amount-input {
+            width: 100%;
+            padding: 16px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 24px;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+        
+        .amount-input:focus {
+            outline: none;
+            border-color: var(--color-buy);
+        }
+        
+        .amount-currency {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        /* Quick Amount Buttons */
+        .quick-amounts {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .quick-amount-btn {
+            padding: 10px 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--bg-elevated);
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .quick-amount-btn:hover {
+            border-color: var(--color-buy);
+            color: var(--color-buy);
+        }
+        
+        /* Payment Method */
+        .payment-section {
+            margin-bottom: 20px;
+        }
+        
+        .payment-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            display: block;
+        }
+        
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        
+        .payment-method {
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-elevated);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .payment-method.active {
+            background: var(--color-info);
+            color: white;
+            border-color: var(--color-info);
+        }
+        
+        .payment-icon {
+            font-size: 18px;
+        }
+        
+        .payment-name {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        /* Price Display */
+        .price-display {
+            background: var(--bg-elevated);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .price-label {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+        
+        .price-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        
+        .price-currency {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-left: 4px;
+        }
+        
+        /* Action Button */
+        .action-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--color-buy);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .action-btn:hover {
+            background: #1D4ED8;
+        }
+        
+        .action-btn.sell {
+            background: var(--color-sell);
+        }
+        
+        .action-btn.sell:hover {
+            background: #DC2626;
+        }
+        
+        .action-btn:disabled {
+            background: var(--bg-elevated);
+            color: var(--text-muted);
+            cursor: not-allowed;
+        }
+        
+        /* Timer */
+        .timer {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        /* Features */
+        .features {
+            padding: 0 16px 24px;
+        }
+        
+        .features-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-buy);
+            font-size: 24px;
+        }
+        
+        .feature-content {
+            flex: 1;
+        }
+        
+        .feature-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .feature-description {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 8px 0;
+            z-index: 100;
+        }
+        
+        .nav-items {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            padding: 4px 8px;
+        }
+        
+        .nav-item.active {
+            color: var(--color-buy);
+        }
+        
+        .nav-item:not(.active) {
+            color: var(--text-muted);
+        }
+        
+        .nav-icon {
+            font-size: 20px;
+        }
+        
+        .nav-label {
+            font-size: 11px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="app-header">
+        <div class="header-content">
+            <h1 class="header-title" data-i18n="express">Express</h1>
+            <div class="header-actions">
+                <div class="history-btn">
+                    <i class="fas fa-history"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Trading Tabs -->
+    <div class="trading-tabs">
+        <div class="tabs-container">
+            <div class="tab-link" onclick="window.location.href='home.html'">P2P</div>
+            <div class="tab-link active">Express</div>
+            <div class="tab-link" onclick="window.location.href='blocktrade.html'">Block trade</div>
+        </div>
+    </div>
+    
+    <!-- Express Hero -->
+    <div class="express-hero">
+        <div class="hero-icon">
+            <i class="fas fa-bolt"></i>
+        </div>
+        <h2 class="hero-title">Lightning Fast Trading</h2>
+        <p class="hero-subtitle">Buy or sell crypto instantly at market rates</p>
+    </div>
+    
+    <!-- Quick Trade -->
+    <div class="quick-trade">
+        <div class="trade-card">
+            <div class="trade-header">
+                <h3 class="trade-title">Quick Trade</h3>
+                <div class="trade-toggle">
+                    <button class="toggle-btn active buy" id="buyToggle">Buy</button>
+                    <button class="toggle-btn sell" id="sellToggle">Sell</button>
+                </div>
+            </div>
+            
+            <!-- Currency Selector -->
+            <div class="currency-selector">
+                <button class="currency-btn active">
+                    <span class="currency-icon" style="background: #26A17B;"></span>
+                    USDT
+                </button>
+                <button class="currency-btn">
+                    <span class="currency-icon" style="background: #FF0420;"></span>
+                    TRX
+                </button>
+                <button class="currency-btn">
+                    <span class="currency-icon" style="background: #F7931A;"></span>
+                    BTC
+                </button>
+                <button class="currency-btn">
+                    <span class="currency-icon" style="background: #627EEA;"></span>
+                    ETH
+                </button>
+            </div>
+            
+            <!-- Amount Input -->
+            <div class="amount-section">
+                <label class="amount-label">Amount</label>
+                <div class="amount-input-wrapper">
+                    <input type="number" class="amount-input" placeholder="0.00" id="amountInput">
+                    <span class="amount-currency">USDT</span>
+                </div>
+            </div>
+            
+            <!-- Quick Amounts -->
+            <div class="quick-amounts">
+                <button class="quick-amount-btn" data-amount="100">100</button>
+                <button class="quick-amount-btn" data-amount="500">500</button>
+                <button class="quick-amount-btn" data-amount="1000">1K</button>
+                <button class="quick-amount-btn" data-amount="5000">5K</button>
+            </div>
+            
+            <!-- Payment Method -->
+            <div class="payment-section">
+                <label class="payment-label">Payment Method</label>
+                <div class="payment-methods">
+                    <div class="payment-method active">
+                        <i class="fas fa-university payment-icon"></i>
+                        <span class="payment-name">Bank Transfer</span>
+                    </div>
+                    <div class="payment-method">
+                        <i class="fas fa-money-bill payment-icon"></i>
+                        <span class="payment-name">Cash</span>
+                    </div>
+                    <div class="payment-method">
+                        <i class="fas fa-wallet payment-icon"></i>
+                        <span class="payment-name">ZainCash</span>
+                    </div>
+                    <div class="payment-method">
+                        <i class="fas fa-mobile-alt payment-icon"></i>
+                        <span class="payment-name">FastPay</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Price Display -->
+            <div class="price-display">
+                <div class="price-label">You'll pay</div>
+                <div class="price-value">
+                    0.00
+                    <span class="price-currency">IQD</span>
+                </div>
+            </div>
+            
+            <!-- Action Button -->
+            <button class="action-btn" id="actionBtn">
+                <i class="fas fa-bolt"></i>
+                Buy USDT Instantly
+                <span class="timer">(30s)</span>
+            </button>
+        </div>
+    </div>
+    
+    <!-- Features -->
+    <div class="features">
+        <h3 class="features-title">Why Express?</h3>
+        
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-clock"></i>
+            </div>
+            <div class="feature-content">
+                <div class="feature-title">Instant Execution</div>
+                <div class="feature-description">Complete trades in under 30 seconds</div>
+            </div>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <div class="feature-content">
+                <div class="feature-title">Guaranteed Rates</div>
+                <div class="feature-description">Lock in your price for 30 seconds</div>
+            </div>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-hand-holding-usd"></i>
+            </div>
+            <div class="feature-content">
+                <div class="feature-title">No Hidden Fees</div>
+                <div class="feature-description">Transparent pricing with no surprises</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <div class="nav-items">
+            <div class="nav-item active">
+                <i class="fas fa-users nav-icon"></i>
+                <span class="nav-label">P2P</span>
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-file-alt nav-icon"></i>
+                <span class="nav-label">Orders</span>
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-bullhorn nav-icon"></i>
+                <span class="nav-label">Ads</span>
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-comments nav-icon"></i>
+                <span class="nav-label">Chat</span>
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-user nav-icon"></i>
+                <span class="nav-label">Profile</span>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Trade toggle
+        const buyToggle = document.getElementById('buyToggle');
+        const sellToggle = document.getElementById('sellToggle');
+        const actionBtn = document.getElementById('actionBtn');
+        
+        buyToggle.addEventListener('click', function() {
+            buyToggle.classList.add('active', 'buy');
+            buyToggle.classList.remove('sell');
+            sellToggle.classList.remove('active', 'buy');
+            actionBtn.className = 'action-btn';
+            actionBtn.innerHTML = '<i class="fas fa-bolt"></i>Buy USDT Instantly<span class="timer">(30s)</span>';
+        });
+        
+        sellToggle.addEventListener('click', function() {
+            sellToggle.classList.add('active', 'sell');
+            buyToggle.classList.remove('active', 'buy');
+            actionBtn.className = 'action-btn sell';
+            actionBtn.innerHTML = '<i class="fas fa-bolt"></i>Sell USDT Instantly<span class="timer">(30s)</span>';
+        });
+        
+        // Currency selection
+        document.querySelectorAll('.currency-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.currency-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                const currency = this.textContent.trim();
+                document.querySelector('.amount-currency').textContent = currency;
+                actionBtn.innerHTML = `<i class="fas fa-bolt"></i>${buyToggle.classList.contains('active') ? 'Buy' : 'Sell'} ${currency} Instantly<span class="timer">(30s)</span>`;
+            });
+        });
+        
+        // Quick amounts
+        const amountInput = document.getElementById('amountInput');
+        document.querySelectorAll('.quick-amount-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const amount = this.getAttribute('data-amount');
+                amountInput.value = amount;
+                updatePrice();
+            });
+        });
+        
+        // Payment method selection
+        document.querySelectorAll('.payment-method').forEach(method => {
+            method.addEventListener('click', function() {
+                document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        
+        // Update price calculation
+        function updatePrice() {
+            const amount = parseFloat(amountInput.value) || 0;
+            const rate = 1575; // Example rate
+            const total = amount * rate;
+            document.querySelector('.price-value').innerHTML = `${total.toLocaleString()}<span class="price-currency">IQD</span>`;
+        }
+        
+        amountInput.addEventListener('input', updatePrice);
+        
+        // Bottom navigation
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const label = this.querySelector('.nav-label').textContent;
+                if (label === 'P2P') {
+                    window.location.href = 'home.html';
+                } else if (label === 'Orders') {
+                    window.location.href = 'orders.html';
+                } else if (label === 'Ads') {
+                    window.location.href = 'ads.html';
+                } else if (label === 'Chat') {
+                    window.location.href = 'chat.html';
+                } else if (label === 'Profile') {
+                    window.location.href = 'profile.html';
+                }
+            });
+        });
+        
+        // Timer countdown
+        let timeLeft = 30;
+        setInterval(() => {
+            const timer = document.querySelector('.timer');
+            if (timer && timeLeft > 0) {
+                timer.textContent = `(${timeLeft}s)`;
+                timeLeft--;
+            } else {
+                timeLeft = 30;
+            }
+        }, 1000);
+    </script>
+</body>
+</html>

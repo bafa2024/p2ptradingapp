@@ -33,11 +33,11 @@
             --text-secondary: #B7BDC6;
             --text-muted: #848E9C;
             
-            --color-buy: #10B981;
+            --color-buy: #3B82F6;
             --color-sell: #F6465D;
             --color-warning: #FFA500;
             --color-info: #3861FB;
-            --color-success: #10B981;
+            --color-success: #3B82F6;
             --color-verified: #8B5CF6;
             --color-star: #F59E0B;
         }
@@ -51,6 +51,11 @@
             -webkit-touch-callout: none;
             -webkit-user-select: none;
             user-select: none;
+            transition: none; /* Prevent unwanted transitions during language switching */
+        }
+        
+        html {
+            transition: none; /* Stable layout for RTL/LTR switching */
         }
         
         body {
@@ -60,6 +65,13 @@
             min-height: 100vh;
             padding-bottom: 80px;
             overflow-x: hidden;
+            transition: none; /* Prevent layout shifts during language changes */
+        }
+        
+        /* RTL Font Support */
+        [dir="rtl"] body {
+            font-family: 'Cairo', 'Amiri', 'Tajawal', 'IBM Plex Sans Arabic', var(--font-body-ar), system-ui, sans-serif;
+            font-weight: 400;
         }
         
         /* Status Bar */
@@ -130,6 +142,25 @@
             display: flex;
             gap: 16px;
             align-items: center;
+            position: relative;
+        }
+        
+        .header-actions.search-active {
+            overflow: visible;
+        }
+        
+        .header-actions .action-btn,
+        .header-actions .language-switcher,
+        .header-actions .language-currency-toggle {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        
+        .header-actions.search-active .action-btn:not(.search-btn),
+        .header-actions.search-active .language-switcher,
+        .header-actions.search-active .language-currency-toggle {
+            opacity: 0.2;
+            transform: scale(0.8);
+            pointer-events: none;
         }
         
         .action-btn {
@@ -143,11 +174,31 @@
             color: var(--color-buy);
         }
         
+        /* Search Backdrop */
+        .search-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 5;
+        }
+        
+        .search-backdrop.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
         /* Expandable Search */
         .search-container {
             position: relative;
             display: flex;
             align-items: center;
+            min-width: 36px;
         }
         
         .search-input {
@@ -160,24 +211,28 @@
             background: var(--bg-elevated);
             border: 1px solid var(--border-color);
             border-radius: 18px;
-            padding: 0 40px 0 16px;
+            padding: 0 45px 0 16px;
             color: var(--text-primary);
             font-size: 14px;
             transition: all 0.3s ease;
             opacity: 0;
             pointer-events: none;
+            z-index: 10;
         }
         
         .search-input.active {
-            width: 200px;
+            width: calc(100vw - 80px);
+            max-width: 600px;
             opacity: 1;
             pointer-events: all;
+            right: -20px;
+            padding: 0 45px 0 16px;
         }
         
         .search-input:focus {
             outline: none;
             border-color: var(--color-buy);
-            box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
         }
         
         .search-input::placeholder {
@@ -186,7 +241,7 @@
         
         .search-btn {
             position: relative;
-            z-index: 2;
+            z-index: 13;
             background: none;
             border: none;
             color: var(--text-secondary);
@@ -194,6 +249,9 @@
             cursor: pointer;
             transition: color 0.2s ease;
             padding: 8px;
+            min-width: 36px;
+            min-height: 36px;
+            flex-shrink: 0;
         }
         
         .search-btn:hover {
@@ -202,11 +260,13 @@
         
         .search-btn.active {
             color: var(--color-buy);
+            background: var(--bg-elevated);
+            border-radius: 50%;
         }
         
         .search-close {
             position: absolute;
-            right: 8px;
+            right: 35px;
             top: 50%;
             transform: translateY(-50%);
             background: none;
@@ -214,11 +274,12 @@
             color: var(--text-muted);
             font-size: 14px;
             cursor: pointer;
-            padding: 4px;
+            padding: 6px;
             border-radius: 50%;
             transition: all 0.2s ease;
             opacity: 0;
             pointer-events: none;
+            z-index: 11;
         }
         
         .search-close.active {
@@ -235,8 +296,9 @@
         .search-results {
             position: absolute;
             top: 100%;
-            right: 0;
-            width: 280px;
+            right: -20px;
+            width: calc(100vw - 80px);
+            max-width: 600px;
             max-height: 300px;
             background: var(--bg-card);
             border: 1px solid var(--border-color);
@@ -314,11 +376,22 @@
         /* Responsive adjustments */
         @media (max-width: 480px) {
             .search-input.active {
-                width: 160px;
+                width: calc(100vw - 50px);
+                max-width: none;
+                right: -20px;
             }
             
             .search-results {
-                width: 240px;
+                width: calc(100vw - 50px);
+                max-width: none;
+                right: -20px;
+            }
+            
+            .header-actions.search-active .action-btn:not(.search-btn),
+            .header-actions.search-active .language-switcher,
+            .header-actions.search-active .language-currency-toggle {
+                opacity: 0;
+                transform: scale(0.6);
             }
         }
         
@@ -763,7 +836,7 @@
         }
         
         .buy-btn:hover {
-            background: #059669;
+            background: #1D4ED8;
         }
         
         .sell-btn {
@@ -850,6 +923,46 @@
             flex-direction: row-reverse;
         }
         
+        /* RTL Search Adjustments */
+        [dir="rtl"] .search-container {
+            order: -1;
+        }
+        
+        [dir="rtl"] .search-input {
+            left: 0;
+            right: auto;
+            text-align: right;
+            padding: 0 16px 0 45px;
+        }
+        
+        [dir="rtl"] .search-input.active {
+            left: -20px;
+            right: auto;
+            padding: 0 16px 0 45px;
+        }
+        
+        [dir="rtl"] .search-close {
+            left: 35px;
+            right: auto;
+        }
+        
+        [dir="rtl"] .search-results {
+            left: -20px;
+            right: auto;
+        }
+        
+        /* RTL Language Toggle */
+        [dir="rtl"] .language-currency-toggle {
+            margin-left: 0;
+            margin-right: 8px;
+        }
+        
+        [dir="rtl"] .language-switcher {
+            margin-left: 0;
+            margin-right: 8px;
+        }
+        
+        /* RTL Merchant Cards */
         [dir="rtl"] .merchant-header {
             flex-direction: row-reverse;
         }
@@ -860,6 +973,130 @@
         
         [dir="rtl"] .merchant-price {
             text-align: left;
+        }
+        
+        [dir="rtl"] .merchant-name-row {
+            flex-direction: row-reverse;
+        }
+        
+        [dir="rtl"] .merchant-stats {
+            flex-direction: row-reverse;
+        }
+        
+        /* RTL Filter and Trading Controls */
+        [dir="rtl"] .filters-row {
+            flex-direction: row-reverse;
+        }
+        
+        [dir="rtl"] .buy-sell-tabs {
+            flex-direction: row-reverse;
+        }
+        
+        [dir="rtl"] .currency-dropdown {
+            flex-direction: row-reverse;
+        }
+        
+        [dir="rtl"] .currency-info {
+            text-align: right;
+        }
+        
+        [dir="rtl"] .currency-option {
+            flex-direction: row-reverse;
+        }
+        
+        /* RTL Banner */
+        [dir="rtl"] .banner {
+            flex-direction: row-reverse;
+        }
+        
+        [dir="rtl"] .banner-content {
+            text-align: right;
+        }
+        
+        [dir="rtl"] .banner-dots {
+            flex-direction: row-reverse;
+        }
+        
+        /* RTL Payment Methods */
+        [dir="rtl"] .payment-option-left {
+            flex-direction: row-reverse;
+        }
+        
+        [dir="rtl"] .payment-info {
+            text-align: right;
+        }
+        
+        [dir="rtl"] .payment-search-input {
+            text-align: right;
+            padding: 12px 40px 12px 16px;
+        }
+        
+        [dir="rtl"] .payment-search-icon {
+            left: auto;
+            right: 12px;
+        }
+        
+        /* RTL Filter Options */
+        [dir="rtl"] .filter-option {
+            flex-direction: row-reverse;
+        }
+        
+        [dir="rtl"] .filter-option-left {
+            text-align: right;
+        }
+        
+        /* RTL Amount Input */
+        [dir="rtl"] .amount-input {
+            text-align: right;
+        }
+        
+        [dir="rtl"] .amount-currency {
+            left: 16px;
+            right: auto;
+        }
+        
+        /* RTL Bottom Navigation - Keep Stable */
+        [dir="rtl"] .nav-items {
+            flex-direction: row; /* Keep navigation order stable */
+        }
+        
+        /* RTL Responsive Adjustments */
+        @media (max-width: 480px) {
+            [dir="rtl"] .search-input.active {
+                left: -20px;
+                right: auto;
+            }
+            
+            [dir="rtl"] .search-results {
+                left: -20px;
+                right: auto;
+            }
+            
+            [dir="rtl"] .header-actions {
+                gap: 8px;
+            }
+            
+            [dir="rtl"] .nav-tabs {
+                gap: 12px;
+                margin-right: 8px;
+            }
+        }
+        
+        /* RTL Typography */
+        [dir="rtl"] body {
+            font-family: var(--font-body-ar), 'Cairo', 'Amiri', system-ui, sans-serif;
+        }
+        
+        [dir="rtl"] .search-input::placeholder {
+            text-align: right;
+        }
+        
+        [dir="rtl"] .amount-input::placeholder {
+            text-align: right;
+        }
+        
+        [dir="rtl"] .payment-search-input::placeholder {
+            text-align: right;
         }
         
         /* Filter Overlay */
@@ -1062,7 +1299,7 @@
         }
         
         .filter-apply:hover {
-            background: #059669;
+            background: #1D4ED8;
         }
         
         /* Responsive adjustments */
@@ -1326,7 +1563,7 @@
         }
         
         .payment-confirm:hover {
-            background: #059669;
+            background: #1D4ED8;
         }
         
         /* Responsive adjustments */
@@ -1540,7 +1777,7 @@
         }
         
         .keypad-btn.operator:hover {
-            background: #059669;
+            background: #1D4ED8;
         }
         
         .keypad-btn.delete {
@@ -1599,9 +1836,194 @@
                 padding: 14px 18px;
             }
         }
+        
+        /* Currency Selector Modal */
+        .currency-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .currency-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+        
+        .currency-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-radius: 20px 20px 0 0;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            max-height: 80vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .currency-overlay.active .currency-container {
+            transform: translateY(0);
+        }
+        
+        .currency-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+            background: var(--bg-secondary);
+            flex-shrink: 0;
+        }
+        
+        .currency-header::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 4px;
+            background: var(--text-muted);
+            border-radius: 2px;
+            opacity: 0.5;
+        }
+        
+        .currency-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-top: 8px;
+        }
+        
+        .currency-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 20px;
+            cursor: pointer;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .currency-options {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .currency-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.3s ease forwards;
+        }
+        
+        .currency-option:nth-child(1) { animation-delay: 0.05s; }
+        .currency-option:nth-child(2) { animation-delay: 0.1s; }
+        .currency-option:nth-child(3) { animation-delay: 0.15s; }
+        .currency-option:nth-child(4) { animation-delay: 0.2s; }
+        .currency-option:nth-child(5) { animation-delay: 0.25s; }
+        .currency-option:nth-child(6) { animation-delay: 0.3s; }
+        .currency-option:nth-child(7) { animation-delay: 0.35s; }
+        .currency-option:nth-child(8) { animation-delay: 0.4s; }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .currency-option:hover {
+            background: var(--bg-elevated);
+            border-color: var(--color-buy);
+        }
+        
+        .currency-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .currency-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+        }
+        
+        .currency-details {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        
+        .currency-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .currency-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        .currency-check {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-buy);
+            font-size: 12px;
+            opacity: 0;
+            transition: all 0.2s ease;
+        }
+        
+        .currency-check.active {
+            opacity: 1;
+            background: var(--color-buy);
+            color: white;
+            border-color: var(--color-buy);
+        }
     </style>
 </head>
 <body>
+    <!-- Search Backdrop -->
+    <div class="search-backdrop" id="searchBackdrop"></div>
     
     
     <!-- Header -->
@@ -1764,8 +2186,8 @@
         </div>
         
         <div class="filters-row">
-            <div class="filter-dropdown">
-                <span><i class="fas fa-coins" style="color: var(--color-buy); margin-right: 4px;"></i>T USDT</span>
+            <div class="filter-dropdown" onclick="openCurrencySelector()">
+                <span id="selectedCrypto"><i class="fas fa-coins" style="color: var(--color-buy); margin-right: 4px;"></i>USDT</span>
                 <i class="fas fa-chevron-down"></i>
             </div>
             <div class="filter-dropdown" onclick="openAmountModal()">
@@ -2296,6 +2718,140 @@
         </div>
     </div>
     
+    <!-- Currency Selector Modal -->
+    <div class="currency-overlay" id="currencyOverlay">
+        <div class="currency-container">
+            <div class="currency-header">
+                <h3 class="currency-title">Select Currency</h3>
+                <button class="currency-close" onclick="closeCurrencySelector()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="currency-options">
+                <div class="currency-option" onclick="selectCurrency('USDT')">
+                    <div class="currency-info">
+                        <div class="currency-icon" style="background: #26A17B;">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="currency-details">
+                            <div class="currency-name">USDT</div>
+                            <div class="currency-desc">Tether USD</div>
+                        </div>
+                    </div>
+                    <div class="currency-check" id="currencyUSDT">
+                        <i class="fas fa-check"></i>
+                    </div>
+                </div>
+                
+                <div class="currency-option" onclick="selectCurrency('TRX')">
+                    <div class="currency-info">
+                        <div class="currency-icon" style="background: #FF0420;">
+                            <span style="font-weight: bold; color: white;">T</span>
+                        </div>
+                        <div class="currency-details">
+                            <div class="currency-name">TRX</div>
+                            <div class="currency-desc">TRON</div>
+                        </div>
+                    </div>
+                    <div class="currency-check" id="currencyTRX">
+                        <i class="fas fa-check"></i>
+                    </div>
+                </div>
+                
+                <div class="currency-option" onclick="selectCurrency('BTC')">
+                    <div class="currency-info">
+                        <div class="currency-icon" style="background: #F7931A;">
+                            <i class="fab fa-bitcoin"></i>
+                        </div>
+                        <div class="currency-details">
+                            <div class="currency-name">BTC</div>
+                            <div class="currency-desc">Bitcoin</div>
+                        </div>
+                    </div>
+                    <div class="currency-check" id="currencyBTC">
+                        <i class="fas fa-check"></i>
+                    </div>
+                </div>
+                
+                <div class="currency-option" onclick="selectCurrency('ETH')">
+                    <div class="currency-info">
+                        <div class="currency-icon" style="background: #627EEA;">
+                            <i class="fab fa-ethereum"></i>
+                        </div>
+                        <div class="currency-details">
+                            <div class="currency-name">ETH</div>
+                            <div class="currency-desc">Ethereum</div>
+                        </div>
+                    </div>
+                    <div class="currency-check" id="currencyETH">
+                        <i class="fas fa-check"></i>
+                    </div>
+                </div>
+                
+                <div class="currency-option" onclick="selectCurrency('BNB')">
+                    <div class="currency-info">
+                        <div class="currency-icon" style="background: #F3BA2F;">
+                            <span style="font-weight: bold; color: white;">BNB</span>
+                        </div>
+                        <div class="currency-details">
+                            <div class="currency-name">BNB</div>
+                            <div class="currency-desc">Binance Coin</div>
+                        </div>
+                    </div>
+                    <div class="currency-check" id="currencyBNB">
+                        <i class="fas fa-check"></i>
+                    </div>
+                </div>
+                
+                <div class="currency-option" onclick="selectCurrency('XRP')">
+                    <div class="currency-info">
+                        <div class="currency-icon" style="background: #00AAE4;">
+                            <span style="font-weight: bold; color: white;">XRP</span>
+                        </div>
+                        <div class="currency-details">
+                            <div class="currency-name">XRP</div>
+                            <div class="currency-desc">Ripple</div>
+                        </div>
+                    </div>
+                    <div class="currency-check" id="currencyXRP">
+                        <i class="fas fa-check"></i>
+                    </div>
+                </div>
+                
+                <div class="currency-option" onclick="selectCurrency('ADA')">
+                    <div class="currency-info">
+                        <div class="currency-icon" style="background: #0033AD;">
+                            <span style="font-weight: bold; color: white;">ADA</span>
+                        </div>
+                        <div class="currency-details">
+                            <div class="currency-name">ADA</div>
+                            <div class="currency-desc">Cardano</div>
+                        </div>
+                    </div>
+                    <div class="currency-check" id="currencyADA">
+                        <i class="fas fa-check"></i>
+                    </div>
+                </div>
+                
+                <div class="currency-option" onclick="selectCurrency('DOGE')">
+                    <div class="currency-info">
+                        <div class="currency-icon" style="background: #C2A633;">
+                            <span style="font-weight: bold; color: white;">DOGE</span>
+                        </div>
+                        <div class="currency-details">
+                            <div class="currency-name">DOGE</div>
+                            <div class="currency-desc">Dogecoin</div>
+                        </div>
+                    </div>
+                    <div class="currency-check" id="currencyDOGE">
+                        <i class="fas fa-check"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <script>
         // Search functionality
         let searchActive = false;
@@ -2305,12 +2861,16 @@
             const searchBtn = document.querySelector('.search-btn');
             const searchClose = document.querySelector('.search-close');
             const searchResults = document.getElementById('searchResults');
+            const headerActions = document.querySelector('.header-actions');
+            const searchBackdrop = document.getElementById('searchBackdrop');
             
             if (!searchActive) {
                 // Open search
                 searchInput.classList.add('active');
                 searchBtn.classList.add('active');
                 searchClose.classList.add('active');
+                headerActions.classList.add('search-active');
+                searchBackdrop.classList.add('active');
                 searchInput.focus();
                 searchActive = true;
             } else {
@@ -2324,11 +2884,15 @@
             const searchBtn = document.querySelector('.search-btn');
             const searchClose = document.querySelector('.search-close');
             const searchResults = document.getElementById('searchResults');
+            const headerActions = document.querySelector('.header-actions');
+            const searchBackdrop = document.getElementById('searchBackdrop');
             
             searchInput.classList.remove('active');
             searchBtn.classList.remove('active');
             searchClose.classList.remove('active');
             searchResults.classList.remove('active');
+            headerActions.classList.remove('search-active');
+            searchBackdrop.classList.remove('active');
             searchInput.value = '';
             searchActive = false;
         }
@@ -2399,6 +2963,13 @@
             }
         });
         
+        // Close search when clicking backdrop
+        document.getElementById('searchBackdrop').addEventListener('click', function() {
+            if (searchActive) {
+                closeSearch();
+            }
+        });
+        
         // Tab switching
         document.querySelectorAll('.nav-tab').forEach(tab => {
             tab.addEventListener('click', function() {
@@ -2425,8 +2996,13 @@
                 const navLabel = this.querySelector('.nav-label').textContent;
                 if (navLabel === 'Profile') {
                     window.location.href = 'profile.html';
+                } else if (navLabel === 'Orders') {
+                    window.location.href = 'orders.html';
+                } else if (navLabel === 'Ads') {
+                    window.location.href = 'ads.html';
+                } else if (navLabel === 'Chat') {
+                    window.location.href = 'chat.html';
                 }
-                // Add more navigation handlers here for other tabs as needed
             });
         });
         
@@ -2445,16 +3021,55 @@
         let currentLanguage = 'en';
         let currentCurrency = 'USD';
         
+        // Separate language toggle function for the language button
+        function toggleLanguage() {
+            const body = document.body;
+            const html = document.documentElement;
+            
+            if (currentLanguage === 'en') {
+                // Switch to Arabic
+                currentLanguage = 'ar';
+                body.setAttribute('dir', 'rtl');
+                html.setAttribute('dir', 'rtl');
+                body.classList.add('rtl');
+                
+                // Update all text content to Arabic
+                updateTextToArabic();
+                
+                // Update language button text
+                const langBtn = document.querySelector('.language-btn');
+                if (langBtn) langBtn.textContent = 'العربية';
+            } else {
+                // Switch to English
+                currentLanguage = 'en';
+                body.removeAttribute('dir');
+                html.removeAttribute('dir');
+                body.classList.remove('rtl');
+                
+                // Update all text content to English
+                updateTextToEnglish();
+                
+                // Update language button text
+                const langBtn = document.querySelector('.language-btn');
+                if (langBtn) langBtn.textContent = 'EN';
+            }
+            
+            // Save language preference
+            localStorage.setItem('language', currentLanguage);
+        }
+        
         function toggleLanguageCurrency() {
             const toggleBtn = document.getElementById('langCurrencyToggle');
             const toggleText = document.getElementById('toggleText');
             const body = document.body;
+            const html = document.documentElement;
             
             if (currentLanguage === 'en') {
                 // Switch to Arabic and IQD
                 currentLanguage = 'ar';
                 currentCurrency = 'IQD';
                 body.setAttribute('dir', 'rtl');
+                html.setAttribute('dir', 'rtl');
                 body.classList.add('rtl');
                 toggleText.textContent = 'عربي/د.ع';
                 toggleBtn.classList.add('active');
@@ -2467,6 +3082,7 @@
                 currentLanguage = 'en';
                 currentCurrency = 'USD';
                 body.removeAttribute('dir');
+                html.removeAttribute('dir');
                 body.classList.remove('rtl');
                 toggleText.textContent = 'EN/USD';
                 toggleBtn.classList.remove('active');
@@ -2484,9 +3100,9 @@
         function updateTextToArabic() {
             // Update navigation tabs
             const navTabs = document.querySelectorAll('.nav-tab');
-            navTabs[0].textContent = 'P2P';
+            navTabs[0].textContent = 'تداول مباشر';
             navTabs[1].textContent = 'سريع';
-            navTabs[2].textContent = 'كتلة تجارة';
+            navTabs[2].textContent = 'تداول بالجملة';
             
             // Update buy/sell tabs
             const tabBtns = document.querySelectorAll('.tab-btn');
@@ -2499,22 +3115,35 @@
             if (filterDropdowns[2]) filterDropdowns[2].textContent = 'طرق الدفع';
             
             // Update search placeholder
-            document.getElementById('searchInput').placeholder = 'البحث عن التجار...';
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) searchInput.placeholder = 'البحث عن التجار...';
             
-            // Update banner title
+            // Update banner title and subtitle
             const bannerTitle = document.querySelector('.banner-title');
-            if (bannerTitle) bannerTitle.textContent = 'تداول أذكى مع P2P API';
+            if (bannerTitle) bannerTitle.textContent = 'تداول أذكى مع واجهة برمجة التطبيقات';
+            
+            const bannerSubtitle = document.querySelector('.banner-subtitle');
+            if (bannerSubtitle) bannerSubtitle.textContent = 'ابدأ التداول بسهولة وأمان';
             
             // Update bottom navigation
             const navLabels = document.querySelectorAll('.nav-label');
-            navLabels[0].textContent = 'P2P';
+            navLabels[0].textContent = 'تداول مباشر';
             navLabels[1].textContent = 'الطلبات';
             navLabels[2].textContent = 'الإعلانات';
-            navLabels[3].textContent = 'الدردشة';
+            navLabels[3].textContent = 'المحادثات';
             navLabels[4].textContent = 'الملف الشخصي';
+            
+            // Update currency labels
+            updateCurrencyLabelsToArabic();
             
             // Update merchant details
             updateMerchantDetailsToArabic();
+            
+            // Convert all numbers to Arabic numerals
+            convertNumbersToArabic();
+            
+            // Update static text elements
+            updateStaticTextToArabic();
         }
         
         function updateTextToEnglish() {
@@ -2535,11 +3164,15 @@
             if (filterDropdowns[2]) filterDropdowns[2].textContent = 'Payment methods';
             
             // Update search placeholder
-            document.getElementById('searchInput').placeholder = 'Search merchants...';
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) searchInput.placeholder = 'Search merchants...';
             
-            // Update banner title
+            // Update banner title and subtitle
             const bannerTitle = document.querySelector('.banner-title');
             if (bannerTitle) bannerTitle.textContent = 'Trade smarter with P2P API';
+            
+            const bannerSubtitle = document.querySelector('.banner-subtitle');
+            if (bannerSubtitle) bannerSubtitle.textContent = 'Start trading easily and securely';
             
             // Update bottom navigation
             const navLabels = document.querySelectorAll('.nav-label');
@@ -2549,8 +3182,17 @@
             navLabels[3].textContent = 'Chat';
             navLabels[4].textContent = 'Profile';
             
+            // Update currency labels back to English
+            updateCurrencyLabelsToEnglish();
+            
             // Update merchant details
             updateMerchantDetailsToEnglish();
+            
+            // Convert all numbers back to English numerals
+            convertNumbersToEnglish();
+            
+            // Update static text elements
+            updateStaticTextToEnglish();
         }
         
         function updateCurrencyToIQD() {
@@ -2561,17 +3203,43 @@
             // Update price displays
             const priceAmounts = document.querySelectorAll('.price-amount');
             priceAmounts.forEach(price => {
-                if (price.textContent.includes('$')) {
-                    price.textContent = price.textContent.replace('$', 'د.ع ');
+                let text = price.textContent;
+                if (text.includes('$')) {
+                    text = text.replace('$', 'د.ع ');
                 }
+                if (text.includes('USD')) {
+                    text = text.replace('USD', 'د.ع');
+                }
+                // Convert numbers to Arabic
+                const englishToArabic = {
+                    '0': '٠', '1': '١', '2': '٢', '3': '٣', '4': '٤',
+                    '5': '٥', '6': '٦', '7': '٧', '8': '٨', '9': '٩'
+                };
+                for (let eng in englishToArabic) {
+                    text = text.replace(new RegExp(eng, 'g'), englishToArabic[eng]);
+                }
+                price.textContent = text;
             });
             
             // Update order limits
             const orderLimits = document.querySelectorAll('.detail-value');
             orderLimits.forEach(limit => {
-                if (limit.textContent.includes('USD')) {
-                    limit.textContent = limit.textContent.replace('USD', 'د.ع');
+                let text = limit.textContent;
+                if (text.includes('USD')) {
+                    text = text.replace('USD', 'د.ع');
                 }
+                if (text.includes('$')) {
+                    text = text.replace('$', 'د.ع ');
+                }
+                // Convert numbers to Arabic
+                const englishToArabic = {
+                    '0': '٠', '1': '١', '2': '٢', '3': '٣', '4': '٤',
+                    '5': '٥', '6': '٦', '7': '٧', '8': '٨', '9': '٩'
+                };
+                for (let eng in englishToArabic) {
+                    text = text.replace(new RegExp(eng, 'g'), englishToArabic[eng]);
+                }
+                limit.textContent = text;
             });
         }
         
@@ -2583,17 +3251,38 @@
             // Update price displays
             const priceAmounts = document.querySelectorAll('.price-amount');
             priceAmounts.forEach(price => {
-                if (price.textContent.includes('د.ع')) {
-                    price.textContent = price.textContent.replace('د.ع ', '$');
+                let text = price.textContent;
+                if (text.includes('د.ع')) {
+                    text = text.replace('د.ع ', '$');
+                    text = text.replace('د.ع', '$');
                 }
+                // Convert Arabic numbers back to English
+                const arabicToEnglish = {
+                    '٠': '0', '١': '1', '٢': '2', '٣': '3', '٤': '4',
+                    '٥': '5', '٦': '6', '٧': '7', '٨': '8', '٩': '9'
+                };
+                for (let ar in arabicToEnglish) {
+                    text = text.replace(new RegExp(ar, 'g'), arabicToEnglish[ar]);
+                }
+                price.textContent = text;
             });
             
             // Update order limits
             const orderLimits = document.querySelectorAll('.detail-value');
             orderLimits.forEach(limit => {
-                if (limit.textContent.includes('د.ع')) {
-                    limit.textContent = limit.textContent.replace('د.ع', 'USD');
+                let text = limit.textContent;
+                if (text.includes('د.ع')) {
+                    text = text.replace('د.ع', 'USD');
                 }
+                // Convert Arabic numbers back to English
+                const arabicToEnglish = {
+                    '٠': '0', '١': '1', '٢': '2', '٣': '3', '٤': '4',
+                    '٥': '5', '٦': '6', '٧': '7', '٨': '8', '٩': '9'
+                };
+                for (let ar in arabicToEnglish) {
+                    text = text.replace(new RegExp(ar, 'g'), arabicToEnglish[ar]);
+                }
+                limit.textContent = text;
             });
         }
         
@@ -2601,9 +3290,15 @@
             // Update detail labels
             const detailItems = document.querySelectorAll('.detail-item');
             detailItems.forEach(item => {
-                if (item.textContent === 'Available:') item.textContent = 'متاح:';
-                if (item.textContent === 'Order limit:') item.textContent = 'حد الطلب:';
-                if (item.textContent === 'Payment:') item.textContent = 'الدفع:';
+                const text = item.textContent.trim();
+                if (text === 'Available:' || text === 'Available') item.textContent = 'متاح:';
+                if (text === 'Order limit:' || text === 'Order limit') item.textContent = 'حد الطلب:';
+                if (text === 'Payment:' || text === 'Payment') item.textContent = 'الدفع:';
+                if (text === 'Orders' || text === 'Orders:') item.textContent = 'الطلبات:';
+                if (text === 'Completion' || text === 'Completion:') item.textContent = 'معدل الإنجاز:';
+                if (text === 'Payment time' || text === 'Payment time:') item.textContent = 'وقت الدفع:';
+                if (text === 'transactions') item.textContent = 'معاملات';
+                if (text === 'completion') item.textContent = 'إنجاز';
             });
             
             // Update action buttons
@@ -2611,21 +3306,285 @@
             buyBtns.forEach(btn => {
                 btn.textContent = 'شراء';
             });
+            
+            const sellBtns = document.querySelectorAll('.sell-btn');
+            sellBtns.forEach(btn => {
+                btn.textContent = 'بيع';
+            });
+            
+            // Update price labels
+            const priceLabels = document.querySelectorAll('.price-label');
+            priceLabels.forEach(label => {
+                let text = label.textContent;
+                if (text.includes('USDT')) {
+                    text = text.replace('USDT', 'تيثر');
+                }
+                if (text.includes('USD')) {
+                    text = text.replace('USD', 'دولار');
+                }
+                if (text.includes('IQD')) {
+                    text = text.replace('IQD', 'د.ع');
+                }
+                label.textContent = text;
+            });
+        }
+        
+        // Function to convert English numbers to Arabic numerals
+        function convertNumbersToArabic() {
+            const englishToArabic = {
+                '0': '٠', '1': '١', '2': '٢', '3': '٣', '4': '٤',
+                '5': '٥', '6': '٦', '7': '٧', '8': '٨', '9': '٩'
+            };
+            
+            // Convert numbers in price amounts, detail values, and other numeric content
+            const numericElements = document.querySelectorAll('.price-amount, .detail-value, .merchant-stats, .banner-title, .banner-subtitle');
+            numericElements.forEach(element => {
+                let text = element.textContent;
+                let hasNumbers = /\d/.test(text);
+                
+                if (hasNumbers) {
+                    for (let eng in englishToArabic) {
+                        text = text.replace(new RegExp(eng, 'g'), englishToArabic[eng]);
+                    }
+                    element.textContent = text;
+                }
+            });
+            
+            // Also convert numbers in merchant names and other text content
+            const textElements = document.querySelectorAll('.merchant-name, .verification-badge, .result-name, .result-details');
+            textElements.forEach(element => {
+                let text = element.textContent;
+                let hasNumbers = /\d/.test(text);
+                
+                if (hasNumbers) {
+                    for (let eng in englishToArabic) {
+                        text = text.replace(new RegExp(eng, 'g'), englishToArabic[eng]);
+                    }
+                    element.textContent = text;
+                }
+            });
+        }
+        
+        // Function to convert Arabic numbers back to English
+        function convertNumbersToEnglish() {
+            const arabicToEnglish = {
+                '٠': '0', '١': '1', '٢': '2', '٣': '3', '٤': '4',
+                '٥': '5', '٦': '6', '٧': '7', '٨': '8', '٩': '9'
+            };
+            
+            const numericElements = document.querySelectorAll('.price-amount, .detail-value, .merchant-stats, .banner-title, .banner-subtitle');
+            numericElements.forEach(element => {
+                let text = element.textContent;
+                let hasArabicNumbers = /[٠-٩]/.test(text);
+                
+                if (hasArabicNumbers) {
+                    for (let ar in arabicToEnglish) {
+                        text = text.replace(new RegExp(ar, 'g'), arabicToEnglish[ar]);
+                    }
+                    element.textContent = text;
+                }
+            });
+            
+            const textElements = document.querySelectorAll('.merchant-name, .verification-badge, .result-name, .result-details');
+            textElements.forEach(element => {
+                let text = element.textContent;
+                let hasArabicNumbers = /[٠-٩]/.test(text);
+                
+                if (hasArabicNumbers) {
+                    for (let ar in arabicToEnglish) {
+                        text = text.replace(new RegExp(ar, 'g'), arabicToEnglish[ar]);
+                    }
+                    element.textContent = text;
+                }
+            });
+        }
+        
+        // Function to update currency labels to Arabic
+        function updateCurrencyLabelsToArabic() {
+            const currencyElements = document.querySelectorAll('.currency-code, .currency-name');
+            currencyElements.forEach(element => {
+                const text = element.textContent.trim();
+                switch(text) {
+                    case 'IQD': element.textContent = 'د.ع'; break;
+                    case 'Iraqi Dinar': element.textContent = 'الدينار العراقي'; break;
+                    case 'USD': element.textContent = 'د.أ'; break;
+                    case 'US Dollar': element.textContent = 'الدولار الأمريكي'; break;
+                    case 'EUR': element.textContent = 'يورو'; break;
+                    case 'Euro': element.textContent = 'اليورو'; break;
+                    case 'SAR': element.textContent = 'ر.س'; break;
+                    case 'Saudi Riyal': element.textContent = 'الريال السعودي'; break;
+                    case 'AED': element.textContent = 'د.إ'; break;
+                    case 'UAE Dirham': element.textContent = 'الدرهم الإماراتي'; break;
+                    case 'KWD': element.textContent = 'د.ك'; break;
+                    case 'Kuwaiti Dinar': element.textContent = 'الدينار الكويتي'; break;
+                    case 'QAR': element.textContent = 'ر.ق'; break;
+                    case 'Qatari Riyal': element.textContent = 'الريال القطري'; break;
+                }
+            });
+        }
+        
+        // Function to update static text elements to Arabic
+        function updateStaticTextToArabic() {
+            // Update any remaining English text
+            const staticTexts = {
+                'Buy': 'شراء',
+                'Sell': 'بيع',
+                'Amount': 'المبلغ',
+                'Payment methods': 'طرق الدفع',
+                'All payments': 'جميع طرق الدفع',
+                'Bank transfer': 'تحويل بنكي',
+                'PayPal': 'باي بال',
+                'Wise': 'وايز',
+                'Perfect Money': 'بيرفكت موني',
+                'Payeer': 'بايير',
+                'Verified': 'موثق',
+                'Star': 'نجمة',
+                'Online': 'متصل',
+                'Offline': 'غير متصل',
+                'minutes': 'دقائق',
+                'hours': 'ساعات',
+                'days': 'أيام',
+                'min': 'د',
+                'max': 'حد أقصى',
+                'Available': 'متاح',
+                'Order limit': 'حد الطلب',
+                'Payment time': 'وقت الدفع',
+                'Price': 'السعر',
+                'Total': 'المجموع',
+                'Fee': 'الرسوم',
+                'Express': 'سريع',
+                'Block trade': 'تداول بالجملة',
+                'P2P': 'تداول مباشر',
+                'Orders': 'الطلبات',
+                'Ads': 'الإعلانات',
+                'Chat': 'المحادثات',
+                'Profile': 'الملف الشخصي'
+            };
+            
+            // Apply translations to various elements
+            document.querySelectorAll('span, div, button, label').forEach(element => {
+                if (element.children.length === 0 && element.textContent.trim()) {
+                    const text = element.textContent.trim();
+                    if (staticTexts[text]) {
+                        element.textContent = staticTexts[text];
+                    }
+                }
+            });
         }
         
         function updateMerchantDetailsToEnglish() {
             // Update detail labels
             const detailItems = document.querySelectorAll('.detail-item');
             detailItems.forEach(item => {
-                if (item.textContent === 'متاح:') item.textContent = 'Available:';
-                if (item.textContent === 'حد الطلب:') item.textContent = 'Order limit:';
-                if (item.textContent === 'الدفع:') item.textContent = 'Payment:';
+                const text = item.textContent.trim();
+                if (text === 'متاح:' || text === 'متاح') item.textContent = 'Available:';
+                if (text === 'حد الطلب:' || text === 'حد الطلب') item.textContent = 'Order limit:';
+                if (text === 'الدفع:' || text === 'الدفع') item.textContent = 'Payment:';
+                if (text === 'الطلبات:' || text === 'الطلبات') item.textContent = 'Orders:';
+                if (text === 'معدل الإنجاز:' || text === 'معدل الإنجاز') item.textContent = 'Completion:';
+                if (text === 'وقت الدفع:' || text === 'وقت الدفع') item.textContent = 'Payment time:';
+                if (text === 'معاملات') item.textContent = 'transactions';
+                if (text === 'إنجاز') item.textContent = 'completion';
             });
             
             // Update action buttons
             const buyBtns = document.querySelectorAll('.buy-btn');
             buyBtns.forEach(btn => {
                 btn.textContent = 'Buy';
+            });
+            
+            const sellBtns = document.querySelectorAll('.sell-btn');
+            sellBtns.forEach(btn => {
+                btn.textContent = 'Sell';
+            });
+            
+            // Update price labels
+            const priceLabels = document.querySelectorAll('.price-label');
+            priceLabels.forEach(label => {
+                let text = label.textContent;
+                if (text.includes('تيثر')) {
+                    text = text.replace('تيثر', 'USDT');
+                }
+                if (text.includes('دولار')) {
+                    text = text.replace('دولار', 'USD');
+                }
+                if (text.includes('د.ع')) {
+                    text = text.replace('د.ع', 'IQD');
+                }
+                label.textContent = text;
+            });
+        }
+        
+        // Function to update currency labels to English
+        function updateCurrencyLabelsToEnglish() {
+            const currencyElements = document.querySelectorAll('.currency-code, .currency-name');
+            currencyElements.forEach(element => {
+                const text = element.textContent.trim();
+                switch(text) {
+                    case 'د.ع': element.textContent = 'IQD'; break;
+                    case 'الدينار العراقي': element.textContent = 'Iraqi Dinar'; break;
+                    case 'د.أ': element.textContent = 'USD'; break;
+                    case 'الدولار الأمريكي': element.textContent = 'US Dollar'; break;
+                    case 'يورو': element.textContent = 'EUR'; break;
+                    case 'اليورو': element.textContent = 'Euro'; break;
+                    case 'ر.س': element.textContent = 'SAR'; break;
+                    case 'الريال السعودي': element.textContent = 'Saudi Riyal'; break;
+                    case 'د.إ': element.textContent = 'AED'; break;
+                    case 'الدرهم الإماراتي': element.textContent = 'UAE Dirham'; break;
+                    case 'د.ك': element.textContent = 'KWD'; break;
+                    case 'الدينار الكويتي': element.textContent = 'Kuwaiti Dinar'; break;
+                    case 'ر.ق': element.textContent = 'QAR'; break;
+                    case 'الريال القطري': element.textContent = 'Qatari Riyal'; break;
+                }
+            });
+        }
+        
+        // Function to update static text elements to English
+        function updateStaticTextToEnglish() {
+            // Reverse Arabic translations
+            const arabicToEnglish = {
+                'شراء': 'Buy',
+                'بيع': 'Sell',
+                'المبلغ': 'Amount',
+                'طرق الدفع': 'Payment methods',
+                'جميع طرق الدفع': 'All payments',
+                'تحويل بنكي': 'Bank transfer',
+                'باي بال': 'PayPal',
+                'وايز': 'Wise',
+                'بيرفكت موني': 'Perfect Money',
+                'بايير': 'Payeer',
+                'موثق': 'Verified',
+                'نجمة': 'Star',
+                'متصل': 'Online',
+                'غير متصل': 'Offline',
+                'دقائق': 'minutes',
+                'ساعات': 'hours',
+                'أيام': 'days',
+                'د': 'min',
+                'حد أقصى': 'max',
+                'متاح': 'Available',
+                'حد الطلب': 'Order limit',
+                'وقت الدفع': 'Payment time',
+                'السعر': 'Price',
+                'المجموع': 'Total',
+                'الرسوم': 'Fee',
+                'سريع': 'Express',
+                'تداول بالجملة': 'Block trade',
+                'تداول مباشر': 'P2P',
+                'الطلبات': 'Orders',
+                'الإعلانات': 'Ads',
+                'المحادثات': 'Chat',
+                'الملف الشخصي': 'Profile'
+            };
+            
+            // Apply reverse translations to various elements
+            document.querySelectorAll('span, div, button, label').forEach(element => {
+                if (element.children.length === 0 && element.textContent.trim()) {
+                    const text = element.textContent.trim();
+                    if (arabicToEnglish[text]) {
+                        element.textContent = arabicToEnglish[text];
+                    }
+                }
             });
         }
         
@@ -3301,6 +4260,259 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Reset amount on page load
             resetAmount();
+        });
+        
+        // Currency Selector Functions
+        let selectedCrypto = 'USDT';
+        
+        function openCurrencySelector() {
+            const overlay = document.getElementById('currencyOverlay');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            // Update check marks
+            updateCurrencyChecks();
+        }
+        
+        function closeCurrencySelector() {
+            const overlay = document.getElementById('currencyOverlay');
+            const container = overlay.querySelector('.currency-container');
+            
+            // Add closing animation
+            container.style.transform = 'translateY(100%)';
+            
+            setTimeout(() => {
+                overlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+                container.style.transform = '';
+            }, 300);
+        }
+        
+        function selectCurrency(currency) {
+            selectedCrypto = currency;
+            
+            // Update the display
+            const selectedCryptoSpan = document.getElementById('selectedCrypto');
+            const iconColors = {
+                'USDT': '#26A17B',
+                'TRX': '#FF0420',
+                'BTC': '#F7931A',
+                'ETH': '#627EEA',
+                'BNB': '#F3BA2F',
+                'XRP': '#00AAE4',
+                'ADA': '#0033AD',
+                'DOGE': '#C2A633'
+            };
+            
+            selectedCryptoSpan.innerHTML = `<i class="fas fa-coins" style="color: ${iconColors[currency] || 'var(--color-buy)'}; margin-right: 4px;"></i>${currency}`;
+            
+            // Update check marks
+            updateCurrencyChecks();
+            
+            // Close modal
+            closeCurrencySelector();
+            
+            // Save preference
+            localStorage.setItem('selectedCrypto', currency);
+            
+            // Show notification
+            showCryptoNotification(currency);
+            
+            // Update merchant listings based on selected crypto
+            updateMerchantListings(currency);
+        }
+        
+        function updateCurrencyChecks() {
+            // Remove all active checks
+            document.querySelectorAll('.currency-check').forEach(check => {
+                check.classList.remove('active');
+            });
+            
+            // Add active check to selected currency
+            const activeCheck = document.getElementById(`currency${selectedCrypto}`);
+            if (activeCheck) {
+                activeCheck.classList.add('active');
+            }
+        }
+        
+        function showCryptoNotification(crypto) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 80px;
+                right: 20px;
+                background: var(--bg-card);
+                color: var(--text-primary);
+                padding: 12px 20px;
+                border-radius: 8px;
+                border-left: 4px solid var(--color-buy);
+                z-index: 10000;
+                font-size: 14px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+                transform: translateX(400px);
+                transition: transform 0.3s ease;
+            `;
+            notification.textContent = `Switched to ${crypto} trading`;
+            
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.transform = 'translateX(400px)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+        
+        function updateMerchantListings(crypto) {
+            // This would typically fetch new data from the server
+            // For now, we'll just update the available amounts
+            const merchantCards = document.querySelectorAll('.merchant-card');
+            merchantCards.forEach(card => {
+                const availableElement = card.querySelector('.detail-value');
+                if (availableElement && availableElement.textContent.includes('USDT')) {
+                    availableElement.textContent = availableElement.textContent.replace('USDT', crypto);
+                }
+            });
+        }
+        
+        // Initialize selected crypto on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedCrypto = localStorage.getItem('selectedCrypto') || 'USDT';
+            if (savedCrypto !== 'USDT') {
+                selectCurrency(savedCrypto);
+            }
+            
+            // Initialize RTL support and load saved language preferences
+            initializeLanguageSupport();
+            
+            // Setup currency selector interactions
+            setupCurrencySelectorInteractions();
+        });
+        
+        // Setup currency selector interactions
+        function setupCurrencySelectorInteractions() {
+            // Click outside to close
+            const overlay = document.getElementById('currencyOverlay');
+            overlay.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeCurrencySelector();
+                }
+            });
+            
+            // Swipe to close functionality
+            let touchStartY = 0;
+            let touchEndY = 0;
+            let isDragging = false;
+            
+            const currencyContainer = overlay.querySelector('.currency-container');
+            const currencyHeader = overlay.querySelector('.currency-header');
+            
+            if (currencyHeader) {
+                currencyHeader.addEventListener('touchstart', function(e) {
+                    touchStartY = e.touches[0].clientY;
+                    isDragging = true;
+                    currencyContainer.style.transition = 'none';
+                }, { passive: true });
+                
+                currencyHeader.addEventListener('touchmove', function(e) {
+                    if (!isDragging) return;
+                    
+                    touchEndY = e.touches[0].clientY;
+                    const deltaY = touchEndY - touchStartY;
+                    
+                    if (deltaY > 0) {
+                        currencyContainer.style.transform = `translateY(${deltaY}px)`;
+                    }
+                }, { passive: true });
+                
+                currencyHeader.addEventListener('touchend', function(e) {
+                    if (!isDragging) return;
+                    
+                    isDragging = false;
+                    currencyContainer.style.transition = 'transform 0.3s ease';
+                    
+                    const deltaY = touchEndY - touchStartY;
+                    
+                    // If swiped down more than 100px, close the modal
+                    if (deltaY > 100) {
+                        closeCurrencySelector();
+                    } else {
+                        currencyContainer.style.transform = 'translateY(0)';
+                    }
+                    
+                    touchStartY = 0;
+                    touchEndY = 0;
+                }, { passive: true });
+            }
+        }
+        
+        // Initialize language support on page load
+        function initializeLanguageSupport() {
+            const savedLanguage = localStorage.getItem('language') || 'en';
+            const savedCurrency = localStorage.getItem('currency') || 'USD';
+            const body = document.body;
+            const html = document.documentElement;
+            
+            // Set initial language and currency
+            currentLanguage = savedLanguage;
+            currentCurrency = savedCurrency;
+            
+            // Apply RTL if Arabic was previously selected
+            if (savedLanguage === 'ar') {
+                body.setAttribute('dir', 'rtl');
+                html.setAttribute('dir', 'rtl');
+                body.classList.add('rtl');
+                updateTextToArabic();
+                
+                // Update language button
+                const langBtn = document.querySelector('.language-btn');
+                if (langBtn) langBtn.textContent = 'العربية';
+                
+                // Update language/currency toggle if it's Arabic with IQD
+                if (savedCurrency === 'IQD') {
+                    const toggleBtn = document.getElementById('langCurrencyToggle');
+                    const toggleText = document.getElementById('toggleText');
+                    if (toggleBtn && toggleText) {
+                        toggleText.textContent = 'عربي/د.ع';
+                        toggleBtn.classList.add('active');
+                    }
+                    updateCurrencyToIQD();
+                }
+            } else {
+                // Ensure LTR for English
+                body.removeAttribute('dir');
+                html.removeAttribute('dir');
+                body.classList.remove('rtl');
+                updateTextToEnglish();
+                
+                // Update language button
+                const langBtn = document.querySelector('.language-btn');
+                if (langBtn) langBtn.textContent = 'EN';
+                
+                // Update currency if USD
+                if (savedCurrency === 'USD') {
+                    updateCurrencyToUSD();
+                }
+            }
+        }
+        
+        // Nav tab switching for trading types
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const tabText = this.textContent.trim();
+                if (tabText === 'Express' || tabText === 'سريع') {
+                    window.location.href = 'express.html';
+                } else if (tabText === 'Block trade' || tabText === 'كتلة تجارة') {
+                    window.location.href = 'blocktrade.html';
+                }
+            });
         });
     </script>
 </body>
