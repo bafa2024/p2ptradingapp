@@ -1,0 +1,430 @@
+/* 
+ * Mobile Optimization CSS for IQX P2P Trading Platform
+ * This file provides comprehensive mobile-first responsive design enhancements
+ */
+
+/* Mobile-first base optimizations */
+* {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+}
+
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+}
+
+/* Enhanced touch targets - minimum 44px */
+.btn, 
+button, 
+.form-control, 
+.form-select,
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+    min-height: 44px;
+    min-width: 44px;
+}
+
+/* Mobile-optimized form inputs */
+.form-control,
+.form-select,
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="tel"],
+textarea {
+    font-size: 16px; /* Prevents zoom on iOS */
+    border-radius: 12px;
+    padding: 14px 16px;
+    transition: all 0.2s ease;
+}
+
+.form-control:focus,
+.form-select:focus,
+input:focus,
+textarea:focus {
+    outline: 2px solid var(--color-primary, #3B82F6);
+    outline-offset: 2px;
+    border-color: var(--color-primary, #3B82F6);
+}
+
+/* Enhanced buttons for touch */
+.btn {
+    font-size: 16px;
+    padding: 14px 24px;
+    border-radius: 12px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+.btn-primary {
+    background: var(--color-primary, #3B82F6);
+    color: white;
+}
+
+.btn-secondary {
+    background: var(--bg-card, #242530);
+    color: var(--text-primary, #FFFFFF);
+    border: 1px solid var(--border-color, #2B2F36);
+}
+
+/* Mobile navigation optimizations */
+.nav-item,
+.nav-link {
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 16px;
+}
+
+/* Modal optimizations for mobile */
+.modal-content {
+    border-radius: 16px;
+    border: none;
+}
+
+.modal-header {
+    padding: 20px;
+    border-bottom: 1px solid var(--border-color, #2B2F36);
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.modal-footer {
+    padding: 20px;
+    border-top: 1px solid var(--border-color, #2B2F36);
+}
+
+/* Card components mobile optimization */
+.card {
+    border-radius: 16px;
+    border: 1px solid var(--border-color, #2B2F36);
+    background: var(--bg-card, #242530);
+}
+
+.card-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border-color, #2B2F36);
+}
+
+.card-body {
+    padding: 20px;
+}
+
+/* Table responsiveness */
+.table-responsive {
+    -webkit-overflow-scrolling: touch;
+}
+
+.table {
+    font-size: 14px;
+}
+
+.table td,
+.table th {
+    padding: 12px 8px;
+    vertical-align: middle;
+}
+
+/* Loading states */
+.loading-spinner {
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--border-color, #2B2F36);
+    border-top: 2px solid var(--color-primary, #3B82F6);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Toast notifications */
+.toast {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive breakpoints */
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+    .btn {
+        padding: 12px 20px;
+    }
+    
+    .form-control,
+    .form-select {
+        padding: 12px 16px;
+    }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+    .btn {
+        min-height: 40px;
+        padding: 10px 20px;
+        font-size: 15px;
+    }
+    
+    .form-control,
+    .form-select {
+        min-height: 40px;
+        padding: 10px 16px;
+        font-size: 15px;
+    }
+}
+
+/* Mobile-specific styles */
+@media (max-width: 767.98px) {
+    /* Full-width buttons on mobile */
+    .btn-mobile-full {
+        width: 100%;
+        margin-bottom: 8px;
+    }
+    
+    /* Larger touch targets */
+    .btn,
+    .form-control,
+    .form-select {
+        min-height: 48px;
+        font-size: 16px;
+    }
+    
+    /* Modal adjustments */
+    .modal-dialog {
+        margin: 16px;
+        max-width: calc(100% - 32px);
+    }
+    
+    .modal-content {
+        max-height: calc(100vh - 32px);
+        overflow-y: auto;
+    }
+    
+    /* Card spacing */
+    .card {
+        margin-bottom: 16px;
+    }
+    
+    .card-body {
+        padding: 16px;
+    }
+    
+    /* Table mobile view */
+    .table-mobile-stack {
+        display: block;
+    }
+    
+    .table-mobile-stack thead {
+        display: none;
+    }
+    
+    .table-mobile-stack tbody,
+    .table-mobile-stack tr,
+    .table-mobile-stack td {
+        display: block;
+        width: 100%;
+    }
+    
+    .table-mobile-stack tr {
+        border: 1px solid var(--border-color, #2B2F36);
+        border-radius: 12px;
+        margin-bottom: 12px;
+        padding: 16px;
+        background: var(--bg-card, #242530);
+    }
+    
+    .table-mobile-stack td {
+        border: none;
+        padding: 8px 0;
+        text-align: left;
+    }
+    
+    .table-mobile-stack td:before {
+        content: attr(data-label) ": ";
+        font-weight: 600;
+        color: var(--text-secondary, #B7BDC6);
+    }
+}
+
+/* Extra small devices */
+@media (max-width: 575.98px) {
+    .btn {
+        min-height: 52px;
+        font-size: 16px;
+        padding: 16px 24px;
+    }
+    
+    .form-control,
+    .form-select {
+        min-height: 52px;
+        font-size: 16px;
+        padding: 16px 18px;
+    }
+    
+    .modal-dialog {
+        margin: 8px;
+        max-width: calc(100% - 16px);
+    }
+    
+    .card-body {
+        padding: 12px;
+    }
+}
+
+/* Landscape orientation on mobile */
+@media (max-width: 768px) and (orientation: landscape) {
+    .modal-content {
+        max-height: calc(100vh - 16px);
+    }
+    
+    .btn {
+        min-height: 40px;
+        padding: 10px 20px;
+    }
+    
+    .form-control,
+    .form-select {
+        min-height: 40px;
+        padding: 10px 16px;
+    }
+}
+
+/* Touch device optimizations */
+@media (pointer: coarse) {
+    .btn:hover {
+        transform: scale(1.02);
+    }
+    
+    .btn:active {
+        transform: scale(0.98);
+    }
+    
+    .card:active {
+        transform: scale(0.99);
+    }
+    
+    /* Enhanced touch feedback */
+    .clickable:active,
+    .btn:active,
+    .nav-link:active {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .btn {
+        border: 2px solid currentColor;
+    }
+    
+    .form-control,
+    .form-select {
+        border: 2px solid currentColor;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Dark mode optimizations */
+@media (prefers-color-scheme: dark) {
+    .btn-light {
+        background: var(--bg-card, #242530);
+        color: var(--text-primary, #FFFFFF);
+        border: 1px solid var(--border-color, #2B2F36);
+    }
+}
+
+/* Print styles */
+@media print {
+    .btn,
+    .modal,
+    .toast,
+    .nav,
+    .navbar {
+        display: none !important;
+    }
+    
+    .card {
+        border: 1px solid #000;
+        break-inside: avoid;
+    }
+}
+
+/* Utility classes for mobile */
+.mobile-only {
+    display: block;
+}
+
+.desktop-only {
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .mobile-only {
+        display: none;
+    }
+    
+    .desktop-only {
+        display: block;
+    }
+}
+
+/* Safe area insets for notched devices */
+.safe-area-top {
+    padding-top: env(safe-area-inset-top);
+}
+
+.safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+}
+
+.safe-area-left {
+    padding-left: env(safe-area-inset-left);
+}
+
+.safe-area-right {
+    padding-right: env(safe-area-inset-right);
+}
+
+/* PWA status bar optimization */
+.status-bar-height {
+    height: env(safe-area-inset-top);
+    background: var(--bg-primary, #0B0E11);
+}

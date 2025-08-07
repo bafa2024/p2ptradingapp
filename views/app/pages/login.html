@@ -2,9 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
     <title>IQX - Login</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="apple-touch-icon" href="assets/logo.svg">
     
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -61,11 +67,15 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
         }
         
         html {
             font-size: 16px;
             height: 100%;
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
         }
         
         body {
@@ -77,6 +87,8 @@
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
         }
         
         /* Main Layout */
@@ -472,55 +484,57 @@
         
         /* Responsive Design */
         @media (max-width: 1024px) {
-            .login-container {
+            .container {
                 grid-template-columns: 1fr;
-                gap: var(--spacing-2xl);
+                gap: 0;
             }
             
             .branding-section {
-                order: 1;
-                padding: var(--spacing-xl);
+                padding: var(--spacing-2xl) var(--spacing-lg);
+                text-align: center;
             }
             
             .form-section {
-                order: 2;
-            }
-            
-            .app-title {
-                font-size: 2.5rem;
+                padding: var(--spacing-xl) var(--spacing-lg);
             }
         }
         
         @media (max-width: 768px) {
-            .login-page {
-                padding: var(--spacing-md);
+            .branding-section {
+                padding: var(--spacing-xl) var(--spacing-lg);
             }
             
-            .form-card {
-                padding: var(--spacing-2xl);
-            }
-            
-            .social-login {
-                grid-template-columns: 1fr;
-            }
-            
-            .form-options {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: var(--spacing-md);
+            .form-section {
+                padding: var(--spacing-lg);
             }
             
             .app-title {
-                font-size: 2rem;
+                font-size: 2.25rem;
             }
             
-            .logo-container {
-                width: 100px;
-                height: 100px;
+            .form-title {
+                font-size: 1.75rem;
             }
             
-            .logo-icon {
-                font-size: 2.5rem;
+            /* Enhanced touch targets for mobile */
+            .form-input {
+                min-height: 48px;
+                font-size: 16px; /* Prevents zoom on iOS */
+                padding: 14px 18px;
+            }
+            
+            .form-button {
+                min-height: 48px;
+                font-size: 16px;
+                padding: 14px 24px;
+            }
+            
+            .link-button {
+                min-height: 44px;
+                padding: 10px 16px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
             }
         }
         
@@ -531,18 +545,147 @@
             
             .form-card {
                 padding: var(--spacing-xl);
+                margin: var(--spacing-sm);
             }
             
             .branding-section {
                 padding: var(--spacing-lg);
+                min-height: auto;
             }
             
             .app-title {
                 font-size: 1.75rem;
+                line-height: 1.2;
             }
             
             .form-title {
                 font-size: 1.5rem;
+                margin-bottom: var(--spacing-lg);
+            }
+            
+            .app-subtitle {
+                font-size: 1rem;
+                margin-bottom: var(--spacing-lg);
+            }
+            
+            .brand-description {
+                font-size: 0.875rem;
+                line-height: 1.5;
+            }
+            
+            /* Mobile-optimized form inputs */
+            .form-input {
+                min-height: 52px;
+                font-size: 16px;
+                padding: 16px 20px;
+                border-radius: var(--radius-md);
+            }
+            
+            .form-button {
+                min-height: 52px;
+                font-size: 16px;
+                font-weight: 600;
+                padding: 16px 24px;
+                border-radius: var(--radius-md);
+            }
+            
+            .form-actions {
+                gap: var(--spacing-lg);
+            }
+            
+            .link-button {
+                min-height: 48px;
+                padding: 12px 20px;
+                font-size: 15px;
+            }
+            
+            /* Mobile-specific improvements */
+            .form-group {
+                margin-bottom: var(--spacing-xl);
+            }
+            
+            .remember-me {
+                gap: var(--spacing-md);
+            }
+            
+            .checkbox-wrapper {
+                min-height: 24px;
+                min-width: 24px;
+            }
+        }
+        
+        /* Extra small devices */
+        @media (max-width: 360px) {
+            .login-page {
+                padding: var(--spacing-xs);
+            }
+            
+            .form-card {
+                padding: var(--spacing-lg);
+                margin: var(--spacing-xs);
+            }
+            
+            .app-title {
+                font-size: 1.5rem;
+            }
+            
+            .form-title {
+                font-size: 1.25rem;
+            }
+            
+            .form-input,
+            .form-button {
+                min-height: 48px;
+                font-size: 15px;
+            }
+        }
+        
+        /* Touch-specific optimizations */
+        @media (pointer: coarse) {
+            .form-input:focus {
+                outline: 2px solid var(--color-primary);
+                outline-offset: 2px;
+            }
+            
+            .form-button:active {
+                transform: scale(0.98);
+            }
+            
+            .link-button:active {
+                transform: scale(0.96);
+            }
+        }
+        
+        /* Landscape orientation on mobile */
+        @media (max-width: 768px) and (orientation: landscape) {
+            .container {
+                grid-template-columns: 1fr 1fr;
+                min-height: 100vh;
+            }
+            
+            .branding-section {
+                padding: var(--spacing-lg);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+            
+            .form-section {
+                padding: var(--spacing-lg);
+            }
+            
+            .app-title {
+                font-size: 1.5rem;
+                margin-bottom: var(--spacing-sm);
+            }
+            
+            .app-subtitle {
+                font-size: 0.875rem;
+                margin-bottom: var(--spacing-md);
+            }
+            
+            .brand-description {
+                font-size: 0.75rem;
             }
         }
         
