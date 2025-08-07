@@ -22,6 +22,10 @@
     <link rel="stylesheet" href="css/rtl.css">
     <script src="js/language.js"></script>
     
+    <!-- Mobile Optimization -->
+    <link rel="stylesheet" href="css/mobile-optimization.css">
+    <script src="js/mobile-optimization.js"></script>
+    
     <style>
         /* Design System Variables */
         :root {
@@ -642,6 +646,341 @@
             transform: rotate(180deg);
         }
         
+        /* Payment Method Dropdown - Similar to Currency Dropdown */
+        .payment-method-dropdown {
+            position: relative;
+        }
+        
+        .payment-method-dropdown.active {
+            background: var(--bg-secondary);
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+        
+        .payment-dropdown-options {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            max-height: 250px;
+            overflow-y: auto;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            min-width: 200px;
+        }
+        
+        .payment-method-dropdown.active .payment-dropdown-options {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .payment-dropdown-option {
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .payment-dropdown-option:hover {
+            background: var(--bg-elevated);
+        }
+        
+        .payment-dropdown-option.selected {
+            background: var(--color-buy);
+            color: white;
+        }
+        
+        .payment-method-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+        }
+        
+        .payment-dropdown-option.selected .payment-method-icon {
+            color: white;
+        }
+        
+        .payment-method-info {
+            flex: 1;
+        }
+        
+        .payment-method-name {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .payment-dropdown-icon {
+            transition: transform 0.3s ease;
+        }
+        
+        .payment-method-dropdown.active .payment-dropdown-icon {
+            transform: rotate(180deg);
+        }
+        
+        /* Sorting Dropdown - Similar to Currency Dropdown */
+        .sorting-dropdown {
+            position: relative;
+        }
+        
+        .sorting-dropdown.active {
+            background: var(--bg-secondary);
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+        
+        .sorting-options {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            max-height: 250px;
+            overflow-y: auto;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+        
+        .sorting-dropdown.active .sorting-options {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .sorting-option {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .sorting-option:last-child {
+            border-bottom: none;
+        }
+        
+        .sorting-option:hover {
+            background: var(--bg-secondary);
+        }
+        
+        .sorting-option.selected {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 3px solid var(--color-primary);
+        }
+        
+        .sorting-icon {
+            margin-right: 12px;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .sorting-info {
+            flex: 1;
+        }
+        
+        .sorting-name {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+        
+        .sorting-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+        
+        .sorting-option.selected .sorting-desc {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .sorting-dropdown-icon {
+            transition: transform 0.3s ease;
+        }
+        
+        .sorting-dropdown.active .sorting-dropdown-icon {
+            transform: rotate(180deg);
+        }
+        
+        /* Crypto Dropdown - Similar to Currency Dropdown */
+        .crypto-dropdown {
+            position: relative;
+        }
+        
+        .crypto-dropdown.active {
+            background: var(--bg-secondary);
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+        
+        .crypto-options {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            max-height: 250px;
+            overflow-y: auto;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+        
+        .crypto-dropdown.active .crypto-options {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .crypto-option {
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .crypto-option:hover {
+            background: var(--bg-elevated);
+        }
+        
+        .crypto-option.selected {
+            background: var(--color-buy);
+            color: white;
+        }
+        
+        .crypto-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+        
+        .crypto-info {
+            flex: 1;
+        }
+        
+        .crypto-code {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .crypto-name {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .crypto-option.selected .crypto-name {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .crypto-dropdown-icon {
+            transition: transform 0.3s ease;
+        }
+        
+        .crypto-dropdown.active .crypto-dropdown-icon {
+            transform: rotate(180deg);
+        }
+        
+        /* Amount Dropdown - Similar to Currency Dropdown */
+        .amount-dropdown {
+            position: relative;
+        }
+        
+        .amount-dropdown.active {
+            background: var(--bg-secondary);
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+        
+        .amount-options {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+        
+        .amount-dropdown.active .amount-options {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .amount-option {
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            display: flex;
+            align-items: center;
+        }
+        
+        .amount-option:hover {
+            background: var(--bg-elevated);
+        }
+        
+        .amount-option.selected {
+            background: var(--color-buy);
+            color: white;
+        }
+        
+        .amount-info {
+            flex: 1;
+        }
+        
+        .amount-text {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .amount-dropdown-icon {
+            transition: transform 0.3s ease;
+        }
+        
+        .amount-dropdown.active .amount-dropdown-icon {
+            transform: rotate(180deg);
+        }
+        
         .buy-sell-tabs {
             display: flex;
             gap: 8px;
@@ -667,17 +1006,65 @@
         }
         
         .filters-row {
-            display: flex;
-            gap: 8px;
-            align-items: center;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        @media (max-width: 640px) {
+            .filters-row {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+            
+            .filter-dropdown {
+                padding: 10px 14px;
+                font-size: 14px;
+            }
+            
+            .crypto-options,
+            .amount-options,
+            .payment-dropdown-options,
+            .sorting-options {
+                max-height: 180px;
+            }
+            
+            .crypto-option,
+            .amount-option,
+            .payment-dropdown-option,
+            .sorting-option {
+                padding: 10px 12px;
+            }
+            
+            .sorting-info {
+                font-size: 13px;
+            }
+            
+            .sorting-desc {
+                font-size: 11px;
+            }
+        }
+        
+        @media (min-width: 640px) {
+            .filters-row {
+                grid-template-columns: 1fr 1fr;
+                gap: 16px;
+            }
+        }
+        
+        @media (min-width: 768px) {
+            .filters-row {
+                grid-template-columns: 1fr 1fr 1fr 1fr;
+                gap: 12px;
+            }
         }
         
         .filter-dropdown {
-            flex: 1;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 8px 12px;
+            padding: 12px 16px;
             background: var(--bg-elevated);
             border-radius: 6px;
             font-size: 14px;
@@ -1043,6 +1430,20 @@
         [dir="rtl"] .payment-search-icon {
             left: auto;
             right: 12px;
+        }
+        
+        /* RTL Sorting Dropdown */
+        [dir="rtl"] .sorting-option {
+            flex-direction: row-reverse;
+        }
+        
+        [dir="rtl"] .sorting-icon {
+            margin-right: 0;
+            margin-left: 12px;
+        }
+        
+        [dir="rtl"] .sorting-info {
+            text-align: right;
         }
         
         /* RTL Filter Options */
@@ -2188,21 +2589,198 @@
         </div>
         
         <div class="filters-row">
-            <div class="filter-dropdown" onclick="openCurrencySelector()">
+            <div class="filter-dropdown crypto-dropdown" onclick="toggleCryptoDropdown()">
                 <span id="selectedCrypto"><i class="fas fa-coins" style="color: var(--color-buy); margin-right: 4px;"></i>USDT</span>
-                <i class="fas fa-chevron-down"></i>
+                <i class="fas fa-chevron-down crypto-dropdown-icon"></i>
+                <div class="crypto-options" id="cryptoOptions">
+                    <div class="crypto-option selected" data-crypto="USDT" onclick="selectCrypto('USDT', 'Tether USD')">
+                        <div class="crypto-icon">
+                            <i class="fas fa-coins" style="color: #26A17B;"></i>
+                        </div>
+                        <div class="crypto-info">
+                            <div class="crypto-code">USDT</div>
+                            <div class="crypto-name">Tether USD</div>
+                        </div>
+                    </div>
+                    <div class="crypto-option" data-crypto="BTC" onclick="selectCrypto('BTC', 'Bitcoin')">
+                        <div class="crypto-icon">
+                            <i class="fab fa-bitcoin" style="color: #F7931A;"></i>
+                        </div>
+                        <div class="crypto-info">
+                            <div class="crypto-code">BTC</div>
+                            <div class="crypto-name">Bitcoin</div>
+                        </div>
+                    </div>
+                    <div class="crypto-option" data-crypto="ETH" onclick="selectCrypto('ETH', 'Ethereum')">
+                        <div class="crypto-icon">
+                            <i class="fab fa-ethereum" style="color: #627EEA;"></i>
+                        </div>
+                        <div class="crypto-info">
+                            <div class="crypto-code">ETH</div>
+                            <div class="crypto-name">Ethereum</div>
+                        </div>
+                    </div>
+                    <div class="crypto-option" data-crypto="BNB" onclick="selectCrypto('BNB', 'Binance Coin')">
+                        <div class="crypto-icon">
+                            <i class="fas fa-coins" style="color: #F3BA2F;"></i>
+                        </div>
+                        <div class="crypto-info">
+                            <div class="crypto-code">BNB</div>
+                            <div class="crypto-name">Binance Coin</div>
+                        </div>
+                    </div>
+                    <div class="crypto-option" data-crypto="USDC" onclick="selectCrypto('USDC', 'USD Coin')">
+                        <div class="crypto-icon">
+                            <i class="fas fa-coins" style="color: #2775CA;"></i>
+                        </div>
+                        <div class="crypto-info">
+                            <div class="crypto-code">USDC</div>
+                            <div class="crypto-name">USD Coin</div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="filter-dropdown" onclick="openAmountModal()">
-                <span data-i18n="amount">Amount</span>
-                <i class="fas fa-chevron-down"></i>
+            <div class="filter-dropdown amount-dropdown" onclick="toggleAmountDropdown()">
+                <span data-i18n="amount" id="selectedAmount">Amount</span>
+                <i class="fas fa-chevron-down amount-dropdown-icon"></i>
+                <div class="amount-options" id="amountOptions">
+                    <div class="amount-option selected" data-amount="any" onclick="selectAmount('any', 'Any amount')">
+                        <div class="amount-info">
+                            <div class="amount-text">Any amount</div>
+                        </div>
+                    </div>
+                    <div class="amount-option" data-amount="0-100" onclick="selectAmount('0-100', '0 - 100')">
+                        <div class="amount-info">
+                            <div class="amount-text">0 - 100</div>
+                        </div>
+                    </div>
+                    <div class="amount-option" data-amount="100-500" onclick="selectAmount('100-500', '100 - 500')">
+                        <div class="amount-info">
+                            <div class="amount-text">100 - 500</div>
+                        </div>
+                    </div>
+                    <div class="amount-option" data-amount="500-1000" onclick="selectAmount('500-1000', '500 - 1,000')">
+                        <div class="amount-info">
+                            <div class="amount-text">500 - 1,000</div>
+                        </div>
+                    </div>
+                    <div class="amount-option" data-amount="1000-5000" onclick="selectAmount('1000-5000', '1,000 - 5,000')">
+                        <div class="amount-info">
+                            <div class="amount-text">1,000 - 5,000</div>
+                        </div>
+                    </div>
+                    <div class="amount-option" data-amount="5000+" onclick="selectAmount('5000+', '5,000+')">
+                        <div class="amount-info">
+                            <div class="amount-text">5,000+</div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="filter-dropdown" onclick="openPaymentMethods()">
-                <span data-i18n="payment_methods">Payment methods</span>
-                <i class="fas fa-chevron-down"></i>
+            <div class="filter-dropdown payment-method-dropdown" onclick="togglePaymentDropdown()">
+                <span data-i18n="all_payments" id="selectedPaymentMethod">All payments</span>
+                <i class="fas fa-chevron-down payment-dropdown-icon"></i>
+                <div class="payment-dropdown-options" id="paymentDropdownOptions">
+                    <div class="payment-dropdown-option selected" data-payment="all" onclick="selectPaymentMethodDropdown('all', 'All payments')">
+                        <div class="payment-method-icon">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <div class="payment-method-info">
+                            <div class="payment-method-name">All payments</div>
+                        </div>
+                    </div>
+                    <div class="payment-dropdown-option" data-payment="al-rafdin" onclick="selectPaymentMethodDropdown('al-rafdin', 'Al-Rafdin QiServices')">
+                        <div class="payment-method-icon">
+                            <i class="fas fa-university"></i>
+                        </div>
+                        <div class="payment-method-info">
+                            <div class="payment-method-name">Al-Rafdin QiServices</div>
+                        </div>
+                    </div>
+                    <div class="payment-dropdown-option" data-payment="western-union" onclick="selectPaymentMethodDropdown('western-union', 'Western Union')">
+                        <div class="payment-method-icon">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="payment-method-info">
+                            <div class="payment-method-name">Western Union</div>
+                        </div>
+                    </div>
+                    <div class="payment-dropdown-option" data-payment="zain-cash" onclick="selectPaymentMethodDropdown('zain-cash', 'Zain Cash')">
+                        <div class="payment-method-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <div class="payment-method-info">
+                            <div class="payment-method-name">Zain Cash</div>
+                        </div>
+                    </div>
+                    <div class="payment-dropdown-option" data-payment="fib" onclick="selectPaymentMethodDropdown('fib', 'First Iraqi Bank')">
+                        <div class="payment-method-icon">
+                            <i class="fas fa-university"></i>
+                        </div>
+                        <div class="payment-method-info">
+                            <div class="payment-method-name">First Iraqi Bank</div>
+                        </div>
+                    </div>
+                    <div class="payment-dropdown-option" data-payment="fast-pay" onclick="selectPaymentMethodDropdown('fast-pay', 'Fast Pay')">
+                        <div class="payment-method-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <div class="payment-method-info">
+                            <div class="payment-method-name">Fast Pay</div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <button class="filter-icon" onclick="openFilter()">
-                <i class="fas fa-filter"></i>
-            </button>
+            <div class="filter-dropdown sorting-dropdown" onclick="toggleSortingDropdown()">
+                <span data-i18n="sort_by" id="selectedSorting"><i class="fas fa-sort" style="color: var(--color-text-secondary); margin-right: 4px;"></i>Sort by</span>
+                <i class="fas fa-chevron-down sorting-dropdown-icon"></i>
+                <div class="sorting-options" id="sortingOptions">
+                    <div class="sorting-option selected" data-sorting="recommended" onclick="selectSorting('recommended', 'Recommended')">
+                        <div class="sorting-icon">
+                            <i class="fas fa-star" style="color: #FFB800;"></i>
+                        </div>
+                        <div class="sorting-info">
+                            <div class="sorting-name">Recommended</div>
+                            <div class="sorting-desc">Best overall merchants</div>
+                        </div>
+                    </div>
+                    <div class="sorting-option" data-sorting="price-low" onclick="selectSorting('price-low', 'Price: Low to High')">
+                        <div class="sorting-icon">
+                            <i class="fas fa-arrow-up" style="color: var(--color-buy);"></i>
+                        </div>
+                        <div class="sorting-info">
+                            <div class="sorting-name">Price: Low to High</div>
+                            <div class="sorting-desc">Best rates first</div>
+                        </div>
+                    </div>
+                    <div class="sorting-option" data-sorting="price-high" onclick="selectSorting('price-high', 'Price: High to Low')">
+                        <div class="sorting-icon">
+                            <i class="fas fa-arrow-down" style="color: var(--color-sell);"></i>
+                        </div>
+                        <div class="sorting-info">
+                            <div class="sorting-name">Price: High to Low</div>
+                            <div class="sorting-desc">Premium rates first</div>
+                        </div>
+                    </div>
+                    <div class="sorting-option" data-sorting="completion-rate" onclick="selectSorting('completion-rate', 'Completion Rate')">
+                        <div class="sorting-icon">
+                            <i class="fas fa-check-circle" style="color: var(--color-success);"></i>
+                        </div>
+                        <div class="sorting-info">
+                            <div class="sorting-name">Completion Rate</div>
+                            <div class="sorting-desc">Most reliable merchants</div>
+                        </div>
+                    </div>
+                    <div class="sorting-option" data-sorting="trade-count" onclick="selectSorting('trade-count', 'Trade Count')">
+                        <div class="sorting-icon">
+                            <i class="fas fa-exchange-alt" style="color: var(--color-primary);"></i>
+                        </div>
+                        <div class="sorting-info">
+                            <div class="sorting-name">Trade Count</div>
+                            <div class="sorting-desc">Most active merchants</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     
@@ -2855,8 +3433,20 @@
     </div>
     
     <script>
-        // Search functionality
+        // Global variables
         let searchActive = false;
+        let currencyDropdownActive = false;
+        let selectedCurrency = 'IQD';
+        let cryptoDropdownActive = false;
+        let selectedCrypto = 'USDT';
+        let amountDropdownActive = false;
+        let selectedAmountRange = 'any';
+        let paymentDropdownActive = false;
+        let selectedPaymentMethod = 'all';
+        let sortingDropdownActive = false;
+        let selectedSorting = 'recommended';
+        
+        // Search functionality
         
         function toggleSearch() {
             const searchInput = document.getElementById('searchInput');
@@ -3432,6 +4022,12 @@
                 'Buy': 'شراء',
                 'Sell': 'بيع',
                 'Amount': 'المبلغ',
+                'Sort by': 'ترتيب حسب',
+                'Recommended': 'موصى به',
+                'Price: Low to High': 'السعر: من الأقل للأعلى',
+                'Price: High to Low': 'السعر: من الأعلى للأقل',
+                'Completion Rate': 'معدل الإنجاز',
+                'Trade Count': 'عدد الصفقات',
                 'Payment methods': 'طرق الدفع',
                 'All payments': 'جميع طرق الدفع',
                 'Bank transfer': 'تحويل بنكي',
@@ -3548,6 +4144,12 @@
                 'شراء': 'Buy',
                 'بيع': 'Sell',
                 'المبلغ': 'Amount',
+                'ترتيب حسب': 'Sort by',
+                'موصى به': 'Recommended',
+                'السعر: من الأقل للأعلى': 'Price: Low to High',
+                'السعر: من الأعلى للأقل': 'Price: High to Low',
+                'معدل الإنجاز': 'Completion Rate',
+                'عدد الصفقات': 'Trade Count',
                 'طرق الدفع': 'Payment methods',
                 'جميع طرق الدفع': 'All payments',
                 'تحويل بنكي': 'Bank transfer',
@@ -3609,9 +4211,6 @@
         });
 
         // Currency dropdown functionality
-        let currencyDropdownActive = false;
-        let selectedCurrency = 'IQD';
-        
         function toggleCurrencyDropdown() {
             const dropdown = document.querySelector('.currency-dropdown');
             const options = document.getElementById('currencyOptions');
@@ -3622,6 +4221,16 @@
             } else {
                 dropdown.classList.add('active');
                 currencyDropdownActive = true;
+                
+                // Close filter dropdowns
+                document.querySelector('.crypto-dropdown').classList.remove('active');
+                document.querySelector('.amount-dropdown').classList.remove('active');
+                document.querySelector('.payment-method-dropdown').classList.remove('active');
+                document.querySelector('.sorting-dropdown').classList.remove('active');
+                cryptoDropdownActive = false;
+                amountDropdownActive = false;
+                paymentDropdownActive = false;
+                sortingDropdownActive = false;
             }
         }
         
@@ -3770,6 +4379,421 @@
             };
             return currencyNames[currencyCode] || currencyCode;
         }
+
+        // Crypto Dropdown functionality (similar to currency dropdown)
+        function toggleCryptoDropdown() {
+            const dropdown = document.querySelector('.crypto-dropdown');
+            const options = document.getElementById('cryptoOptions');
+            
+            if (!cryptoDropdownActive) {
+                dropdown.classList.add('active');
+                cryptoDropdownActive = true;
+                
+                // Close other dropdowns
+                document.querySelector('.amount-dropdown').classList.remove('active');
+                document.querySelector('.payment-method-dropdown').classList.remove('active');
+                document.querySelector('.sorting-dropdown').classList.remove('active');
+                amountDropdownActive = false;
+                paymentDropdownActive = false;
+                sortingDropdownActive = false;
+            } else {
+                dropdown.classList.remove('active');
+                cryptoDropdownActive = false;
+            }
+        }
+        
+        function selectCrypto(cryptoCode, cryptoName) {
+            // Update global variable
+            selectedCrypto = cryptoCode;
+            
+            // Update display with icon
+            const cryptoIcons = {
+                'USDT': '<i class="fas fa-coins" style="color: #26A17B; margin-right: 4px;"></i>',
+                'BTC': '<i class="fab fa-bitcoin" style="color: #F7931A; margin-right: 4px;"></i>',
+                'ETH': '<i class="fab fa-ethereum" style="color: #627EEA; margin-right: 4px;"></i>',
+                'BNB': '<i class="fas fa-coins" style="color: #F3BA2F; margin-right: 4px;"></i>',
+                'USDC': '<i class="fas fa-coins" style="color: #2775CA; margin-right: 4px;"></i>'
+            };
+            
+            document.getElementById('selectedCrypto').innerHTML = cryptoIcons[cryptoCode] + cryptoCode;
+            
+            // Update all crypto options
+            document.querySelectorAll('.crypto-option').forEach(option => {
+                option.classList.remove('selected');
+                if (option.getAttribute('data-crypto') === cryptoCode) {
+                    option.classList.add('selected');
+                }
+            });
+            
+            // Close dropdown
+            document.querySelector('.crypto-dropdown').classList.remove('active');
+            cryptoDropdownActive = false;
+            
+            // Update listings based on selected crypto
+            updateListingsForCrypto(cryptoCode);
+            
+            // Save preference
+            localStorage.setItem('selectedCrypto', cryptoCode);
+            
+            // Show notification
+            showCryptoNotification(cryptoCode, cryptoName);
+        }
+        
+        function updateListingsForCrypto(cryptoCode) {
+            // This would filter merchant listings based on crypto
+            console.log(`Filtering merchants by crypto: ${cryptoCode}`);
+            // Implementation would update the merchant listings
+        }
+        
+        function showCryptoNotification(cryptoCode, cryptoName) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--color-buy);
+                color: white;
+                padding: 12px 20px;
+                border-radius: 8px;
+                z-index: 10000;
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+                font-size: 14px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            `;
+            notification.textContent = `Crypto: ${cryptoName}`;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+        
+        // Amount Dropdown functionality
+        function toggleAmountDropdown() {
+            const dropdown = document.querySelector('.amount-dropdown');
+            const options = document.getElementById('amountOptions');
+            
+            if (!amountDropdownActive) {
+                dropdown.classList.add('active');
+                amountDropdownActive = true;
+                
+                // Close other dropdowns
+                document.querySelector('.crypto-dropdown').classList.remove('active');
+                document.querySelector('.payment-method-dropdown').classList.remove('active');
+                document.querySelector('.sorting-dropdown').classList.remove('active');
+                cryptoDropdownActive = false;
+                paymentDropdownActive = false;
+                sortingDropdownActive = false;
+            } else {
+                dropdown.classList.remove('active');
+                amountDropdownActive = false;
+            }
+        }
+        
+        function selectAmount(amountCode, amountText) {
+            // Update global variable
+            selectedAmountRange = amountCode;
+            document.getElementById('selectedAmount').textContent = amountText;
+            
+            // Update all amount options
+            document.querySelectorAll('.amount-option').forEach(option => {
+                option.classList.remove('selected');
+                if (option.getAttribute('data-amount') === amountCode) {
+                    option.classList.add('selected');
+                }
+            });
+            
+            // Close dropdown
+            document.querySelector('.amount-dropdown').classList.remove('active');
+            amountDropdownActive = false;
+            
+            // Update listings based on selected amount range
+            updateListingsForAmount(amountCode);
+            
+            // Save preference
+            localStorage.setItem('selectedAmountRange', amountCode);
+            
+            // Show notification
+            showAmountNotification(amountText);
+        }
+        
+        function updateListingsForAmount(amountCode) {
+            // This would filter merchant listings based on amount range
+            console.log(`Filtering merchants by amount: ${amountCode}`);
+            // Implementation would update the merchant listings
+        }
+        
+        function showAmountNotification(amountText) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--color-buy);
+                color: white;
+                padding: 12px 20px;
+                border-radius: 8px;
+                z-index: 10000;
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+                font-size: 14px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            `;
+            notification.textContent = `Amount: ${amountText}`;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+        
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(e) {
+            // Close crypto dropdown
+            const cryptoDropdown = document.querySelector('.crypto-dropdown');
+            if (!cryptoDropdown.contains(e.target) && cryptoDropdownActive) {
+                cryptoDropdown.classList.remove('active');
+                cryptoDropdownActive = false;
+            }
+            
+            // Close amount dropdown
+            const amountDropdown = document.querySelector('.amount-dropdown');
+            if (!amountDropdown.contains(e.target) && amountDropdownActive) {
+                amountDropdown.classList.remove('active');
+                amountDropdownActive = false;
+            }
+            
+            // Close currency dropdown
+            const currencyDropdown = document.querySelector('.currency-dropdown');
+            if (!currencyDropdown.contains(e.target) && currencyDropdownActive) {
+                currencyDropdown.classList.remove('active');
+                currencyDropdownActive = false;
+            }
+            
+            // Close sorting dropdown
+            const sortingDropdown = document.querySelector('.sorting-dropdown');
+            if (sortingDropdown && !sortingDropdown.contains(e.target) && sortingDropdownActive) {
+                sortingDropdown.classList.remove('active');
+                sortingDropdownActive = false;
+            }
+        });
+
+        // Payment Method Dropdown functionality (similar to currency dropdown)
+        function togglePaymentDropdown() {
+            const dropdown = document.querySelector('.payment-method-dropdown');
+            const options = document.getElementById('paymentDropdownOptions');
+            
+            if (paymentDropdownActive) {
+                dropdown.classList.remove('active');
+                paymentDropdownActive = false;
+            } else {
+                dropdown.classList.add('active');
+                paymentDropdownActive = true;
+                
+                // Close other dropdowns
+                document.querySelector('.crypto-dropdown').classList.remove('active');
+                document.querySelector('.amount-dropdown').classList.remove('active');
+                document.querySelector('.sorting-dropdown').classList.remove('active');
+                cryptoDropdownActive = false;
+                amountDropdownActive = false;
+                sortingDropdownActive = false;
+            }
+        }
+        
+        function selectPaymentMethodDropdown(paymentCode, paymentName) {
+            // Update selected payment method
+            selectedPaymentMethod = paymentCode;
+            document.getElementById('selectedPaymentMethod').textContent = paymentName;
+            
+            // Update all payment options
+            document.querySelectorAll('.payment-dropdown-option').forEach(option => {
+                option.classList.remove('selected');
+                if (option.getAttribute('data-payment') === paymentCode) {
+                    option.classList.add('selected');
+                }
+            });
+            
+            // Close dropdown
+            document.querySelector('.payment-method-dropdown').classList.remove('active');
+            paymentDropdownActive = false;
+            
+            // Save preference
+            localStorage.setItem('selectedPaymentMethod', paymentCode);
+            
+            // Show notification
+            showPaymentMethodNotification(paymentCode, paymentName);
+            
+            // Update merchant listings based on selected payment method
+            updateMerchantListingsByPayment(paymentCode);
+        }
+        
+        function showPaymentMethodNotification(paymentCode, paymentName) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: var(--bg-card);
+                color: var(--text-primary);
+                padding: 12px 24px;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                z-index: 10000;
+                transition: opacity 0.3s ease;
+            `;
+            notification.textContent = `Payment method: ${paymentName}`;
+            document.body.appendChild(notification);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+        
+        function updateMerchantListingsByPayment(paymentCode) {
+            // This would filter merchant listings based on payment method
+            console.log(`Filtering merchants by payment method: ${paymentCode}`);
+            // Implementation would go here to filter merchant cards
+        }
+        
+        // Close payment dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            const dropdown = document.querySelector('.payment-method-dropdown');
+            if (dropdown && !dropdown.contains(e.target) && paymentDropdownActive) {
+                dropdown.classList.remove('active');
+                paymentDropdownActive = false;
+            }
+        });
+        
+        // Initialize payment method on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedPaymentMethod = localStorage.getItem('selectedPaymentMethod') || 'all';
+            if (savedPaymentMethod !== 'all') {
+                const paymentNames = {
+                    'al-rafdin': 'Al-Rafdin QiServices',
+                    'western-union': 'Western Union',
+                    'zain-cash': 'Zain Cash',
+                    'fib': 'First Iraqi Bank',
+                    'fast-pay': 'Fast Pay'
+                };
+                selectPaymentMethodDropdown(savedPaymentMethod, paymentNames[savedPaymentMethod] || 'All payments');
+            }
+        });
+
+        // Sorting Dropdown functionality (similar to currency dropdown)
+        function toggleSortingDropdown() {
+            const dropdown = document.querySelector('.sorting-dropdown');
+            const options = document.getElementById('sortingOptions');
+            
+            if (!sortingDropdownActive) {
+                dropdown.classList.add('active');
+                sortingDropdownActive = true;
+                
+                // Close other dropdowns
+                document.querySelector('.crypto-dropdown').classList.remove('active');
+                document.querySelector('.amount-dropdown').classList.remove('active');
+                document.querySelector('.payment-method-dropdown').classList.remove('active');
+                cryptoDropdownActive = false;
+                amountDropdownActive = false;
+                paymentDropdownActive = false;
+            } else {
+                dropdown.classList.remove('active');
+                sortingDropdownActive = false;
+            }
+        }
+        
+        function selectSorting(sortingCode, sortingName) {
+            // Update selected sorting
+            selectedSorting = sortingCode;
+            
+            // Update display
+            const iconMap = {
+                'recommended': '<i class="fas fa-star" style="color: #FFB800; margin-right: 4px;"></i>',
+                'price-low': '<i class="fas fa-arrow-up" style="color: var(--color-buy); margin-right: 4px;"></i>',
+                'price-high': '<i class="fas fa-arrow-down" style="color: var(--color-sell); margin-right: 4px;"></i>',
+                'completion-rate': '<i class="fas fa-check-circle" style="color: var(--color-success); margin-right: 4px;"></i>',
+                'trade-count': '<i class="fas fa-exchange-alt" style="color: var(--color-primary); margin-right: 4px;"></i>'
+            };
+            
+            document.getElementById('selectedSorting').innerHTML = iconMap[sortingCode] + sortingName;
+            
+            // Update selected state
+            document.querySelectorAll('.sorting-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            document.querySelector(`[data-sorting="${sortingCode}"]`).classList.add('selected');
+            
+            // Close dropdown
+            document.querySelector('.sorting-dropdown').classList.remove('active');
+            sortingDropdownActive = false;
+            
+            // Save to localStorage
+            localStorage.setItem('selectedSorting', sortingCode);
+            
+            // Update merchant listings based on selected sorting
+            updateMerchantListingsBySorting(sortingCode);
+            
+            // Show notification
+            const notification = document.getElementById('notification');
+            if (notification) {
+                notification.style.display = 'block';
+                notification.textContent = `Sort by: ${sortingName}`;
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 2000);
+            }
+        }
+        
+        function updateMerchantListingsBySorting(sortingCode) {
+            // This would sort merchant listings based on selected criteria
+            console.log(`Sorting merchants by: ${sortingCode}`);
+            // Implementation would go here to sort merchant cards
+        }
+        
+        // Close sorting dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            const dropdown = document.querySelector('.sorting-dropdown');
+            if (dropdown && !dropdown.contains(e.target) && sortingDropdownActive) {
+                dropdown.classList.remove('active');
+                sortingDropdownActive = false;
+            }
+        });
+        
+        // Initialize sorting on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedSorting = localStorage.getItem('selectedSorting') || 'recommended';
+            if (savedSorting !== 'recommended') {
+                const sortingNames = {
+                    'price-low': 'Price: Low to High',
+                    'price-high': 'Price: High to Low',
+                    'completion-rate': 'Completion Rate',
+                    'trade-count': 'Trade Count'
+                };
+                selectSorting(savedSorting, sortingNames[savedSorting] || 'Recommended');
+            }
+        });
 
         // Filter overlay functionality
         let currentSortOption = 'recommended';
@@ -3920,7 +4944,6 @@
         });
 
         // Payment methods overlay functionality
-        let selectedPaymentMethod = 'all';
         let paymentMethods = [
             { id: 'all', name: 'All', icon: 'fas fa-globe', type: 'checkbox' },
             { id: 'al-rafdin', name: 'Al-Rafdin QiServices', icon: 'fas fa-university', type: 'radio' },
@@ -4265,8 +5288,6 @@
         });
         
         // Currency Selector Functions
-        let selectedCrypto = 'USDT';
-        
         function openCurrencySelector() {
             const overlay = document.getElementById('currencyOverlay');
             overlay.classList.add('active');

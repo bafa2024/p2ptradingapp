@@ -1,305 +1,513 @@
 /**
  * Mobile Optimization JavaScript for IQX P2P Trading Platform
- * Provides enhanced mobile functionality and touch interactions
+ * Enhanced version with stability features to prevent sliding, zooming, and ensure responsive behavior
  */
 
 class MobileOptimizer {
     constructor() {
+        this.touchStartX = 0;
+        this.touchStartY = 0;
+        this.isScrolling = null;
         this.init();
     }
 
     init() {
-        this.setupViewportHandler();
+        // Critical: Set up viewport stability first
+        this.setupViewportStability();
+        this.preventUnwantedBehaviors();
         this.setupTouchOptimizations();
         this.setupFormOptimizations();
         this.setupModalOptimizations();
-        this.setupSwipeGestures();
-        this.setupPullToRefresh();
-        this.setupVirtualKeyboardHandling();
+        this.setupScrollOptimizations();
+        this.setupOrientationHandling();
+        this.setupResizeHandling();
+        this.monitorPerformance();
     }
 
-    // Handle viewport changes and orientation
-    setupViewportHandler() {
-        // Prevent zoom on double tap
+    // ===== VIEWPORT STABILITY =====
+    setupViewportStability() {
+        // Fix viewport height for mobile browsers (100vh issue)
+        this.setVHProperty();
+        
+        // Prevent all zooming
+        document.addEventListener('gesturestart', (e) => e.preventDefault());
+        document.addEventListener('gesturechange', (e) => e.preventDefault());
+        document.addEventListener('gestureend', (e) => e.preventDefault());
+        
+        // Prevent double-tap zoom
         let lastTouchEnd = 0;
         document.addEventListener('touchend', (event) => {
-            const now = (new Date()).getTime();
+            const now = Date.now();
             if (now - lastTouchEnd <= 300) {
                 event.preventDefault();
             }
             lastTouchEnd = now;
-        }, false);
+        }, { passive: false });
 
-        // Handle orientation changes
-        window.addEventListener('orientationchange', () => {
-            setTimeout(() => {
-                this.adjustViewport();
-            }, 500);
-        });
-
-        // Handle resize events
-        window.addEventListener('resize', this.debounce(() => {
-            this.adjustViewport();
-        }, 250));
-    }
-
-    // Adjust viewport for different screen sizes
-    adjustViewport() {
-        const isMobile = window.innerWidth < 768;
-        const isLandscape = window.innerWidth > window.innerHeight;
-        
-        if (isMobile) {
-            document.body.classList.add('mobile-device');
-            
-            if (isLandscape) {
-                document.body.classList.add('landscape-mode');
-            } else {
-                document.body.classList.remove('landscape-mode');
+        // Prevent pinch zoom on iOS 10+
+        document.addEventListener('touchmove', (event) => {
+            if (event.scale !== 1) {
+                event.preventDefault();
             }
-        } else {
-            document.body.classList.remove('mobile-device', 'landscape-mode');
-        }
+        }, { passive: false });
     }
 
-    // Enhanced touch interactions
-    setupTouchOptimizations() {
-        // Add touch feedback to interactive elements
-        const touchElements = document.querySelectorAll('.btn, .card, .nav-link, .clickable');
-        
-        touchElements.forEach(element => {
-            element.addEventListener('touchstart', this.handleTouchStart.bind(this), { passive: true });
-            element.addEventListener('touchend', this.handleTouchEnd.bind(this), { passive: true });
-            element.addEventListener('touchcancel', this.handleTouchEnd.bind(this), { passive: true });
-        });
+    setVHProperty() {
+        // Calculate real viewport height
+        const vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+        document.documentElement.style.setProperty('--full-vh', `${window.innerHeight}px`);
+    }
 
-        // Prevent scrolling when touching buttons
+    // ===== PREVENT UNWANTED BEHAVIORS =====
+    preventUnwantedBehaviors() {
+        // Prevent horizontal scroll and bounce
+        this.preventHorizontalScroll();
+        this.preventBounceScroll();
+        this.preventPullToRefresh();
+        
+        // Lock body scroll when needed
+        this.setupBodyScrollLock();
+    }
+
+    preventHorizontalScroll() {
+        let touchStartX = 0;
+        let touchStartY = 0;
+        
         document.addEventListener('touchstart', (e) => {
-            if (e.target.classList.contains('btn') || e.target.closest('.btn')) {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+        }, { passive: true });
+
+        document.addEventListener('touchmove', (e) => {
+            if (!e.target.closest('.scrollable')) {
+                const touchEndX = e.touches[0].clientX;
+                const touchEndY = e.touches[0].clientY;
+                
+                const deltaX = Math.abs(touchEndX - touchStartX);
+                const deltaY = Math.abs(touchEndY - touchStartY);
+                
+                // If horizontal movement is greater than vertical, prevent it
+                if (deltaX > deltaY && deltaX > 10) {
+                    e.preventDefault();
+                }
+            }
+        }, { passive: false });
+    }
+
+    preventBounceScroll() {
+        // Prevent overscroll bounce on iOS
+        document.body.addEventListener('touchmove', (e) => {
+            // Only allow scrolling on elements marked as scrollable
+            const scrollable = e.target.closest('.scrollable, .modal-body, .overlay-content');
+            
+            if (!scrollable) {
+                e.preventDefault();
+                return;
+            }
+            
+            // Check if scrollable element is at its scroll boundaries
+            const isAtTop = scrollable.scrollTop <= 0;
+            const isAtBottom = scrollable.scrollTop + scrollable.clientHeight >= scrollable.scrollHeight;
+            
+            if ((isAtTop && e.touches[0].clientY > this.touchStartY) ||
+                (isAtBottom && e.touches[0].clientY < this.touchStartY)) {
                 e.preventDefault();
             }
         }, { passive: false });
     }
 
-    handleTouchStart(event) {
-        event.currentTarget.classList.add('touch-active');
-    }
-
-    handleTouchEnd(event) {
-        setTimeout(() => {
-            event.currentTarget.classList.remove('touch-active');
-        }, 150);
-    }
-
-    // Optimize forms for mobile
-    setupFormOptimizations() {
-        const inputs = document.querySelectorAll('input, textarea, select');
+    preventPullToRefresh() {
+        // Prevent pull-to-refresh on Chrome
+        document.body.style.overscrollBehaviorY = 'contain';
         
-        inputs.forEach(input => {
-            // Auto-capitalize and input modes
-            if (input.type === 'email') {
-                input.setAttribute('autocapitalize', 'none');
-                input.setAttribute('autocorrect', 'off');
-                input.setAttribute('inputmode', 'email');
-            }
-            
-            if (input.type === 'tel') {
-                input.setAttribute('inputmode', 'tel');
-            }
-            
-            if (input.type === 'number') {
-                input.setAttribute('inputmode', 'numeric');
-            }
-            
-            // Handle focus events
-            input.addEventListener('focus', this.handleInputFocus.bind(this));
-            input.addEventListener('blur', this.handleInputBlur.bind(this));
-        });
-    }
-
-    handleInputFocus(event) {
-        // Scroll input into view on mobile
-        if (window.innerWidth < 768) {
-            setTimeout(() => {
-                event.target.scrollIntoView({ 
-                    behavior: 'smooth', 
-                    block: 'center' 
-                });
-            }, 300);
-        }
-    }
-
-    handleInputBlur(event) {
-        // Remove any scrolling artifacts
-        window.scrollTo(window.scrollX, window.scrollY);
-    }
-
-    // Enhanced modal handling for mobile
-    setupModalOptimizations() {
-        // Handle modal opening
-        document.addEventListener('show.bs.modal', (event) => {
-            this.handleModalOpen(event.target);
-        });
-
-        // Handle modal closing
-        document.addEventListener('hidden.bs.modal', (event) => {
-            this.handleModalClose(event.target);
-        });
-    }
-
-    handleModalOpen(modal) {
-        if (window.innerWidth < 768) {
-            document.body.style.position = 'fixed';
-            document.body.style.width = '100%';
-            modal.classList.add('mobile-modal');
-        }
-    }
-
-    handleModalClose(modal) {
-        if (window.innerWidth < 768) {
-            document.body.style.position = '';
-            document.body.style.width = '';
-            modal.classList.remove('mobile-modal');
-        }
-    }
-
-    // Simple swipe gesture support
-    setupSwipeGestures() {
-        let touchStartX = 0;
+        // Additional prevention for iOS Safari
         let touchStartY = 0;
-        let touchEndX = 0;
-        let touchEndY = 0;
-
-        document.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-            touchStartY = e.changedTouches[0].screenY;
-        }, { passive: true });
-
-        document.addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            touchEndY = e.changedTouches[0].screenY;
-            this.handleSwipe();
-        }, { passive: true });
-
-        this.handleSwipe = () => {
-            const threshold = 50;
-            const restraint = 100;
-            const allowedTime = 300;
-            
-            const distX = touchEndX - touchStartX;
-            const distY = touchEndY - touchStartY;
-            
-            if (Math.abs(distX) >= threshold && Math.abs(distY) <= restraint) {
-                if (distX > 0) {
-                    this.triggerCustomEvent('swipeRight');
-                } else {
-                    this.triggerCustomEvent('swipeLeft');
-                }
+        
+        window.addEventListener('touchstart', (e) => {
+            if (window.scrollY === 0) {
+                touchStartY = e.touches[0].pageY;
             }
+        }, { passive: true });
+
+        window.addEventListener('touchmove', (e) => {
+            const touchY = e.touches[0].pageY;
+            const touchDiff = touchY - touchStartY;
             
-            if (Math.abs(distY) >= threshold && Math.abs(distX) <= restraint) {
-                if (distY > 0) {
-                    this.triggerCustomEvent('swipeDown');
-                } else {
-                    this.triggerCustomEvent('swipeUp');
-                }
+            if (window.scrollY === 0 && touchDiff > 0 && e.cancelable) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+    }
+
+    setupBodyScrollLock() {
+        // Utility methods for locking body scroll
+        window.lockBodyScroll = () => {
+            const scrollY = window.scrollY;
+            document.body.style.position = 'fixed';
+            document.body.style.top = `-${scrollY}px`;
+            document.body.style.width = '100%';
+            document.body.setAttribute('data-scroll-lock', scrollY);
+        };
+
+        window.unlockBodyScroll = () => {
+            const scrollY = document.body.getAttribute('data-scroll-lock');
+            document.body.style.position = '';
+            document.body.style.top = '';
+            document.body.style.width = '';
+            if (scrollY) {
+                window.scrollTo(0, parseInt(scrollY, 10));
+                document.body.removeAttribute('data-scroll-lock');
             }
         };
     }
 
-    // Pull to refresh functionality
-    setupPullToRefresh() {
-        let startY = 0;
-        let currentY = 0;
-        let pullThreshold = 80;
-        let isRefreshing = false;
+    // ===== TOUCH OPTIMIZATIONS =====
+    setupTouchOptimizations() {
+        // Fast click implementation
+        this.implementFastClick();
+        
+        // Touch feedback
+        this.setupTouchFeedback();
+        
+        // Swipe detection with direction locking
+        this.setupSwipeDetection();
+    }
 
+    implementFastClick() {
+        let touchStartTime;
+        let touchStartPos;
+        
         document.addEventListener('touchstart', (e) => {
-            if (window.scrollY === 0) {
-                startY = e.touches[0].pageY;
-            }
+            touchStartTime = Date.now();
+            touchStartPos = {
+                x: e.touches[0].clientX,
+                y: e.touches[0].clientY
+            };
         }, { passive: true });
 
-        document.addEventListener('touchmove', (e) => {
-            if (window.scrollY === 0 && !isRefreshing) {
-                currentY = e.touches[0].pageY;
-                const pullDistance = currentY - startY;
-                
-                if (pullDistance > 0) {
-                    this.updatePullIndicator(pullDistance, pullThreshold);
-                }
+        document.addEventListener('touchend', (e) => {
+            const touchEndTime = Date.now();
+            const touchEndPos = {
+                x: e.changedTouches[0].clientX,
+                y: e.changedTouches[0].clientY
+            };
+            
+            // Check if it's a tap (not a swipe or long press)
+            const timeDiff = touchEndTime - touchStartTime;
+            const posDiff = Math.sqrt(
+                Math.pow(touchEndPos.x - touchStartPos.x, 2) +
+                Math.pow(touchEndPos.y - touchStartPos.y, 2)
+            );
+            
+            if (timeDiff < 200 && posDiff < 10) {
+                // It's a tap - trigger click immediately
+                const clickEvent = new MouseEvent('click', {
+                    bubbles: true,
+                    cancelable: true,
+                    view: window
+                });
+                e.target.dispatchEvent(clickEvent);
+                e.preventDefault();
+            }
+        }, { passive: false });
+    }
+
+    setupTouchFeedback() {
+        const interactiveElements = 'button, .btn, .nav-item, .merchant-card, .filter-dropdown, a, .clickable';
+        
+        document.addEventListener('touchstart', (e) => {
+            const target = e.target.closest(interactiveElements);
+            if (target) {
+                target.classList.add('touch-active');
             }
         }, { passive: true });
 
         document.addEventListener('touchend', (e) => {
-            if (window.scrollY === 0 && !isRefreshing) {
-                const pullDistance = currentY - startY;
-                
-                if (pullDistance > pullThreshold) {
-                    this.triggerRefresh();
-                } else {
-                    this.resetPullIndicator();
+            const target = e.target.closest(interactiveElements);
+            if (target) {
+                setTimeout(() => {
+                    target.classList.remove('touch-active');
+                }, 150);
+            }
+        }, { passive: true });
+    }
+
+    setupSwipeDetection() {
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let touchStartTime = 0;
+        
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+            touchStartTime = Date.now();
+            this.isScrolling = null;
+        }, { passive: true });
+
+        document.addEventListener('touchmove', (e) => {
+            if (!touchStartX || !touchStartY) return;
+            
+            const touchEndX = e.touches[0].clientX;
+            const touchEndY = e.touches[0].clientY;
+            
+            const deltaX = touchEndX - touchStartX;
+            const deltaY = touchEndY - touchStartY;
+            
+            // Determine scroll direction on first move
+            if (this.isScrolling === null) {
+                this.isScrolling = Math.abs(deltaY) > Math.abs(deltaX);
+            }
+            
+            // Lock to detected direction
+            if (!this.isScrolling && Math.abs(deltaX) > 10) {
+                e.preventDefault(); // Prevent horizontal scroll
+            }
+        }, { passive: false });
+
+        document.addEventListener('touchend', (e) => {
+            if (!touchStartX || !touchStartY) return;
+            
+            const touchEndX = e.changedTouches[0].clientX;
+            const touchEndY = e.changedTouches[0].clientY;
+            const touchEndTime = Date.now();
+            
+            const deltaX = touchEndX - touchStartX;
+            const deltaY = touchEndY - touchStartY;
+            const deltaTime = touchEndTime - touchStartTime;
+            
+            // Reset values
+            touchStartX = 0;
+            touchStartY = 0;
+            
+            // Detect swipe (threshold: 50px, max time: 300ms)
+            if (deltaTime < 300) {
+                if (Math.abs(deltaX) > 50 && Math.abs(deltaX) > Math.abs(deltaY)) {
+                    this.triggerCustomEvent(deltaX > 0 ? 'swiperight' : 'swipeleft');
+                } else if (Math.abs(deltaY) > 50 && Math.abs(deltaY) > Math.abs(deltaX)) {
+                    this.triggerCustomEvent(deltaY > 0 ? 'swipedown' : 'swipeup');
                 }
             }
         }, { passive: true });
     }
 
-    updatePullIndicator(distance, threshold) {
-        const percentage = Math.min(distance / threshold, 1);
-        const indicator = document.querySelector('.pull-refresh-indicator');
+    // ===== FORM OPTIMIZATIONS =====
+    setupFormOptimizations() {
+        const inputs = document.querySelectorAll('input, textarea, select');
         
-        if (indicator) {
-            indicator.style.transform = `translateY(${Math.min(distance, threshold)}px)`;
-            indicator.style.opacity = percentage;
-        }
-    }
-
-    triggerRefresh() {
-        this.triggerCustomEvent('pullToRefresh');
-        // Reset after animation
-        setTimeout(() => {
-            this.resetPullIndicator();
-        }, 1000);
-    }
-
-    resetPullIndicator() {
-        const indicator = document.querySelector('.pull-refresh-indicator');
-        if (indicator) {
-            indicator.style.transform = 'translateY(0)';
-            indicator.style.opacity = '0';
-        }
-    }
-
-    // Handle virtual keyboard
-    setupVirtualKeyboardHandling() {
-        let initialViewportHeight = window.innerHeight;
-        
-        window.addEventListener('resize', () => {
-            const currentHeight = window.innerHeight;
-            const heightDifference = initialViewportHeight - currentHeight;
+        inputs.forEach(input => {
+            // Set appropriate input modes
+            this.setInputMode(input);
             
-            if (heightDifference > 150) {
-                // Virtual keyboard is likely open
-                document.body.classList.add('keyboard-open');
-                this.triggerCustomEvent('keyboardOpen');
-            } else {
-                // Virtual keyboard is likely closed
-                document.body.classList.remove('keyboard-open');
-                this.triggerCustomEvent('keyboardClose');
+            // Handle focus/blur for keyboard
+            input.addEventListener('focus', (e) => this.handleInputFocus(e));
+            input.addEventListener('blur', (e) => this.handleInputBlur(e));
+        });
+
+        // Prevent form zoom on iOS
+        const metaViewport = document.querySelector('meta[name="viewport"]');
+        const defaultContent = metaViewport.getAttribute('content');
+        
+        document.addEventListener('focusin', (e) => {
+            if (e.target.matches('input, textarea, select')) {
+                metaViewport.setAttribute('content', defaultContent + ', maximum-scale=1.0');
             }
+        });
+        
+        document.addEventListener('focusout', () => {
+            metaViewport.setAttribute('content', defaultContent);
         });
     }
 
-    // Utility function to trigger custom events
-    triggerCustomEvent(eventName, data = {}) {
-        const event = new CustomEvent(eventName, { 
-            detail: data,
+    setInputMode(input) {
+        const type = input.type;
+        const inputModes = {
+            'tel': 'tel',
+            'email': 'email',
+            'number': 'numeric',
+            'url': 'url',
+            'search': 'search'
+        };
+        
+        if (inputModes[type]) {
+            input.setAttribute('inputmode', inputModes[type]);
+        }
+        
+        // Set autocomplete attributes
+        if (type === 'email') {
+            input.setAttribute('autocapitalize', 'off');
+            input.setAttribute('autocorrect', 'off');
+        }
+    }
+
+    handleInputFocus(e) {
+        const input = e.target;
+        
+        // Smoothly scroll input into view
+        setTimeout(() => {
+            input.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center',
+                inline: 'nearest'
+            });
+        }, 300);
+        
+        // Add class to body for keyboard adjustments
+        document.body.classList.add('keyboard-visible');
+    }
+
+    handleInputBlur(e) {
+        // Remove keyboard class
+        document.body.classList.remove('keyboard-visible');
+        
+        // Ensure viewport returns to normal
+        window.scrollTo(0, window.scrollY);
+    }
+
+    // ===== MODAL OPTIMIZATIONS =====
+    setupModalOptimizations() {
+        // Track open modals
+        this.openModals = new Set();
+        
+        // Listen for modal events
+        document.addEventListener('show.bs.modal', (e) => this.handleModalShow(e));
+        document.addEventListener('hidden.bs.modal', (e) => this.handleModalHidden(e));
+    }
+
+    handleModalShow(e) {
+        const modal = e.target;
+        this.openModals.add(modal);
+        
+        // Lock body scroll
+        if (this.openModals.size === 1) {
+            window.lockBodyScroll();
+        }
+        
+        // Add mobile modal class
+        if (window.innerWidth < 768) {
+            modal.classList.add('mobile-modal');
+        }
+        
+        // Ensure modal content is scrollable
+        const modalBody = modal.querySelector('.modal-body');
+        if (modalBody) {
+            modalBody.classList.add('scrollable');
+        }
+    }
+
+    handleModalHidden(e) {
+        const modal = e.target;
+        this.openModals.delete(modal);
+        
+        // Unlock body scroll if no modals open
+        if (this.openModals.size === 0) {
+            window.unlockBodyScroll();
+        }
+        
+        // Remove mobile modal class
+        modal.classList.remove('mobile-modal');
+    }
+
+    // ===== SCROLL OPTIMIZATIONS =====
+    setupScrollOptimizations() {
+        // Passive scroll listeners for performance
+        let ticking = false;
+        let lastScrollY = 0;
+        
+        const updateScroll = () => {
+            const currentScrollY = window.scrollY;
+            
+            // Hide/show elements based on scroll direction
+            if (currentScrollY > lastScrollY && currentScrollY > 100) {
+                document.body.classList.add('scrolling-down');
+                document.body.classList.remove('scrolling-up');
+            } else if (currentScrollY < lastScrollY) {
+                document.body.classList.remove('scrolling-down');
+                document.body.classList.add('scrolling-up');
+            }
+            
+            lastScrollY = currentScrollY;
+            ticking = false;
+        };
+        
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(updateScroll);
+                ticking = true;
+            }
+        }, { passive: true });
+    }
+
+    // ===== ORIENTATION HANDLING =====
+    setupOrientationHandling() {
+        const handleOrientationChange = () => {
+            const orientation = window.orientation || screen.orientation?.angle || 0;
+            const isLandscape = Math.abs(orientation) === 90;
+            
+            document.body.classList.toggle('landscape', isLandscape);
+            document.body.classList.toggle('portrait', !isLandscape);
+            
+            // Recalculate viewport height
+            this.setVHProperty();
+            
+            // Trigger custom event
+            this.triggerCustomEvent('orientationchange', { isLandscape });
+        };
+        
+        window.addEventListener('orientationchange', handleOrientationChange);
+        window.addEventListener('resize', this.debounce(handleOrientationChange, 150));
+        
+        // Initial check
+        handleOrientationChange();
+    }
+
+    // ===== RESIZE HANDLING =====
+    setupResizeHandling() {
+        let resizeTimer;
+        
+        window.addEventListener('resize', () => {
+            // Add resizing class
+            document.body.classList.add('resizing');
+            
+            // Clear previous timer
+            clearTimeout(resizeTimer);
+            
+            // Update viewport height
+            this.setVHProperty();
+            
+            // Remove resizing class after resize ends
+            resizeTimer = setTimeout(() => {
+                document.body.classList.remove('resizing');
+            }, 150);
+        });
+    }
+
+    // ===== PERFORMANCE MONITORING =====
+    monitorPerformance() {
+        // Check for layout thrashing
+        if ('PerformanceObserver' in window) {
+            const observer = new PerformanceObserver((list) => {
+                for (const entry of list.getEntries()) {
+                    if (entry.duration > 50) {
+                        console.warn('Long task detected:', entry);
+                    }
+                }
+            });
+            
+            observer.observe({ entryTypes: ['longtask'] });
+        }
+    }
+
+    // ===== UTILITIES =====
+    triggerCustomEvent(eventName, detail = {}) {
+        const event = new CustomEvent(`mobile:${eventName}`, {
+            detail,
             bubbles: true,
             cancelable: true
         });
         document.dispatchEvent(event);
     }
 
-    // Debounce utility
     debounce(func, wait) {
         let timeout;
         return function executedFunction(...args) {
@@ -312,87 +520,139 @@ class MobileOptimizer {
         };
     }
 
-    // Check if device is mobile
-    static isMobile() {
-        return window.innerWidth < 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    }
-
-    // Check if device supports touch
-    static hasTouch() {
-        return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    }
-
-    // Get safe area insets
-    static getSafeAreaInsets() {
-        const style = getComputedStyle(document.documentElement);
-        return {
-            top: parseInt(style.getPropertyValue('env(safe-area-inset-top)')) || 0,
-            right: parseInt(style.getPropertyValue('env(safe-area-inset-right)')) || 0,
-            bottom: parseInt(style.getPropertyValue('env(safe-area-inset-bottom)')) || 0,
-            left: parseInt(style.getPropertyValue('env(safe-area-inset-left)')) || 0
+    throttle(func, limit) {
+        let inThrottle;
+        return function() {
+            const args = arguments;
+            const context = this;
+            if (!inThrottle) {
+                func.apply(context, args);
+                inThrottle = true;
+                setTimeout(() => inThrottle = false, limit);
+            }
         };
+    }
+
+    // ===== STATIC HELPERS =====
+    static isMobile() {
+        return window.innerWidth < 768 || 
+               /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
+
+    static hasTouch() {
+        return 'ontouchstart' in window || 
+               navigator.maxTouchPoints > 0 || 
+               navigator.msMaxTouchPoints > 0;
+    }
+
+    static getDeviceType() {
+        const width = window.innerWidth;
+        if (width < 576) return 'mobile';
+        if (width < 768) return 'tablet-portrait';
+        if (width < 992) return 'tablet-landscape';
+        return 'desktop';
     }
 }
 
-// CSS for touch feedback
-const touchFeedbackCSS = `
+// ===== ENHANCED CSS FOR MOBILE STABILITY =====
+const mobileStabilityCSS = `
+/* Touch feedback */
 .touch-active {
     transform: scale(0.98) !important;
     opacity: 0.8 !important;
-    transition: all 0.1s ease !important;
+    transition: transform 0.1s ease !important;
 }
 
-.keyboard-open {
+/* Prevent text selection on UI elements */
+.no-select {
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+}
+
+/* Scrollable areas */
+.scrollable {
+    -webkit-overflow-scrolling: touch !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+}
+
+/* Body states */
+body.keyboard-visible {
     padding-bottom: 0 !important;
 }
 
-.mobile-modal {
-    padding: 0 !important;
+body.scrolling-down .header {
+    transform: translateY(-100%);
+    transition: transform 0.3s ease;
 }
 
+body.scrolling-up .header {
+    transform: translateY(0);
+    transition: transform 0.3s ease;
+}
+
+body.resizing * {
+    transition: none !important;
+}
+
+/* Mobile modal enhancements */
 .mobile-modal .modal-dialog {
     margin: 0 !important;
     max-width: 100% !important;
     height: 100vh !important;
+    height: calc(var(--vh, 1vh) * 100) !important;
 }
 
 .mobile-modal .modal-content {
     height: 100% !important;
     border-radius: 0 !important;
+    display: flex;
+    flex-direction: column;
 }
 
-.pull-refresh-indicator {
-    position: fixed;
-    top: -50px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 40px;
-    height: 40px;
-    background: var(--color-primary, #3B82F6);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 20px;
-    z-index: 9999;
-    opacity: 0;
-    transition: all 0.3s ease;
+.mobile-modal .modal-body {
+    flex: 1;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+}
+
+/* Landscape adjustments */
+body.landscape {
+    --header-height: 50px;
+    --bottom-nav-height: 50px;
+}
+
+body.landscape .nav-label {
+    display: none !important;
+}
+
+/* Performance optimizations */
+.hardware-accelerated {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    will-change: transform;
+}
+
+/* Debug mode (remove in production) */
+.debug-mobile * {
+    outline: 1px solid red !important;
 }
 `;
 
-// Add CSS to document
-const style = document.createElement('style');
-style.textContent = touchFeedbackCSS;
-document.head.appendChild(style);
+// Inject CSS
+const styleSheet = document.createElement('style');
+styleSheet.textContent = mobileStabilityCSS;
+document.head.appendChild(styleSheet);
 
 // Initialize when DOM is ready
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
-        new MobileOptimizer();
+        window.mobileOptimizer = new MobileOptimizer();
     });
 } else {
-    new MobileOptimizer();
+    window.mobileOptimizer = new MobileOptimizer();
 }
 
 // Export for use in other scripts
