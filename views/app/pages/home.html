@@ -2593,7 +2593,7 @@
                 <span id="selectedCrypto"><i class="fas fa-coins" style="color: var(--color-buy); margin-right: 4px;"></i>USDT</span>
                 <i class="fas fa-chevron-down crypto-dropdown-icon"></i>
                 <div class="crypto-options" id="cryptoOptions">
-                    <div class="crypto-option selected" data-crypto="USDT" onclick="selectCrypto('USDT', 'Tether USD')">
+                    <div class="crypto-option selected" data-crypto="USDT" onclick="selectCrypto('USDT', 'Tether USD', event)">
                         <div class="crypto-icon">
                             <i class="fas fa-coins" style="color: #26A17B;"></i>
                         </div>
@@ -2602,7 +2602,7 @@
                             <div class="crypto-name">Tether USD</div>
                         </div>
                     </div>
-                    <div class="crypto-option" data-crypto="BTC" onclick="selectCrypto('BTC', 'Bitcoin')">
+                    <div class="crypto-option" data-crypto="BTC" onclick="selectCrypto('BTC', 'Bitcoin', event)">
                         <div class="crypto-icon">
                             <i class="fab fa-bitcoin" style="color: #F7931A;"></i>
                         </div>
@@ -2611,7 +2611,7 @@
                             <div class="crypto-name">Bitcoin</div>
                         </div>
                     </div>
-                    <div class="crypto-option" data-crypto="ETH" onclick="selectCrypto('ETH', 'Ethereum')">
+                    <div class="crypto-option" data-crypto="ETH" onclick="selectCrypto('ETH', 'Ethereum', event)">
                         <div class="crypto-icon">
                             <i class="fab fa-ethereum" style="color: #627EEA;"></i>
                         </div>
@@ -2620,7 +2620,7 @@
                             <div class="crypto-name">Ethereum</div>
                         </div>
                     </div>
-                    <div class="crypto-option" data-crypto="BNB" onclick="selectCrypto('BNB', 'Binance Coin')">
+                    <div class="crypto-option" data-crypto="BNB" onclick="selectCrypto('BNB', 'Binance Coin', event)">
                         <div class="crypto-icon">
                             <i class="fas fa-coins" style="color: #F3BA2F;"></i>
                         </div>
@@ -2629,7 +2629,7 @@
                             <div class="crypto-name">Binance Coin</div>
                         </div>
                     </div>
-                    <div class="crypto-option" data-crypto="USDC" onclick="selectCrypto('USDC', 'USD Coin')">
+                    <div class="crypto-option" data-crypto="USDC" onclick="selectCrypto('USDC', 'USD Coin', event)">
                         <div class="crypto-icon">
                             <i class="fas fa-coins" style="color: #2775CA;"></i>
                         </div>
@@ -2644,32 +2644,32 @@
                 <span data-i18n="amount" id="selectedAmount">Amount</span>
                 <i class="fas fa-chevron-down amount-dropdown-icon"></i>
                 <div class="amount-options" id="amountOptions">
-                    <div class="amount-option selected" data-amount="any" onclick="selectAmount('any', 'Any amount')">
+                    <div class="amount-option selected" data-amount="any" onclick="selectAmount('any', 'Any amount', event)">
                         <div class="amount-info">
                             <div class="amount-text">Any amount</div>
                         </div>
                     </div>
-                    <div class="amount-option" data-amount="0-100" onclick="selectAmount('0-100', '0 - 100')">
+                    <div class="amount-option" data-amount="0-100" onclick="selectAmount('0-100', '0 - 100', event)">
                         <div class="amount-info">
                             <div class="amount-text">0 - 100</div>
                         </div>
                     </div>
-                    <div class="amount-option" data-amount="100-500" onclick="selectAmount('100-500', '100 - 500')">
+                    <div class="amount-option" data-amount="100-500" onclick="selectAmount('100-500', '100 - 500', event)">
                         <div class="amount-info">
                             <div class="amount-text">100 - 500</div>
                         </div>
                     </div>
-                    <div class="amount-option" data-amount="500-1000" onclick="selectAmount('500-1000', '500 - 1,000')">
+                    <div class="amount-option" data-amount="500-1000" onclick="selectAmount('500-1000', '500 - 1,000', event)">
                         <div class="amount-info">
                             <div class="amount-text">500 - 1,000</div>
                         </div>
                     </div>
-                    <div class="amount-option" data-amount="1000-5000" onclick="selectAmount('1000-5000', '1,000 - 5,000')">
+                    <div class="amount-option" data-amount="1000-5000" onclick="selectAmount('1000-5000', '1,000 - 5,000', event)">
                         <div class="amount-info">
                             <div class="amount-text">1,000 - 5,000</div>
                         </div>
                     </div>
-                    <div class="amount-option" data-amount="5000+" onclick="selectAmount('5000+', '5,000+')">
+                    <div class="amount-option" data-amount="5000+" onclick="selectAmount('5000+', '5,000+', event)">
                         <div class="amount-info">
                             <div class="amount-text">5,000+</div>
                         </div>
@@ -2680,7 +2680,7 @@
                 <span data-i18n="all_payments" id="selectedPaymentMethod">All payments</span>
                 <i class="fas fa-chevron-down payment-dropdown-icon"></i>
                 <div class="payment-dropdown-options" id="paymentDropdownOptions">
-                    <div class="payment-dropdown-option selected" data-payment="all" onclick="selectPaymentMethodDropdown('all', 'All payments')">
+                    <div class="payment-dropdown-option selected" data-payment="all" onclick="selectPaymentMethodDropdown('all', 'All payments', event)">
                         <div class="payment-method-icon">
                             <i class="fas fa-globe"></i>
                         </div>
@@ -2688,7 +2688,7 @@
                             <div class="payment-method-name">All payments</div>
                         </div>
                     </div>
-                    <div class="payment-dropdown-option" data-payment="al-rafdin" onclick="selectPaymentMethodDropdown('al-rafdin', 'Al-Rafdin QiServices')">
+                    <div class="payment-dropdown-option" data-payment="al-rafdin" onclick="selectPaymentMethodDropdown('al-rafdin', 'Al-Rafdin QiServices', event)">
                         <div class="payment-method-icon">
                             <i class="fas fa-university"></i>
                         </div>
@@ -2696,7 +2696,7 @@
                             <div class="payment-method-name">Al-Rafdin QiServices</div>
                         </div>
                     </div>
-                    <div class="payment-dropdown-option" data-payment="western-union" onclick="selectPaymentMethodDropdown('western-union', 'Western Union')">
+                    <div class="payment-dropdown-option" data-payment="western-union" onclick="selectPaymentMethodDropdown('western-union', 'Western Union', event)">
                         <div class="payment-method-icon">
                             <i class="fas fa-money-bill-wave"></i>
                         </div>
@@ -2704,7 +2704,7 @@
                             <div class="payment-method-name">Western Union</div>
                         </div>
                     </div>
-                    <div class="payment-dropdown-option" data-payment="zain-cash" onclick="selectPaymentMethodDropdown('zain-cash', 'Zain Cash')">
+                    <div class="payment-dropdown-option" data-payment="zain-cash" onclick="selectPaymentMethodDropdown('zain-cash', 'Zain Cash', event)">
                         <div class="payment-method-icon">
                             <i class="fas fa-mobile-alt"></i>
                         </div>
@@ -2712,7 +2712,7 @@
                             <div class="payment-method-name">Zain Cash</div>
                         </div>
                     </div>
-                    <div class="payment-dropdown-option" data-payment="fib" onclick="selectPaymentMethodDropdown('fib', 'First Iraqi Bank')">
+                    <div class="payment-dropdown-option" data-payment="fib" onclick="selectPaymentMethodDropdown('fib', 'First Iraqi Bank', event)">
                         <div class="payment-method-icon">
                             <i class="fas fa-university"></i>
                         </div>
@@ -2720,7 +2720,7 @@
                             <div class="payment-method-name">First Iraqi Bank</div>
                         </div>
                     </div>
-                    <div class="payment-dropdown-option" data-payment="fast-pay" onclick="selectPaymentMethodDropdown('fast-pay', 'Fast Pay')">
+                    <div class="payment-dropdown-option" data-payment="fast-pay" onclick="selectPaymentMethodDropdown('fast-pay', 'Fast Pay', event)">
                         <div class="payment-method-icon">
                             <i class="fas fa-bolt"></i>
                         </div>
@@ -2734,7 +2734,7 @@
                 <span data-i18n="sort_by" id="selectedSorting"><i class="fas fa-sort" style="color: var(--color-text-secondary); margin-right: 4px;"></i>Sort by</span>
                 <i class="fas fa-chevron-down sorting-dropdown-icon"></i>
                 <div class="sorting-options" id="sortingOptions">
-                    <div class="sorting-option selected" data-sorting="recommended" onclick="selectSorting('recommended', 'Recommended')">
+                    <div class="sorting-option selected" data-sorting="recommended" onclick="selectSorting('recommended', 'Recommended', event)">
                         <div class="sorting-icon">
                             <i class="fas fa-star" style="color: #FFB800;"></i>
                         </div>
@@ -2743,7 +2743,7 @@
                             <div class="sorting-desc">Best overall merchants</div>
                         </div>
                     </div>
-                    <div class="sorting-option" data-sorting="price-low" onclick="selectSorting('price-low', 'Price: Low to High')">
+                    <div class="sorting-option" data-sorting="price-low" onclick="selectSorting('price-low', 'Price: Low to High', event)">
                         <div class="sorting-icon">
                             <i class="fas fa-arrow-up" style="color: var(--color-buy);"></i>
                         </div>
@@ -2752,7 +2752,7 @@
                             <div class="sorting-desc">Best rates first</div>
                         </div>
                     </div>
-                    <div class="sorting-option" data-sorting="price-high" onclick="selectSorting('price-high', 'Price: High to Low')">
+                    <div class="sorting-option" data-sorting="price-high" onclick="selectSorting('price-high', 'Price: High to Low', event)">
                         <div class="sorting-icon">
                             <i class="fas fa-arrow-down" style="color: var(--color-sell);"></i>
                         </div>
@@ -2761,7 +2761,7 @@
                             <div class="sorting-desc">Premium rates first</div>
                         </div>
                     </div>
-                    <div class="sorting-option" data-sorting="completion-rate" onclick="selectSorting('completion-rate', 'Completion Rate')">
+                    <div class="sorting-option" data-sorting="completion-rate" onclick="selectSorting('completion-rate', 'Completion Rate', event)">
                         <div class="sorting-icon">
                             <i class="fas fa-check-circle" style="color: var(--color-success);"></i>
                         </div>
@@ -2770,7 +2770,7 @@
                             <div class="sorting-desc">Most reliable merchants</div>
                         </div>
                     </div>
-                    <div class="sorting-option" data-sorting="trade-count" onclick="selectSorting('trade-count', 'Trade Count')">
+                    <div class="sorting-option" data-sorting="trade-count" onclick="selectSorting('trade-count', 'Trade Count', event)">
                         <div class="sorting-icon">
                             <i class="fas fa-exchange-alt" style="color: var(--color-primary);"></i>
                         </div>
@@ -4402,7 +4402,13 @@
             }
         }
         
-        function selectCrypto(cryptoCode, cryptoName) {
+        function selectCrypto(cryptoCode, cryptoName, event) {
+            // Prevent event propagation
+            if (event) {
+                event.stopPropagation();
+                event.preventDefault();
+            }
+            
             // Update global variable
             selectedCrypto = cryptoCode;
             
@@ -4425,8 +4431,9 @@
                 }
             });
             
-            // Close dropdown
-            document.querySelector('.crypto-dropdown').classList.remove('active');
+            // Force close dropdown immediately
+            const dropdown = document.querySelector('.crypto-dropdown');
+            dropdown.classList.remove('active');
             cryptoDropdownActive = false;
             
             // Update listings based on selected crypto
@@ -4499,7 +4506,13 @@
             }
         }
         
-        function selectAmount(amountCode, amountText) {
+        function selectAmount(amountCode, amountText, event) {
+            // Prevent event propagation
+            if (event) {
+                event.stopPropagation();
+                event.preventDefault();
+            }
+            
             // Update global variable
             selectedAmountRange = amountCode;
             document.getElementById('selectedAmount').textContent = amountText;
@@ -4512,8 +4525,9 @@
                 }
             });
             
-            // Close dropdown
-            document.querySelector('.amount-dropdown').classList.remove('active');
+            // Force close dropdown immediately
+            const dropdown = document.querySelector('.amount-dropdown');
+            dropdown.classList.remove('active');
             amountDropdownActive = false;
             
             // Update listings based on selected amount range
@@ -4617,7 +4631,13 @@
             }
         }
         
-        function selectPaymentMethodDropdown(paymentCode, paymentName) {
+        function selectPaymentMethodDropdown(paymentCode, paymentName, event) {
+            // Prevent event propagation
+            if (event) {
+                event.stopPropagation();
+                event.preventDefault();
+            }
+            
             // Update selected payment method
             selectedPaymentMethod = paymentCode;
             document.getElementById('selectedPaymentMethod').textContent = paymentName;
@@ -4630,8 +4650,9 @@
                 }
             });
             
-            // Close dropdown
-            document.querySelector('.payment-method-dropdown').classList.remove('active');
+            // Force close dropdown immediately
+            const dropdown = document.querySelector('.payment-method-dropdown');
+            dropdown.classList.remove('active');
             paymentDropdownActive = false;
             
             // Save preference
@@ -4724,7 +4745,13 @@
             }
         }
         
-        function selectSorting(sortingCode, sortingName) {
+        function selectSorting(sortingCode, sortingName, event) {
+            // Prevent event propagation
+            if (event) {
+                event.stopPropagation();
+                event.preventDefault();
+            }
+            
             // Update selected sorting
             selectedSorting = sortingCode;
             
@@ -4745,8 +4772,9 @@
             });
             document.querySelector(`[data-sorting="${sortingCode}"]`).classList.add('selected');
             
-            // Close dropdown
-            document.querySelector('.sorting-dropdown').classList.remove('active');
+            // Force close dropdown immediately
+            const dropdown = document.querySelector('.sorting-dropdown');
+            dropdown.classList.remove('active');
             sortingDropdownActive = false;
             
             // Save to localStorage
