@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm start)",
+      "Bash(npx expo start:*)",
+      "Bash(timeout:*)",
+      "Bash(set EXPO_DEVTOOLS_PORT=8082)",
+      "Bash(npx expo publish:*)",
+      "Bash(npx expo:*)",
+      "Bash(mkdir:*)"
+    ],
+    "deny": [],
+    "ask": [],
+    "defaultMode": "acceptEdits"
+  }
+}

@@ -1,0 +1,125 @@
+version: '3.8'
+
+services:
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: p2p_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: p2p_platform
+      MYSQL_USER: p2p_user
+      MYSQL_PASSWORD: p2p_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql/init:/docker-entrypoint-initdb.d
+    networks:
+      - p2p_network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: p2p_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - p2p_network
+
+  # API Service
+  api:
+    build:
+      context: ../packages/api
+      dockerfile: Dockerfile
+    container_name: p2p_api
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: p2p_platform
+      DB_USER: p2p_user
+      DB_PASSWORD: p2p_password
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    volumes:
+      - ../packages/api:/app
+      - /app/node_modules
+    depends_on:
+      - mysql
+      - redis
+    networks:
+      - p2p_network
+
+  # Web App
+  web-app:
+    build:
+      context: ../packages/web-app
+      dockerfile: Dockerfile
+    container_name: p2p_web_app
+    restart: unless-stopped
+    ports:
+      - "3002:3002"
+    environment:
+      NODE_ENV: development
+      API_URL: http://api:3000
+    volumes:
+      - ../packages/web-app:/app
+      - /app/node_modules
+    depends_on:
+      - api
+    networks:
+      - p2p_network
+
+  # Admin Dashboard
+  admin-dashboard:
+    build:
+      context: ../packages/admin-dashboard
+      dockerfile: Dockerfile
+    container_name: p2p_admin_dashboard
+    restart: unless-stopped
+    ports:
+      - "3003:3003"
+    environment:
+      NODE_ENV: development
+      API_URL: http://api:3000
+    volumes:
+      - ../packages/admin-dashboard:/app
+      - /app/node_modules
+    depends_on:
+      - api
+    networks:
+      - p2p_network
+
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:alpine
+    container_name: p2p_nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/ssl:/etc/nginx/ssl
+    depends_on:
+      - api
+      - web-app
+      - admin-dashboard
+    networks:
+      - p2p_network
+
+volumes:
+  mysql_data:
+  redis_data:
+
+networks:
+  p2p_network:
+    driver: bridge

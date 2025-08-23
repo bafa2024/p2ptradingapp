@@ -1,5 +1,0 @@
-[33me92b43b[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Complete P2P trading app with modern UI features: Filter overlay, Payment methods modal, Amount input with keypad, Arabic interface support, and comprehensive backend structure
-[33mfb92cc3[m Replace green color scheme with blue: update all CSS variables, gradients, and colors throughout the application to use blue theme (#3B82F6, #1D4ED8) instead of green
-[33m8e20258[m Add splash screen and logo: create native mobile splash screen with animations, logo files, and update app flow to show splash first
-[33mbceebbc[m Fix mobile app layouts: implement native mobile interface with proper viewport settings, remove zoom capability, add touch interactions, and remove Bootstrap dependency for core mobile app files
-[33m1a340d7[m Implement Phase 1 missing features: Enhanced search, live market rates, internal transfer system, rating system, multi-language support, dark mode toggle, and currency switching

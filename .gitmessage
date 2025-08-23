@@ -1,0 +1,45 @@
+# <type>(<scope>): <subject>
+#
+# <body>
+#
+# <footer>
+
+# Types:
+#   feat     (new feature for the user, not a new feature for build script)
+#   fix      (bug fix for the user, not a fix to a build script)
+#   docs     (changes to the documentation)
+#   style    (formatting, missing semi colons, etc; no production code change)
+#   refactor (refactoring production code, eg. renaming a variable)
+#   test     (adding missing tests, refactoring tests; no production code change)
+#   chore    (updating grunt tasks etc; no production code change)
+
+# Scopes:
+#   api      (API related changes)
+#   mobile   (mobile app changes)
+#   web      (web app changes)
+#   admin    (admin dashboard changes)
+#   firebase (Firebase related changes)
+#   db       (database changes)
+#   auth     (authentication changes)
+#   trading  (trading features)
+#   wallet   (wallet functionality)
+#   kyc      (KYC system)
+#   ui       (user interface changes)
+#   deps     (dependency updates)
+
+# Examples:
+#   feat(trading): add escrow system for secure trades
+#   fix(wallet): resolve balance calculation issue
+#   docs(api): update authentication endpoints documentation
+#   style(ui): format code according to style guide
+#   refactor(auth): restructure user authentication flow
+#   test(wallet): add unit tests for balance operations
+#   chore(deps): update Firebase dependencies
+
+# Rules:
+#   - Use imperative mood in the subject line
+#   - Do not end the subject line with a period
+#   - Use the body to explain what and why vs. how
+#   - Reference issues and pull requests in the footer
+#   - Limit the subject line to 50 characters
+#   - Wrap the body at 72 characters

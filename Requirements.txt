@@ -1,0 +1,193 @@
+Project Requirements:
+Initial Project Description:
+Job Description:
+We are looking for an experienced mobile app developer to build a full-featured Peer-to-Peer (P2P) cryptocurrency trading application, supporting Arabic and English languages. The app will allow users to register, verify their identity, post buy/sell offers, and securely trade with one another. An admin dashboard is also required for managing users, trades, and disputes.
+
+Key Features:
+User Side:
+• User registration and login.
+• Identity verification (KYC): Uploading ID documents and photo for manual review.
+• Ability to deposit crypto funds into user wallets (e.g., USDT TRC20).
+• Manual deposit/withdrawal system: Users can request to deposit or withdraw, and admin must approve.
+• Create buy/sell ads with:
+• Custom pricing
+• Auto-suggested market price based on real-time exchange rate (via API).
+• Filter/search ads by currency, country, and payment method.
+• Private in-app chat between buyer and seller.
+• Secure trading process:
+• Funds are locked during trade (Escrow lock & release mechanism).
+• Released after payment confirmation.
+• Platform takes a commission from every successful trade with commission logic adjustable from admin panel.
+• Dispute system with admin intervention when needed including dispute management + real-time moderation features in Admin Panel.
+• Referral system: Users can invite others and earn commissions from their activity.
+•. Membership management system for users
+• ROI system (investment packages): Users can invest crypto and receive daily profits.
+• Help & support section within the app for user assistance, including internal support feature (user-to-admin contact / support ticket system).
+• Multilingual support (Arabic & English): Full app should support both languages with an option to switch.
+
+Admin Panel:
+• User management and KYC approval/rejection.
+• Ad moderation (approve/block).
+• Monitor trades and resolve disputes with real-time moderation tools.
+• View transaction history, platform income, and analytics.
+• Full control over wallet balances, deposits, and withdrawals.
+• Ability to configure ROI plans, referral rates, and commissions.
+• Notifications management (in-app or push).
+• Commission logic adjustable from admin panel.
+• Deployment assistance for App Store and Google Play publishing.
+
+Suggested Tech Stack (negotiable):
+• Flutter (preferred) or React Native.
+• Firebase, Supabase, or MongoDB for backend.
+• TRC20 or other crypto wallet integration via API or mapped addresses.
+• Real-time exchange rate via CoinGecko or similar API.
+• Clean, modern bilingual UI/UX (RTL support for Arabic).
+
+Deliverables:
+• Complete source code (App + Admin Panel).
+• APK for testing.
+• Deployment documentation or video guide.
+• Bilingual UI (Arabic + English).
+• Support in uploading the app to Play Store and App Store (deployment inclusion).
+• Basic support post-delivery (bug fixes).
+
+Budget:
+All the above features and deliverables will be covered in the total budget of $1500
+
+Timeline:
+• Estimated delivery: 30–40 days
+
+To apply, please include:
+• Portfolio of previous crypto/fintech or P2P apps.
+• Your suggested tech stack.
+• Estimated timeline and milestones.
+• Confirmation of experience with multilingual apps (especially Arabic RTL support).
+
+
+
+Updated Requirements:
+
+Complete Feature Requirements for the P2P Crypto Trading App (User Side + System Side)
+1. User-Side Features
+1.1 Personal Account & Verification:
+• Secure login (Email or Phone Number).
+• User verification (OTP or basic KYC).
+• Ability to edit personal information.
+
+1.2 Centralized Dynamic Wallet:
+• Unique TRC20 deposit address per user (linked to a master wallet).
+• Automatic detection of deposits via TronGrid or TronWeb.
+• Withdrawals to external addresses (requires admin approval).
+• Off-chain internal transfers between users.
+• Support for internal balance in local currency.
+
+1.3 P2P Trading System:
+• Browse and execute buy/sell trades.
+• Create offers (buy/sell) with custom price and amount.
+• Secure Escrow system.
+• Cancel / Confirm / Dispute trades.
+• Rate the counterparty after the trade.
+
+1.4 Referral System:
+• Each user has a unique referral link.
+• Reward is one free trade for the referrer only.
+• No fee on the first trade for the referred user.
+• Track number of referrals and completed trades.
+
+1.5 Membership System:
+• Optional membership subscription via app.
+• Membership benefits: lower fees / additional features.
+• Manual renewal only, with user consent.
+• Ability to cancel or upgrade membership.
+
+1.6 Notifications & Alerts:
+• Real-time notifications (new trade, confirmation, withdrawal, dispute).
+• Use of Firebase / OneSignal for push notifications.
+• Support for in-app messaging.
+
+1.7 Support & Help:
+• In-app ticketing system for user support.
+• Notifications when a ticket is answered.
+
+1.8 User Interface:
+• Simple, user-friendly UI (Arabic + English).
+• Optional dark mode support.
+• Currency switch (IQD, USD, USDT).
+
+1.9 Additional Features:
+• QR Code scanner to display the deposit or transfer address.
+• Live market rates (TRX and USDT vs IQD/USD).
+• Ability to set custom pricing independent of market rate.
+• Transaction history (deposit, withdrawal, trading).
+• In-app pop-up messaging system for alerts and notes.
+
+2. Admin Panel Features
+1. Manage users (view, ban, edit).
+2. Monitor deposits and withdrawals.
+3. Control offers and trades.
+4. Dispute management system.
+5. Activate/deactivate memberships.
+6. Dashboard with platform statistics and fee profit tracking.
+7. Control over trading fees and limits.
+8. Toggle features on/off per user or globally.
+9. Ticket support system to answer user inquiries.
+10. Ability to modify messages and notes shown in the user interface (e.g., warnings, alerts via popups).
+11. Ability to pin paid promotional offers in the top 5 positions (with a fee).
+
+3. Infrastructure (Backend & Services)
+• Backend: Node.js + Firebase.
+• Hosting: External (e.g., Render, Vercel, or DigitalOcean).
+• Firebase used only for:
+• Authentication.
+• Notifications.
+• Caching and simple data.
+• Integration with TRON blockchain via:
+• TronWeb / TronGrid (for monitoring deposits and withdrawals).
+• Centralized master wallet managed by the platform.
+• Optional support for Redis (for caching and performance).
+Design Requirement:  
+Design Requirements for Screens: 1. Overall Style • Use a modern dark theme: deep gray/black backgrounds with contrasting white text and vibrant accent colors (green, orange, or blue). 
+• Avoid plain flat colors — use shadows, borders, and gradient highlights to create depth. 2. Visual Hierarchy 
+• Important data (wallet balance, prices, user stats) should be larger, bold, and clearly visible.
+ • Group related items visually with cards or boxes. 3. Button Design 
+• Use rounded, bold buttons with hover and tap effects. 
+• Differentiate between primary (e.g. Buy, Sell) and secondary actions. 
+4. Font & Spacing • Use modern readable fonts (e.g. Poppins, Inter). 
+• Ensure proper spacing and padding — don’t crowd elements. 
+5. Wallet Screen • Large balance section at the top. 
+• Buttons: Deposit – Withdraw – Transfer (with icons). 
+• Recent transactions in a scrollable list. 
+6. Order Book / Marketplace 
+• Cards or list view of active ads (with price, trader name, method, button).
+ • Use color codes (green for buy, red for sell).
+ • Filters on top (currency, payment, country).
+ 7. Chat / Deal Screen 
+• Clean layout, bubble-style messages, action buttons (cancel, confirm). 
+• Header shows trade status and amount. 
+8. Profile & KYC 
+• Clear user info, status indicators (verified, rating).
+ • Editable fields, upload sections for documents.
+
+
+
+The fonts used for the English language • Main Headings: Montserrat Bold • Buttons and Inner Text: Poppins Regular or Inter Regular • Numbers and Data: Inter
+
+The fonts used for the Arabic language • Headings: Tajawal Bold • Body Text: Cairo Regular • Numbers & Symbols: Inter or Poppins (Latin)
+
+
+* For the P2P trading option, we start with the trading page.
+
+1. Search for the merchant or user name, or the user’s account QR code.
+2. Banner for ads, messages, or announcements added from the admin panel.
+3. The currency in our case is the Iraqi Dinar (IQD).
+4. Tab for displaying Buy/Sell ads.
+5. Tab to select the token, amount, and the user’s preferred payment method (ads will appear filtered by the chosen payment method).
+6. Filtered search.
+7. Membership badge.
+8. Status: Available or Unavailable.
+9. Menu with: Profile, Orders, Create Ad, Chats, and P2P list.
+
+* Initially upon launch we will make it free for one month so please make the membership and KYC system controlled from the dashboard
+At first, just verify the phone number for internal transfer and security purposes. After a month, the membership and KYC verification system will be activated.
+
+  

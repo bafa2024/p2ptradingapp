@@ -1,0 +1,22 @@
+{
+  "version": "1.0.0",
+  "npmClient": "npm",
+  "packages": ["packages/*"],
+  "command": {
+    "bootstrap": {
+      "npmClientArgs": ["--legacy-peer-deps"]
+    },
+    "publish": {
+      "conventionalCommits": true,
+      "message": "chore(release): publish %s"
+    }
+  },
+  "ignoreChanges": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/*.log",
+    "**/coverage/**"
+  ],
+  "$schema": "node_modules/lerna/schemas/lerna-schema.json"
+}

@@ -1,0 +1,62 @@
+{
+  "expo": {
+    "name": "IQX P2P Trading",
+    "slug": "iqx",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "newArchEnabled": true,
+    "owner": "abfa2025",
+    "projectId": "75893748-ae39-49b2-817b-5bc51b13ac41",
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#F0B90B"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.iqx.p2ptrading"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#F0B90B"
+      },
+      "edgeToEdgeEnabled": true,
+      "package": "com.iqx.p2ptrading"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 34,
+            "targetSdkVersion": 34,
+            "buildToolsVersion": "34.0.0"
+          },
+          "ios": {
+            "deploymentTarget": "15.1"
+          }
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "75893748-ae39-49b2-817b-5bc51b13ac41"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "enabled": true,
+      "checkAutomatically": "ON_LOAD",
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/75893748-ae39-49b2-817b-5bc51b13ac41"
+    }
+  }
+}

@@ -1,30 +1,59 @@
 {
-  "name": "iqx-p2p-trading-platform",
+  "name": "p2p-crypto-platform",
   "version": "1.0.0",
-  "description": "IQX P2P Trading Platform with dynamic routing",
-  "main": "services/server.js",
+  "description": "P2P Crypto Trading Platform - Monorepo with API, Mobile App, Web App, and Admin Dashboard",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
-    "start": "node services/server.js",
-    "dev": "nodemon services/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "lerna run dev --parallel",
+    "build": "lerna run build",
+    "test": "lerna run test",
+    "lint": "lerna run lint",
+    "clean": "lerna clean",
+    "bootstrap": "lerna bootstrap",
+    "publish": "lerna publish",
+    "setup": "npm run bootstrap && npm run build",
+    "start:api": "lerna run start --scope=@p2p-platform/api",
+    "start:mobile": "lerna run start --scope=@p2p-platform/mobile-app",
+    "start:web": "lerna run start --scope=@p2p-platform/web-app",
+    "start:admin": "lerna run start --scope=@p2p-platform/admin-dashboard"
   },
   "keywords": [
     "p2p",
-    "trading",
     "cryptocurrency",
-    "express",
-    "nodejs"
+    "trading",
+    "blockchain",
+    "react-native",
+    "web-app",
+    "api",
+    "monorepo"
   ],
-  "author": "IQX Team",
+  "author": "P2P Platform Team",
   "license": "MIT",
-  "dependencies": {
-    "express": "^4.18.2"
-  },
   "devDependencies": {
-    "nodemon": "^3.0.2"
+    "@types/node": "^20.0.0",
+    "eslint": "^8.0.0",
+    "lerna": "^7.4.2",
+    "prettier": "^3.0.0",
+    "typescript": "^5.0.0"
   },
   "engines": {
-    "node": ">=16.0.0",
-    "npm": ">=8.0.0"
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "dependencies": {
+    "@react-native-async-storage/async-storage": "^2.2.0",
+    "@react-native-firebase/analytics": "^23.1.1",
+    "@react-native-firebase/app": "^23.1.1",
+    "@react-native-firebase/auth": "^23.1.1",
+    "@react-native-firebase/firestore": "^23.1.1",
+    "@react-native-firebase/messaging": "^23.1.1",
+    "dotenv": "^17.2.1",
+    "mysql2": "^3.14.3",
+    "react-native-device-info": "^14.0.4",
+    "sequelize": "^6.37.7",
+    "sequelize-cli": "^6.6.3"
   }
-} 
+}

@@ -1,0 +1,223 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+    
+    function isAdmin() {
+      return request.auth != null && request.auth.token.admin == true;
+    }
+    
+    function isModerator() {
+      return request.auth != null && request.auth.token.moderator == true;
+    }
+    
+    function isParticipant(participants) {
+      return request.auth.uid in participants;
+    }
+    
+    function isValidUserData(data) {
+      return data.keys().hasAll(['email', 'displayName', 'createdAt']) &&
+             data.email is string &&
+             data.displayName is string &&
+             data.createdAt is timestamp;
+    }
+    
+    function isValidTradeData(data) {
+      return data.keys().hasAll(['userId', 'type', 'currency', 'amount', 'price', 'status', 'createdAt']) &&
+             data.userId is string &&
+             data.type in ['buy', 'sell'] &&
+             data.currency in ['USDT', 'BTC', 'ETH'] &&
+             data.amount is number &&
+             data.price is number &&
+             data.status in ['active', 'pending', 'in_progress', 'completed', 'cancelled', 'disputed'];
+    }
+    
+    function isValidTransactionData(data) {
+      return data.keys().hasAll(['userId', 'type', 'amount', 'currency', 'status', 'createdAt']) &&
+             data.userId is string &&
+             data.type in ['deposit', 'withdrawal', 'trade', 'transfer', 'fee', 'refund', 'commission'] &&
+             data.amount is number &&
+             data.currency is string &&
+             data.status in ['pending', 'processing', 'completed', 'failed', 'cancelled'];
+    }
+    
+    // Users collection - users can only read/write their own documents
+    match /users/{userId} {
+      allow read: if isAuthenticated() && (isOwner(userId) || isAdmin() || isModerator());
+      allow create: if isAuthenticated() && isOwner(userId) && isValidUserData(resource.data);
+      allow update: if isAuthenticated() && isOwner(userId) && 
+        (resource.data.uid == request.auth.uid) &&
+        (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['displayName', 'photoURL', 'dateOfBirth', 'nationality', 'country', 'city', 'address', 'lastActive', 'lastLogin']));
+      allow delete: if isAdmin();
+    }
+    
+    // Wallets collection - users can only access their own wallets
+    match /wallets/{walletId} {
+      allow read: if isAuthenticated() && 
+        (resource.data.userId == request.auth.uid || isAdmin() || isModerator());
+      allow create: if isAuthenticated() && 
+        (request.resource.data.userId == request.auth.uid) &&
+        (request.resource.data.keys().hasAll(['userId', 'balances', 'createdAt']));
+      allow update: if isAuthenticated() && 
+        (resource.data.userId == request.auth.uid || isAdmin()) &&
+        (request.resource.data.userId == resource.data.userId);
+      allow delete: if isAdmin();
+    }
+    
+    // Trades collection - users can read all active trades, create their own, update their own
+    match /trades/{tradeId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && 
+        (request.resource.data.userId == request.auth.uid) &&
+        isValidTradeData(request.resource.data);
+      allow update: if isAuthenticated() && (
+        (resource.data.userId == request.auth.uid) || 
+        (resource.data.counterpartyId == request.auth.uid) ||
+        isAdmin() || isModerator()
+      ) && isValidTradeData(request.resource.data);
+      allow delete: if isAuthenticated() && (resource.data.userId == request.auth.uid || isAdmin());
+    }
+    
+    // Transactions collection - users can only read their own transactions
+    match /transactions/{transactionId} {
+      allow read: if isAuthenticated() && 
+        (resource.data.userId == request.auth.uid || isAdmin() || isModerator());
+      allow create: if isAuthenticated() && 
+        (request.resource.data.userId == request.auth.uid) &&
+        isValidTransactionData(request.resource.data);
+      allow update: if isAuthenticated() && (
+        (resource.data.userId == request.auth.uid) || isAdmin()
+      ) && isValidTransactionData(request.resource.data);
+      allow delete: if isAdmin();
+    }
+    
+    // Chats collection - users can only access chats they're participants in
+    match /chats/{chatId} {
+      allow read: if isAuthenticated() && 
+        (isParticipant(resource.data.participants) || isAdmin() || isModerator());
+      allow create: if isAuthenticated() && 
+        (request.resource.data.participants.hasAny([request.auth.uid])) &&
+        (request.resource.data.keys().hasAll(['tradeId', 'participants', 'createdAt']));
+      allow update: if isAuthenticated() && 
+        (isParticipant(resource.data.participants) || isAdmin() || isModerator());
+      allow delete: if isAdmin();
+    }
+    
+    // Chat messages subcollection
+    match /chats/{chatId}/messages/{messageId} {
+      allow read: if isAuthenticated() && 
+        (isParticipant(get(/databases/$(database)/documents/chats/$(chatId)).data.participants) || isAdmin() || isModerator());
+      allow create: if isAuthenticated() && 
+        (request.resource.data.senderId == request.auth.uid) &&
+        (isParticipant(get(/databases/$(database)/documents/chats/$(chatId)).data.participants)) &&
+        (request.resource.data.keys().hasAll(['senderId', 'text', 'messageType', 'createdAt']));
+      allow update: if isAuthenticated() && 
+        (resource.data.senderId == request.auth.uid || isAdmin()) &&
+        (request.resource.data.keys().hasOnly(['isRead', 'readAt']));
+      allow delete: if isAdmin();
+    }
+    
+    // Support tickets - users can only access their own tickets
+    match /support-tickets/{ticketId} {
+      allow read: if isAuthenticated() && 
+        (resource.data.userId == request.auth.uid || isAdmin() || isModerator());
+      allow create: if isAuthenticated() && 
+        (request.resource.data.userId == request.auth.uid) &&
+        (request.resource.data.keys().hasAll(['userId', 'subject', 'message', 'priority', 'category', 'createdAt']));
+      allow update: if isAuthenticated() && (
+        (resource.data.userId == request.auth.uid) || isAdmin() || isModerator()
+      );
+      allow delete: if isAdmin();
+    }
+    
+    // Support ticket responses subcollection
+    match /support-tickets/{ticketId}/responses/{responseId} {
+      allow read: if isAuthenticated() && 
+        (get(/databases/$(database)/documents/support-tickets/$(ticketId)).data.userId == request.auth.uid || isAdmin() || isModerator());
+      allow create: if isAuthenticated() && 
+        (request.resource.data.senderId == request.auth.uid) &&
+        (request.resource.data.keys().hasAll(['senderId', 'message', 'isAdmin', 'createdAt']));
+      allow update: if isAuthenticated() && 
+        (resource.data.senderId == request.auth.uid || isAdmin() || isModerator());
+      allow delete: if isAdmin();
+    }
+    
+    // Referrals - users can read referral data they're involved in
+    match /referrals/{referralId} {
+      allow read: if isAuthenticated() && 
+        (resource.data.referrerId == request.auth.uid || 
+         resource.data.referredId == request.auth.uid ||
+         isAdmin() || isModerator());
+      allow create: if isAuthenticated() && 
+        (request.resource.data.referrerId == request.auth.uid) &&
+        (request.resource.data.keys().hasAll(['referrerId', 'referredId', 'status', 'createdAt']));
+      allow update: if isAuthenticated() && (
+        (resource.data.referrerId == request.auth.uid) || 
+        (resource.data.referredId == request.auth.uid) ||
+        isAdmin()
+      );
+      allow delete: if isAdmin();
+    }
+    
+    // System settings - admin only for write, readable by all authenticated users
+    match /system-settings/{settingId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+    
+    // Admin-only collections
+    match /admin/{document=**} {
+      allow read, write: if isAdmin();
+    }
+    
+    // KYC documents - strict access control
+    match /kyc-documents/{documentId} {
+      allow read: if isAuthenticated() && (
+        (resource.data.userId == request.auth.uid) || isAdmin() || isModerator()
+      );
+      allow create: if isAuthenticated() && 
+        (request.resource.data.userId == request.auth.uid) &&
+        (request.resource.data.keys().hasAll(['userId', 'documentType', 'documentUrl', 'uploadedAt']));
+      allow update: if isAuthenticated() && (
+        (resource.data.userId == request.auth.uid) || isAdmin() || isModerator()
+      );
+      allow delete: if isAdmin();
+    }
+    
+    // Notifications - users can only access their own notifications
+    match /notifications/{notificationId} {
+      allow read: if isAuthenticated() && 
+        (resource.data.userId == request.auth.uid || isAdmin());
+      allow create: if isAuthenticated() && 
+        (request.resource.data.userId == request.auth.uid);
+      allow update: if isAuthenticated() && 
+        (resource.data.userId == request.auth.uid || isAdmin());
+      allow delete: if isAuthenticated() && 
+        (resource.data.userId == request.auth.uid || isAdmin());
+    }
+    
+    // Rate limiting for write operations
+    function rateLimit(operation, limit) {
+      return request.time > resource.data.lastOperation[operation] + duration.value(limit, 's');
+    }
+    
+    // Apply rate limiting to user operations
+    match /users/{userId} {
+      allow update: if isAuthenticated() && isOwner(userId) && 
+        rateLimit('update', 60); // 1 update per minute
+    }
+    
+    match /trades/{tradeId} {
+      allow create: if isAuthenticated() && 
+        (request.resource.data.userId == request.auth.uid) &&
+        rateLimit('create', 300); // 1 trade creation per 5 minutes
+    }
+  }
+}

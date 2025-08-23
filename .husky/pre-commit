@@ -1,0 +1,21 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Run linting
+echo "🔍 Running ESLint..."
+npm run lint
+
+# Run tests
+echo "🧪 Running tests..."
+npm run test:unit
+
+# Check for sensitive files
+echo "🔒 Checking for sensitive files..."
+if git diff --cached --name-only | grep -E "\.(env|key|pem|p12)$"; then
+  echo "❌ Error: Attempting to commit sensitive files!"
+  echo "Please remove these files from your commit:"
+  git diff --cached --name-only | grep -E "\.(env|key|pem|p12)$"
+  exit 1
+fi
+
+echo "✅ Pre-commit checks passed!"
