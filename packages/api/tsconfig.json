@@ -10,22 +10,26 @@
     "strict": true,
     "skipLibCheck": true,
 
-    // Relax noisy checks for deployment
+    // Relax checks so unused params don’t break build
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "noImplicitAny": false,
 
-    // Ensure our custom env types are picked up
     "typeRoots": ["./src/types", "./node_modules/@types"]
   },
-  "include": [
-    "src/**/*.ts"
-  ],
+  
+  "include": ["src/**/*.ts"],
   "exclude": [
     "node_modules",
     "dist",
     "src/__tests__",
     "**/*.test.ts",
-    "**/*.spec.ts"
-  ]
+    "**/*.spec.ts",
+    "src/test-server-db.ts"
+  ],
+  "scripts": {
+  "build": "tsc -p tsconfig.json",
+  "start": "node dist/server.js",
+  "migrate": "node dist/database/migrations/index.js"
+}
+
 }
