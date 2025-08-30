@@ -1,17 +1,21 @@
 export class AppError extends Error {
   public statusCode: number;
   public isOperational: boolean;
+  public status: string;
+  public validationErrors?: Array<{
+    field: string;
+    message: string;
+    value?: any;
+  }>;
 
-  constructor(message: string, statusCode: number = 500, isOperational: boolean = true) {
+  constructor(message: string, statusCode: number = 500) {
     super(message);
     
     this.statusCode = statusCode;
-    this.isOperational = isOperational;
-    
-    // Maintain proper stack trace for where our error was thrown (only available on V8)
-    if (Error.captureStackTrace) {
-      Error.captureStackTrace(this, AppError);
-    }
+    this.status = `${statusCode}`.startsWith('4') ? 'fail' : 'error';
+    this.isOperational = true;
+
+    Error.captureStackTrace(this, this.constructor);
   }
 }
 

@@ -1,0 +1,162 @@
+version: '3.8'
+
+services:
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: p2p_mysql_dev
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: p2p_platform
+      MYSQL_USER: p2p_user
+      MYSQL_PASSWORD: p2p_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data_dev:/var/lib/mysql
+      - ./mysql/init:/docker-entrypoint-initdb.d
+    networks:
+      - p2p_network_dev
+    command: --default-authentication-plugin=mysql_native_password
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: p2p_redis_dev
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data_dev:/data
+    networks:
+      - p2p_network_dev
+
+  # API Service (Development with hot reload)
+  api:
+    build:
+      context: ../packages/api
+      dockerfile: Dockerfile.dev
+    container_name: p2p_api_dev
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: p2p_platform
+      DB_USER: p2p_user
+      DB_PASSWORD: p2p_password
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      JWT_SECRET: dev-jwt-secret-key
+      LOG_LEVEL: debug
+    volumes:
+      - ../packages/api:/app
+      - /app/node_modules
+    depends_on:
+      - mysql
+      - redis
+    networks:
+      - p2p_network_dev
+    stdin_open: true
+    tty: true
+
+  # Web App (Development placeholder)
+  web-app:
+    build:
+      context: ../packages/web-app
+      dockerfile: Dockerfile
+    container_name: p2p_web_app_dev
+    restart: unless-stopped
+    ports:
+      - "3002:3002"
+    environment:
+      NODE_ENV: development
+      API_URL: http://api:3000
+    volumes:
+      - ../packages/web-app:/app
+      - /app/node_modules
+    depends_on:
+      - api
+    networks:
+      - p2p_network_dev
+
+  # Admin Dashboard (Development placeholder)
+  admin-dashboard:
+    build:
+      context: ../packages/admin-dashboard
+      dockerfile: Dockerfile
+    container_name: p2p_admin_dashboard_dev
+    restart: unless-stopped
+    ports:
+      - "3003:3003"
+    environment:
+      NODE_ENV: development
+      API_URL: http://api:3000
+    volumes:
+      - ../packages/admin-dashboard:/app
+      - /app/node_modules
+    depends_on:
+      - api
+    networks:
+      - p2p_network_dev
+
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:alpine
+    container_name: p2p_nginx_dev
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - api
+      - web-app
+      - admin-dashboard
+    networks:
+      - p2p_network_dev
+
+  # phpMyAdmin for database management
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: p2p_phpmyadmin_dev
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: p2p_user
+      PMA_PASSWORD: p2p_password
+      MYSQL_ROOT_PASSWORD: root
+    depends_on:
+      - mysql
+    networks:
+      - p2p_network_dev
+
+  # Redis Commander for Redis management
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: p2p_redis_commander_dev
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    environment:
+      REDIS_HOSTS: local:redis:6379
+    depends_on:
+      - redis
+    networks:
+      - p2p_network_dev
+
+volumes:
+  mysql_data_dev:
+  redis_data_dev:
+
+networks:
+  p2p_network_dev:
+    driver: bridge
+
+

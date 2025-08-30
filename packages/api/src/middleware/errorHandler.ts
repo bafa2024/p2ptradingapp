@@ -8,9 +8,9 @@ export interface AppError extends Error {
 
 export const errorHandler = (
   err: AppError,
-  req: Request,
+  _req: Request,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ): void => {
   let error = { ...err };
   error.message = err.message;
@@ -19,10 +19,10 @@ export const errorHandler = (
   console.error('Error:', {
     message: err.message,
     stack: err.stack,
-    url: req.url,
-    method: req.method,
-    ip: req.ip,
-    userAgent: req.get('User-Agent'),
+    url: _req.url,
+    method: _req.method,
+    ip: _req.ip,
+    userAgent: _req.get('User-Agent'),
     timestamp: new Date().toISOString()
   });
 
@@ -86,10 +86,10 @@ export const errorHandler = (
     success: false,
     error: {
       message,
-      ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
+      ...(process.env['NODE_ENV'] === 'development' && { stack: err.stack })
     },
     timestamp: new Date().toISOString(),
-    path: req.url,
-    method: req.method
+    path: _req.url,
+    method: _req.method
   });
 };

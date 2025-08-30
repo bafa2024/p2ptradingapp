@@ -56,17 +56,17 @@ A comprehensive P2P cryptocurrency trading platform built with modern technologi
 - XAMPP (for local development)
 
 ### Quick Start
-```bash
+   ```bash
 # Clone the repository
 git clone https://github.com/your-username/okx-platform.git
 cd okx-platform
 
 # Install dependencies
-npm install
+   npm install
 
 # Setup environment
-cp .env.example .env
-# Edit .env with your configuration
+   cp .env.example .env
+   # Edit .env with your configuration
 
 # Setup Firebase
 npm run setup:firebase
@@ -75,8 +75,8 @@ npm run setup:firebase
 npm run setup:database
 
 # Start development
-npm run dev
-```
+   npm run dev
+   ```
 
 ### Environment Variables
 ```env

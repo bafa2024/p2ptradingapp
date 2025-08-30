@@ -1,37 +1,68 @@
 import { Sequelize } from 'sequelize';
-import dotenv from 'dotenv';
+import config from '../config';
+import logger from '../utils/logger';
 
-dotenv.config();
+// Initialize Sequelize connection
+let sequelize: Sequelize;
 
-const sequelize = new Sequelize({
-  dialect: 'mysql',
-  host: process.env['DB_HOST'] || 'localhost',
-  port: parseInt(process.env['DB_PORT'] || '3306'),
-  username: process.env['DB_USER'] || 'root',
-  password: process.env['DB_PASSWORD'] || '',
-  database: process.env['DB_NAME'] || 'p2p_platform',
-  logging: process.env['NODE_ENV'] === 'development' ? console.log : false,
-  pool: {
-    max: parseInt(process.env['DB_POOL_MAX'] || '10'),
-    min: parseInt(process.env['DB_POOL_MIN'] || '0'),
-    acquire: parseInt(process.env['DB_POOL_ACQUIRE'] || '30000'),
-    idle: parseInt(process.env['DB_POOL_IDLE'] || '10000'),
-  },
-  define: {
-    timestamps: true,
-    underscored: true,
-    freezeTableName: true,
-    createdAt: 'created_at',
-    updatedAt: 'updated_at',
-  },
-  // Additional MySQL options for better compatibility
-  dialectOptions: {
-    charset: 'utf8mb4',
-    supportBigNumbers: true,
-    bigNumberStrings: true,
-  },
-  // Timezone configuration
-  timezone: '+00:00',
-});
+try {
+  sequelize = new Sequelize(config.database);
+  
+  // Test the connection
+  sequelize.authenticate()
+    .then(() => {
+      logger.info('✅ Sequelize database connection established successfully.');
+    })
+    .catch((err) => {
+      logger.error('❌ Sequelize database connection failed:', err.message);
+    });
+} catch (error) {
+  logger.error('❌ Failed to initialize Sequelize:', error);
+}
 
-export default sequelize;
+// Export connections
+export { sequelize };
+
+// Initialize models and associations
+export const initializeDatabase = async () => {
+  try {
+    // Import models to ensure they are registered
+    await import('../models');
+    
+    // Sync database (in development, use force: false to avoid dropping tables)
+    if (process.env['NODE_ENV'] === 'development') {
+      await sequelize.sync({ force: false });
+      logger.info('✅ Database synchronized in development mode');
+    }
+    
+    logger.info('✅ Database initialization completed');
+  } catch (error) {
+    logger.error('❌ Database initialization failed:', error);
+    throw error;
+  }
+};
+
+// Graceful shutdown
+export const closeDatabaseConnection = async () => {
+  try {
+    if (sequelize) {
+      await sequelize.close();
+      logger.info('✅ Database connection closed gracefully');
+    }
+  } catch (error) {
+    logger.error('❌ Error closing database connection:', error);
+  }
+};
+
+// Health check
+export const checkDatabaseHealth = async () => {
+  try {
+    if (sequelize) {
+      await sequelize.authenticate();
+      return { status: 'healthy', message: 'Database connection is working' };
+    }
+    return { status: 'unhealthy', message: 'Database connection not initialized' };
+  } catch (error) {
+    return { status: 'unhealthy', message: `Database connection failed: ${(error as Error).message}` };
+  }
+};

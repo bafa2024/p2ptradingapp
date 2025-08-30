@@ -1,11 +1,8 @@
 // Test setup file
-import dotenv from 'dotenv';
+import { setupTestEnv } from './test.config';
 
-// Load test environment variables
-dotenv.config({ path: '.env.test' });
-
-// Set test environment
-process.env.NODE_ENV = 'test';
+// Setup test environment
+setupTestEnv();
 
 // Mock console methods for cleaner test output
 const originalConsoleLog = console.log;
@@ -28,3 +25,6 @@ afterAll(() => {
 
 // Global test timeout
 jest.setTimeout(10000);
+
+// Export empty function to satisfy Jest
+export default function() {}
