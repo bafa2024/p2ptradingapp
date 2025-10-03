@@ -1,101 +1,18 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import { body, validationResult } from 'express-validator';
-import AuthController from '../../controllers/auth/auth.controller';
+import { validationResult } from 'express-validator';
+import * as AuthController from '../../controllers/auth/auth.controller';
 import { AppError } from '../../utils/AppError';
+import {
+  validateRegistration,
+  validateLogin,
+  validateRefreshToken,
+  validateChangePassword,
+  validateForgotPassword,
+  validateResetPassword,
+  validatePhoneVerification
+} from '../../validation/auth.validation';
 
 const router = Router();
-
-// Validation middleware
-const validateRegistration = [
-  body('email')
-    .isEmail()
-    .withMessage('Please provide a valid email address'),
-  body('phone_number')
-    .isMobilePhone('any')
-    .withMessage('Please provide a valid phone number'),
-  body('password')
-    .isLength({ min: 6 })
-    .withMessage('Password must be at least 6 characters long')
-    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/)
-    .withMessage('Password must contain at least one lowercase letter, one uppercase letter, and one number'),
-  body('display_name')
-    .isLength({ min: 2, max: 100 })
-    .withMessage('Display name must be between 2 and 100 characters'),
-  body('referral_code')
-    .optional()
-    .isLength({ min: 3, max: 20 })
-    .withMessage('Referral code must be between 3 and 20 characters'),
-  body('date_of_birth')
-    .optional()
-    .isISO8601()
-    .withMessage('Date of birth must be a valid date'),
-  body('nationality')
-    .optional()
-    .isLength({ min: 2, max: 50 })
-    .withMessage('Nationality must be between 2 and 50 characters'),
-  body('country')
-    .optional()
-    .isLength({ min: 2, max: 50 })
-    .withMessage('Country must be between 2 and 50 characters'),
-  body('city')
-    .optional()
-    .isLength({ min: 2, max: 50 })
-    .withMessage('City must be between 2 and 50 characters')
-];
-
-const validateLogin = [
-  body('email')
-    .isEmail()
-    .withMessage('Please provide a valid email address'),
-  body('password')
-    .notEmpty()
-    .withMessage('Password is required')
-];
-
-const validateRefreshToken = [
-  body('refresh_token')
-    .notEmpty()
-    .withMessage('Refresh token is required')
-];
-
-const validateChangePassword = [
-  body('current_password')
-    .notEmpty()
-    .withMessage('Current password is required'),
-  body('new_password')
-    .isLength({ min: 6 })
-    .withMessage('New password must be at least 6 characters long')
-    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/)
-    .withMessage('New password must contain at least one lowercase letter, one uppercase letter, and one number')
-];
-
-const validateForgotPassword = [
-  body('email')
-    .isEmail()
-    .withMessage('Please provide a valid email address')
-];
-
-const validateResetPassword = [
-  body('email')
-    .isEmail()
-    .withMessage('Please provide a valid email address'),
-  body('reset_token')
-    .notEmpty()
-    .withMessage('Reset token is required'),
-  body('new_password')
-    .isLength({ min: 6 })
-    .withMessage('New password must be at least 6 characters long')
-    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/)
-    .withMessage('New password must contain at least one lowercase letter, one uppercase letter, and one number')
-];
-
-const validatePhoneVerification = [
-  body('otp')
-    .isLength({ min: 4, max: 6 })
-    .withMessage('OTP must be between 4 and 6 characters')
-    .isNumeric()
-    .withMessage('OTP must contain only numbers')
-];
 
 // Check validation results
 const checkValidation = (req: Request, res: Response, next: NextFunction): void => {

@@ -1,5 +1,7 @@
 import User from './User';
 import Wallet from './Wallet';
+import Order from './Order';
+import Transaction from './Transaction';
 
 // Define associations
 User.hasOne(Wallet, { 
@@ -31,7 +33,22 @@ User.belongsTo(User, {
   onUpdate: 'CASCADE' 
 });
 
-export { User, Wallet };
+// Order associations
+User.hasMany(Order, { 
+  foreignKey: 'user_id', 
+  as: 'orders', 
+  onDelete: 'CASCADE', 
+  onUpdate: 'CASCADE' 
+});
+
+Order.belongsTo(User, { 
+  foreignKey: 'user_id', 
+  as: 'user', 
+  onDelete: 'CASCADE', 
+  onUpdate: 'CASCADE' 
+});
+
+export { User, Wallet, Order, Transaction };
 
 export const initializeAssociations = () => {
   console.log('✅ Sequelize model associations initialized');
@@ -40,6 +57,8 @@ export const initializeAssociations = () => {
 export default {
   User,
   Wallet,
+  Order,
+  Transaction,
   initializeAssociations
 };
 

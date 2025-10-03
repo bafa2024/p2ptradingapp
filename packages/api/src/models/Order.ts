@@ -1,33 +1,37 @@
-// src/models/Wallet.ts
+// src/models/Order.ts
 import { DataTypes, Model, Optional } from 'sequelize';
 import { sequelize } from '../database/connection';
 
-export interface WalletAttributes {
+export interface OrderAttributes {
   id: string;
   user_id: string;
-  usdt_available: number;
-  usdt_locked: number;
+  type: 'buy' | 'sell';
+  amount: number;
+  price: number;
+  status: 'open' | 'completed' | 'cancelled';
   created_at: Date;
   updated_at: Date;
 }
 
-export interface WalletCreationAttributes extends Optional<WalletAttributes, 'id' | 'created_at' | 'updated_at'> {}
+export interface OrderCreationAttributes extends Optional<OrderAttributes, 'id' | 'created_at' | 'updated_at'> {}
 
-export class Wallet extends Model<WalletAttributes, WalletCreationAttributes> implements WalletAttributes {
+export class Order extends Model<OrderAttributes, OrderCreationAttributes> implements OrderAttributes {
   public id!: string;
   public user_id!: string;
-  public usdt_available!: number;
-  public usdt_locked!: number;
+  public type!: 'buy' | 'sell';
+  public amount!: number;
+  public price!: number;
+  public status!: 'open' | 'completed' | 'cancelled';
   public created_at!: Date;
   public updated_at!: Date;
 
-  // Computed property for total balance
-  public get total_usdt(): number {
-    return this.usdt_available + this.usdt_locked;
+  // Computed property for total value
+  public get total_value(): number {
+    return this.amount * this.price;
   }
 }
 
-Wallet.init(
+Order.init(
   {
     id: {
       type: DataTypes.CHAR(36),
@@ -45,15 +49,22 @@ Wallet.init(
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE'
     },
-    usdt_available: {
-      type: DataTypes.DECIMAL(18, 8),
-      allowNull: false,
-      defaultValue: 0
+    type: {
+      type: DataTypes.ENUM('buy', 'sell'),
+      allowNull: false
     },
-    usdt_locked: {
+    amount: {
       type: DataTypes.DECIMAL(18, 8),
+      allowNull: false
+    },
+    price: {
+      type: DataTypes.DECIMAL(18, 8),
+      allowNull: false
+    },
+    status: {
+      type: DataTypes.ENUM('open', 'completed', 'cancelled'),
       allowNull: false,
-      defaultValue: 0
+      defaultValue: 'open'
     },
     created_at: {
       type: DataTypes.DATE,
@@ -68,16 +79,26 @@ Wallet.init(
   },
   {
     sequelize,
-    tableName: 'Wallets',
+    tableName: 'Orders',
     timestamps: true,
     createdAt: 'created_at',
     updatedAt: 'updated_at',
     indexes: [
       {
         fields: ['user_id']
+      },
+      {
+        fields: ['type']
+      },
+      {
+        fields: ['status']
+      },
+      {
+        fields: ['created_at']
       }
     ]
   }
 );
 
-export default Wallet;
+export default Order;
+
