@@ -5,17 +5,14 @@
  * Entry point for DigitalOcean App Platform deployment
  */
 
-const express = require('express');
+require("dotenv").config();
+const express = require("express");
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const path = require('path');
 
-// Load environment variables
-require('dotenv').config();
-
 const app = express();
-const PORT = process.env.PORT || 8080;
 
 // Middleware
 app.use(helmet());
@@ -42,14 +39,6 @@ app.get('/api', (req, res) => {
   });
 });
 
-// Start server
-app.listen(PORT, '0.0.0.0', () => {
-  console.log('🚀 IQX P2P Backend Server Started');
-  console.log(`📋 Environment: ${process.env.NODE_ENV || 'production'}`);
-  console.log(`🌐 Server listening on 0.0.0.0:${PORT}`);
-  console.log(`🔗 Health check: http://localhost:${PORT}/health`);
-});
-
 // Graceful shutdown
 process.on('SIGINT', () => {
   console.log('\n🛑 Shutting down server...');
@@ -59,4 +48,11 @@ process.on('SIGINT', () => {
 process.on('SIGTERM', () => {
   console.log('\n🛑 Shutting down server...');
   process.exit(0);
+});
+
+// ✅ Dynamic port for DO App Platform
+const PORT = process.env.PORT || 8080;
+
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`🚀 Server running on port ${PORT}`);
 });
