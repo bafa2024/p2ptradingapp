@@ -1,62 +1,22 @@
 {
-  "name": "p2p-crypto-platform",
-  "version": "1.0.0",
-  "description": "P2P Crypto Trading Platform - Monorepo with API, Mobile App, Web App, and Admin Dashboard",
-  "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
+  "name": "iqx-p2p-backend",
+  "version": "12.2.0",
+  "description": "IQX P2P Trading Backend - Wallet, Orders, Matching Engine, Transactions",
+  "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "build": "echo 'skip build step'",
-    "dev": "lerna run dev --parallel",
-    "test": "lerna run test",
-    "lint": "lerna run lint",
-    "clean": "lerna clean",
-    "bootstrap": "lerna bootstrap",
-    "publish": "lerna publish",
-    "setup": "npm run bootstrap && npm run build",
-    "start:api": "lerna run start --scope=@p2p-platform/api",
-    "start:mobile": "lerna run start --scope=@p2p-platform/mobile-app",
-    "start:web": "lerna run start --scope=@p2p-platform/web-app",
-    "start:admin": "lerna run start --scope=@p2p-platform/admin-dashboard"
-  },
-  "keywords": [
-    "p2p",
-    "cryptocurrency",
-    "trading",
-    "blockchain",
-    "react-native",
-    "web-app",
-    "api",
-    "monorepo"
-  ],
-  "author": "P2P Platform Team",
-  "license": "MIT",
-  "devDependencies": {
-    "@types/compression": "^1.8.1",
-    "@types/morgan": "^1.9.10",
-    "@types/node": "^20.0.0",
-    "eslint": "^8.0.0",
-    "lerna": "^7.4.2",
-    "prettier": "^3.0.0",
-    "typescript": "^5.0.0"
-  },
-  "engines": {
-    "node": ">=18.0.0",
-    "npm": ">=9.0.0"
+    "build": "echo \"skip build step\""
   },
   "dependencies": {
-    "@react-native-async-storage/async-storage": "^2.2.0",
-    "@react-native-firebase/analytics": "^23.1.1",
-    "@react-native-firebase/app": "^23.1.1",
-    "@react-native-firebase/auth": "^23.1.1",
-    "@react-native-firebase/firestore": "^23.1.1",
-    "@react-native-firebase/messaging": "^23.1.1",
-    "dotenv": "^17.2.1",
-    "mysql2": "^3.14.3",
-    "react-native-device-info": "^14.0.4",
-    "sequelize": "^6.37.7",
-    "sequelize-cli": "^6.6.3"
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "helmet": "^7.1.0",
+    "morgan": "^1.10.0",
+    "sequelize": "^6.35.1",
+    "mysql2": "^3.9.0",
+    "pg": "^8.11.1",
+    "pg-hstore": "^2.3.4",
+    "jsonwebtoken": "^9.0.0",
+    "dotenv": "^16.4.0"
   }
 }

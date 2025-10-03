@@ -1,55 +1,62 @@
 #!/usr/bin/env node
 
 /**
- * Root server entry point for App Platform deployment
- * This file starts the API service from the packages/api directory
+ * IQX P2P Trading Backend Server
+ * Entry point for DigitalOcean App Platform deployment
  */
 
-const { spawn, execSync } = require('child_process');
+const express = require('express');
+const cors = require('cors');
+const helmet = require('helmet');
+const morgan = require('morgan');
 const path = require('path');
 
-console.log('🚀 Starting P2P Platform API Server...');
-console.log('📋 Environment:', process.env.NODE_ENV || 'production');
+// Load environment variables
+require('dotenv').config();
 
-// Change to the API directory
-process.chdir(path.join(__dirname, 'packages', 'api'));
+const app = express();
+const PORT = process.env.PORT || 8080;
 
-// Build the API first
-console.log('🔨 Building API...');
-try {
-  execSync('npm run build', { stdio: 'inherit' });
-  console.log('✅ API build completed successfully');
-} catch (error) {
-  console.error('❌ API build failed:', error.message);
-  process.exit(1);
-}
+// Middleware
+app.use(helmet());
+app.use(cors());
+app.use(morgan('combined'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// Start the API server
-console.log('🚀 Starting API server...');
-const apiProcess = spawn('npm', ['start'], {
-  stdio: 'inherit',
-  shell: true
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.json({ 
+    status: 'healthy', 
+    timestamp: new Date().toISOString(),
+    service: 'IQX P2P Backend'
+  });
 });
 
-// Handle process termination
+// API routes placeholder
+app.get('/api', (req, res) => {
+  res.json({ 
+    message: 'IQX P2P Trading Backend API',
+    version: '12.2.0',
+    status: 'running'
+  });
+});
+
+// Start server
+app.listen(PORT, '0.0.0.0', () => {
+  console.log('🚀 IQX P2P Backend Server Started');
+  console.log(`📋 Environment: ${process.env.NODE_ENV || 'production'}`);
+  console.log(`🌐 Server listening on 0.0.0.0:${PORT}`);
+  console.log(`🔗 Health check: http://localhost:${PORT}/health`);
+});
+
+// Graceful shutdown
 process.on('SIGINT', () => {
-  console.log('\n🛑 Shutting down API server...');
-  apiProcess.kill('SIGINT');
+  console.log('\n🛑 Shutting down server...');
   process.exit(0);
 });
 
 process.on('SIGTERM', () => {
-  console.log('\n🛑 Shutting down API server...');
-  apiProcess.kill('SIGTERM');
+  console.log('\n🛑 Shutting down server...');
   process.exit(0);
-});
-
-apiProcess.on('close', (code) => {
-  console.log(`API server process exited with code ${code}`);
-  process.exit(code);
-});
-
-apiProcess.on('error', (err) => {
-  console.error('Failed to start API server:', err);
-  process.exit(1);
 });
