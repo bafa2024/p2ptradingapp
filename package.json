@@ -7,8 +7,9 @@
     "packages/*"
   ],
   "scripts": {
+    "start": "node server.js",
+    "build": "echo 'skip build step'",
     "dev": "lerna run dev --parallel",
-    "build": "lerna run build",
     "test": "lerna run test",
     "lint": "lerna run lint",
     "clean": "lerna clean",
