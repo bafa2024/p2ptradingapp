@@ -2,7 +2,9 @@ module.exports = {
   apps: [
     {
       name: "p2p",
-      script: "packages/api/server.js",
+      script: "ts-node",
+      args: "packages/api/src/server.ts",
+      interpreter: "node",
       instances: 1,
       autorestart: true,
       watch: false,
