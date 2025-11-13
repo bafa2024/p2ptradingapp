@@ -38,6 +38,8 @@ app.use(morgan(NODE_ENV === 'development' ? 'dev' : 'combined'));
 // API routes
 app.use('/api', healthRouter);
 app.use('/api/v1/auth', authRouter);
+// Also mount auth routes at /api/auth for compatibility
+app.use('/api/auth', authRouter);
 app.use('/api/v1/orders', orderRouter);
 
 // Transactions history

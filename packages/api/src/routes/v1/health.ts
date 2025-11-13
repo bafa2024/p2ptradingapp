@@ -5,11 +5,11 @@ const router = Router();
 // Health check endpoint
 router.get('/health', (_req: Request, res: Response) => {
   res.json({
-    ok: true,
+    status: 'ok',
+    version: 'v12.3',
     env: process.env['NODE_ENV'] || 'development',
     timestamp: new Date().toISOString(),
-    uptime: process.uptime(),
-    version: process.env['npm_package_version'] || 'dev'
+    uptime: process.uptime()
   });
 });
 
