@@ -1,6 +1,7 @@
 // src/server.ts
 import 'dotenv/config';
 import express from 'express';
+import { createServer } from 'http';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
@@ -8,11 +9,15 @@ import authRouter from './routes/v1/auth';
 import walletRouter from './routes/v1/wallet';
 import orderRouter from './routes/v1/order';
 import healthRouter from './routes/v1/health';
+import adminRouter from './routes/admin';
+import monitorRouter from './routes/monitor';
 import { features } from './config/features';
 import { authMiddleware } from './middleware/auth';
 import { Wallet } from './models/Wallet';
 import { Op } from 'sequelize';
 import Transaction from './models/Transaction';
+import { initializeSocket } from './socket';
+import { Server as SocketIOServer } from 'socket.io';
 
 // Load environment variables
 const NODE_ENV = process.env['NODE_ENV'] || 'development';
@@ -41,6 +46,8 @@ app.use('/api/v1/auth', authRouter);
 // Also mount auth routes at /api/auth for compatibility
 app.use('/api/auth', authRouter);
 app.use('/api/v1/orders', orderRouter);
+app.use('/api/admin', adminRouter);
+app.use('/api/monitor', monitorRouter);
 
 // Transactions history
 app.get('/api/v1/transactions', authMiddleware, async (req, res) => {
@@ -253,10 +260,21 @@ function startWalletWatcher() {
       console.log('⚠️  [watcher] Wallet disabled: watcher not started');
     }
 
-    app.listen(PORT, () => {
+    // Create HTTP server from Express app
+    const httpServer = createServer(app);
+    
+    // Initialize Socket.IO
+    const io = initializeSocket(httpServer);
+    
+    // Make io available globally for use in controllers
+    (global as any).io = io;
+
+    // Start HTTP server (with Socket.IO support)
+    httpServer.listen(PORT, () => {
       console.log('✅ Server running on port', PORT);
       console.log(`🌐 API available at: http://localhost:${PORT}/api`);
       console.log(`❤️  Health check: http://localhost:${PORT}/api/health`);
+      console.log(`🔌 WebSocket available at: ws://localhost:${PORT}`);
       console.log('📊 Environment:', NODE_ENV);
     });
   } catch (error) {

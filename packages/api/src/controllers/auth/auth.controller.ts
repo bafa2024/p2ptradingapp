@@ -33,6 +33,7 @@ export async function register(req: Request, res: Response) {
       phone_number: req.body.phone_number || `+1${Math.floor(Math.random() * 9000000000) + 1000000000}`, // Generate random phone if not provided
       username: req.body.display_name || email.split('@')[0],
       password_hash,
+      role: 'user', // Default role
       kyc_status: 'pending',
       membership_tier: 'free',
       referral_code: uuidv4().substring(0, 8).toUpperCase(),

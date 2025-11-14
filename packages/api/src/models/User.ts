@@ -7,6 +7,7 @@ export interface UserAttributes {
   phone_number: string;
   username: string;
   password_hash: string;
+  role: 'user' | 'admin';
   kyc_status: 'pending' | 'verified' | 'rejected';
   membership_tier: 'free' | 'basic' | 'premium';
   referral_code: string;
@@ -23,6 +24,7 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
   public phone_number!: string;
   public username!: string;
   public password_hash!: string;
+  public role!: 'user' | 'admin';
   public kyc_status!: 'pending' | 'verified' | 'rejected';
   public membership_tier!: 'free' | 'basic' | 'premium';
   public referral_code!: string;
@@ -79,6 +81,11 @@ User.init(
     password_hash: {
       type: DataTypes.STRING(255),
       allowNull: true
+    },
+    role: {
+      type: DataTypes.ENUM('user', 'admin'),
+      allowNull: false,
+      defaultValue: 'user'
     },
     kyc_status: {
       type: DataTypes.ENUM('pending', 'verified', 'rejected'),
