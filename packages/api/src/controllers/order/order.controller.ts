@@ -7,7 +7,7 @@ import { Op, Transaction as SequelizeTx } from 'sequelize';
 import { sequelize } from '../../database/connection';
 import Transaction from '../../models/Transaction';
 import { emitOrderCreated, emitOrderFilled, emitOrderCancelled } from '../../socket/events';
-import { Server as SocketIOServer } from 'socket.io';
+import { io } from '../../server';
 
 async function matchOrders(newOrder: Order): Promise<void> {
   // Runs matching in a DB transaction to keep balances consistent
@@ -117,16 +117,14 @@ async function matchOrders(newOrder: Order): Promise<void> {
       await newOrder.save({ transaction: t });
 
       // Emit Socket.IO events for filled orders
-      const io = (global as any).io as SocketIOServer;
       if (io) {
         if (counter.status === 'completed') {
           emitOrderFilled(io, {
-            id: counter.id,
+            orderId: counter.id,
             type: counter.type,
             amount: counter.amount,
             price: counter.price,
-            status: counter.status,
-            user_id: counter.user_id
+            status: counter.status
           }, {
             amount: tradeAmount,
             price: tradePrice,
@@ -136,12 +134,11 @@ async function matchOrders(newOrder: Order): Promise<void> {
         }
         if (newOrder.status === 'completed') {
           emitOrderFilled(io, {
-            id: newOrder.id,
+            orderId: newOrder.id,
             type: newOrder.type,
             amount: newOrder.amount,
             price: newOrder.price,
-            status: newOrder.status,
-            user_id: newOrder.user_id
+            status: newOrder.status
           }, {
             amount: tradeAmount,
             price: tradePrice,
@@ -216,16 +213,14 @@ export async function createBuyOrder(req: AuthenticatedRequest, res: Response) {
     await matchOrders(order);
 
     // Emit Socket.IO event for order creation
-    const io = (global as any).io as SocketIOServer;
     if (io) {
       emitOrderCreated(io, {
-        id: order.id,
+        orderId: order.id,
         type: order.type,
-        amount: order.amount,
         price: order.price,
+        amount: order.amount,
         status: order.status,
-        user_id: order.user_id,
-        created_at: order.created_at
+        user_id: order.user_id
       });
     }
 
@@ -311,16 +306,14 @@ export async function createSellOrder(req: AuthenticatedRequest, res: Response) 
     await matchOrders(order);
 
     // Emit Socket.IO event for order creation
-    const io = (global as any).io as SocketIOServer;
     if (io) {
       emitOrderCreated(io, {
-        id: order.id,
+        orderId: order.id,
         type: order.type,
-        amount: order.amount,
         price: order.price,
+        amount: order.amount,
         status: order.status,
-        user_id: order.user_id,
-        created_at: order.created_at
+        user_id: order.user_id
       });
     }
 
@@ -472,16 +465,14 @@ export async function cancelOrder(req: AuthenticatedRequest, res: Response) {
     });
 
     // Emit Socket.IO event for order cancellation
-    const io = (global as any).io as SocketIOServer;
     if (io) {
       emitOrderCancelled(io, {
-        id: order.id,
+        orderId: order.id,
         type: order.type,
         amount: order.amount,
         price: order.price,
         status: order.status,
-        user_id: order.user_id,
-        created_at: order.created_at
+        user_id: order.user_id
       });
     }
 

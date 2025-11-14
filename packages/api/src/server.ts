@@ -16,12 +16,15 @@ import { authMiddleware } from './middleware/auth';
 import { Wallet } from './models/Wallet';
 import { Op } from 'sequelize';
 import Transaction from './models/Transaction';
-import { initializeSocket } from './socket';
-import { Server as SocketIOServer } from 'socket.io';
+import registerSocketEvents from './socket';
+import { Server } from 'socket.io';
+
+// Export io for use in controllers
+export let io: Server;
 
 // Load environment variables
 const NODE_ENV = process.env['NODE_ENV'] || 'development';
-const PORT = Number(process.env['PORT'] || 8080);
+const PORT = Number(process.env['PORT'] || 3000);
 
 console.log('🚀 Starting P2P Platform API Server...');
 console.log(`📋 Environment: ${NODE_ENV}`);
@@ -264,14 +267,19 @@ function startWalletWatcher() {
     const httpServer = createServer(app);
     
     // Initialize Socket.IO
-    const io = initializeSocket(httpServer);
+    io = new Server(httpServer, {
+      cors: { origin: '*', methods: ['GET', 'POST'] },
+    });
+
+    // Register Socket.IO events
+    registerSocketEvents(io);
     
     // Make io available globally for use in controllers
     (global as any).io = io;
 
     // Start HTTP server (with Socket.IO support)
-    httpServer.listen(PORT, () => {
-      console.log('✅ Server running on port', PORT);
+    httpServer.listen(PORT, '0.0.0.0', () => {
+      console.log(`🚀 Server with Socket.IO running on port ${PORT}`);
       console.log(`🌐 API available at: http://localhost:${PORT}/api`);
       console.log(`❤️  Health check: http://localhost:${PORT}/api/health`);
       console.log(`🔌 WebSocket available at: ws://localhost:${PORT}`);
