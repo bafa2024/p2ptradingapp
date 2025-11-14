@@ -20,7 +20,7 @@ import registerSocketEvents from './socket';
 import { Server } from 'socket.io';
 
 // Export io for use in controllers
-export let io: Server;
+export let io: Server | undefined;
 
 // Load environment variables
 const NODE_ENV = process.env['NODE_ENV'] || 'development';

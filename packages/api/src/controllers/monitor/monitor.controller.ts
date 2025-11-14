@@ -6,7 +6,7 @@ import { Order } from '../../models/Order';
 import Transaction from '../../models/Transaction';
 import { Wallet } from '../../models/Wallet';
 import { Op } from 'sequelize';
-import { activeConnections } from '../../socket';
+import { io } from '../../server';
 
 export async function getSystemInfo(req: Request, res: Response) {
   try {
@@ -16,8 +16,20 @@ export async function getSystemInfo(req: Request, res: Response) {
 
     // Get active socket connections count
     let activeSocketCount = 0;
-    for (const connections of activeConnections.values()) {
-      activeSocketCount += connections.length;
+    let activeRooms = 0;
+    if (io) {
+      const sockets = await io.fetchSockets();
+      activeSocketCount = sockets.length;
+      // Count unique rooms
+      const roomSet = new Set<string>();
+      sockets.forEach(socket => {
+        socket.rooms.forEach(room => {
+          if (room !== socket.id) { // Exclude default room (socket.id)
+            roomSet.add(room);
+          }
+        });
+      });
+      activeRooms = roomSet.size;
     }
 
     return res.json({
@@ -51,7 +63,7 @@ export async function getSystemInfo(req: Request, res: Response) {
         },
         sockets: {
           active: activeSocketCount,
-          rooms: activeConnections.size
+          rooms: activeRooms
         }
       }
     });
