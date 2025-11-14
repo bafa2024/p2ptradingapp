@@ -229,7 +229,7 @@ const config: AppConfig = {
     port: parseNumber(process.env['DB_PORT'], 3306),
     username: process.env['DB_USER'] || 'root',
     password: process.env['DB_PASSWORD'] || '',
-    database: process.env['DB_NAME'] || 'p2p_platform',
+    database: process.env['DB_NAME'] || 'okx_platform',
     dialect: (process.env['DB_DIALECT'] as any) || 'mysql',
     pool: {
       max: parseNumber(process.env['DB_POOL_MAX'], 10),

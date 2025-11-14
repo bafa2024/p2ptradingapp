@@ -39,7 +39,7 @@ const databaseConfig: DatabaseConfig = {
   port: parseNumber(process.env['DB_PORT'], 3306),
   username: process.env['DB_USER'] || 'root',
   password: process.env['DB_PASSWORD'] || '',
-  database: process.env['DB_NAME'] || 'p2p_platform',
+  database: process.env['DB_NAME'] || 'okx_platform',
   dialect: (process.env['DB_DIALECT'] as 'mysql' | 'postgres' | 'sqlite' | 'mariadb') || 'mysql',
   pool: {
     max: parseNumber(process.env['DB_POOL_MAX'], 10),
@@ -92,7 +92,7 @@ export const testDatabaseConnection = async (): Promise<boolean> => {
         console.log('\n💡 Troubleshooting tips:');
         console.log('  1. Create the database first');
         console.log('  2. Check the database name in your .env file');
-        console.log('  3. Run: CREATE DATABASE p2p_platform;');
+        console.log('  3. Run: CREATE DATABASE okx_platform;');
       }
     }
     

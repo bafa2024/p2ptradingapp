@@ -13,7 +13,7 @@ export const devConfig = {
     port: 3306,
     username: 'root',
     password: '',
-    database: 'p2p_platform_dev',
+    database: 'okx_platform_dev',
     dialect: 'mysql' as const,
     logging: false,
   },

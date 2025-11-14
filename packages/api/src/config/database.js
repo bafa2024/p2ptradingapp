@@ -4,7 +4,7 @@ module.exports = {
   development: {
     username: process.env.DB_USER || 'root',
     password: process.env.DB_PASSWORD || '',
-    database: process.env.DB_NAME || 'p2p_platform',
+    database: process.env.DB_NAME || 'okx_platform',
     host: process.env.DB_HOST || 'localhost',
     port: parseInt(process.env.DB_PORT || '3306'),
     dialect: process.env.DB_DIALECT || 'mysql',
@@ -19,7 +19,7 @@ module.exports = {
   test: {
     username: process.env.DB_USER || 'root',
     password: process.env.DB_PASSWORD || '',
-    database: process.env.DB_NAME + '_test' || 'p2p_platform_test',
+    database: process.env.DB_NAME + '_test' || 'okx_platform_test',
     host: process.env.DB_HOST || 'localhost',
     port: parseInt(process.env.DB_PORT || '3306'),
     dialect: process.env.DB_DIALECT || 'mysql',
