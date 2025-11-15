@@ -69,7 +69,7 @@ The Docker environment uses the configuration from `docker/env.docker`. Key sett
 ## Database Initialization
 
 The MySQL container automatically:
-1. Creates the `p2p_platform` database
+1. Creates the `okx_platform` database
 2. Sets up the `p2p_user` with proper privileges
 3. Creates basic table structure
 4. Inserts a default admin user
@@ -122,7 +122,7 @@ docker-compose -f docker-compose.dev.yml up --build -d
 docker exec -it p2p_api_dev sh
 
 # MySQL container
-docker exec -it p2p_mysql_dev mysql -u p2p_user -p p2p_platform
+docker exec -it p2p_mysql_dev mysql -u p2p_user -p okx_platform
 ```
 
 ## Troubleshooting

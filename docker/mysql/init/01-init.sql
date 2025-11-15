@@ -2,19 +2,19 @@
 -- This script runs when the MySQL container starts for the first time
 
 -- Create database if it doesn't exist
-CREATE DATABASE IF NOT EXISTS p2p_platform CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE IF NOT EXISTS okx_platform CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Use the database
-USE p2p_platform;
+USE okx_platform;
 
 -- Create user if it doesn't exist
 CREATE USER IF NOT EXISTS 'p2p_user'@'%' IDENTIFIED BY 'p2p_password';
 
 -- Grant privileges to the user
-GRANT ALL PRIVILEGES ON p2p_platform.* TO 'p2p_user'@'%';
+GRANT ALL PRIVILEGES ON okx_platform.* TO 'p2p_user'@'%';
 
 -- Grant additional privileges for development
-GRANT CREATE, DROP, ALTER, INDEX, CREATE TEMPORARY TABLES, LOCK TABLES, EXECUTE, CREATE VIEW, SHOW VIEW, CREATE ROUTINE, ALTER ROUTINE, EVENT, TRIGGER ON p2p_platform.* TO 'p2p_user'@'%';
+GRANT CREATE, DROP, ALTER, INDEX, CREATE TEMPORARY TABLES, LOCK TABLES, EXECUTE, CREATE VIEW, SHOW VIEW, CREATE ROUTINE, ALTER ROUTINE, EVENT, TRIGGER ON okx_platform.* TO 'p2p_user'@'%';
 
 -- Flush privileges
 FLUSH PRIVILEGES;

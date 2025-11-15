@@ -133,7 +133,7 @@ echo "-------------------"
 # Check database connection
 if docker ps --format "table {{.Names}}" | grep -q "p2p_mysql_dev"; then
     echo -n "Testing MySQL connection... "
-    if docker exec p2p_mysql_dev mysql -u p2p_user -pp2p_password -e "SELECT 1;" p2p_platform >/dev/null 2>&1; then
+    if docker exec p2p_mysql_dev mysql -u p2p_user -pp2p_password -e "SELECT 1;" okx_platform >/dev/null 2>&1; then
         echo -e "${GREEN}✓ Connected${NC}"
     else
         echo -e "${RED}✗ Connection failed${NC}"

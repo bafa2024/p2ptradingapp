@@ -163,7 +163,7 @@ API_HOST=localhost
 # Database Configuration
 DB_HOST=localhost
 DB_PORT=3306
-DB_NAME=p2p_platform
+DB_NAME=okx_platform
 DB_USER=root
 DB_PASSWORD=
 

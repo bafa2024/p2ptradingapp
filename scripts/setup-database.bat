@@ -19,7 +19,7 @@ set DB_PASSWORD=%DB_PASSWORD%
 if "%DB_PASSWORD%"=="" set DB_PASSWORD=
 
 set DB_NAME=%DB_NAME%
-if "%DB_NAME%"=="" set DB_NAME=p2p_platform
+if "%DB_NAME%"=="" set DB_NAME=okx_platform
 
 set SCHEMA_FILE=packages\api\src\database\migrations
 

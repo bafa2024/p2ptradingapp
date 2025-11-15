@@ -8,7 +8,7 @@ services:
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: p2p_platform
+      MYSQL_DATABASE: okx_platform
       MYSQL_USER: p2p_user
       MYSQL_PASSWORD: p2p_password
     ports:
@@ -44,7 +44,7 @@ services:
       NODE_ENV: production
       DB_HOST: mysql
       DB_PORT: 3306
-      DB_NAME: p2p_platform
+      DB_NAME: okx_platform
       DB_USER: p2p_user
       DB_PASSWORD: p2p_password
       REDIS_HOST: redis

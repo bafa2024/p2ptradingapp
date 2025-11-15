@@ -65,7 +65,7 @@ shell-api:
 
 # Open MySQL shell
 shell-mysql:
-	docker exec -it p2p_mysql_dev mysql -u p2p_user -p p2p_platform
+	docker exec -it p2p_mysql_dev mysql -u p2p_user -p okx_platform
 
 # Open Redis shell
 shell-redis:

@@ -172,7 +172,7 @@ REM Check database connection
 docker ps --format "table {{.Names}}" | findstr "p2p_mysql_dev" >nul 2>&1
 if %errorlevel% equ 0 (
     echo Testing MySQL connection... 
-    docker exec p2p_mysql_dev mysql -u p2p_user -pp2p_password -e "SELECT 1;" p2p_platform >nul 2>&1
+    docker exec p2p_mysql_dev mysql -u p2p_user -pp2p_password -e "SELECT 1;" okx_platform >nul 2>&1
     if %errorlevel% equ 0 (
         echo ✓ Connected
     ) else (

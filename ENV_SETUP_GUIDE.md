@@ -38,7 +38,7 @@ Edit `.env` with your local development settings:
 ```bash
 # API Configuration
 API_PORT=3000
-DB_NAME=p2p_platform_dev
+DB_NAME=okx_platform_dev
 JWT_SECRET=your-development-jwt-secret
 
 # Database (adjust for your local setup)
@@ -280,7 +280,7 @@ docker run -e NODE_ENV=production -e JWT_SECRET=secret api-image
    ```bash
    # Create database
    mysql -u root -p
-   CREATE DATABASE p2p_platform_dev;
+   CREATE DATABASE okx_platform_dev;
    
    # Run migrations (when implemented)
    npm run migrate

@@ -18,7 +18,7 @@ DB_HOST=${DB_HOST:-"localhost"}
 DB_PORT=${DB_PORT:-"3306"}
 DB_USER=${DB_USER:-"root"}
 DB_PASSWORD=${DB_PASSWORD:-""}
-DB_NAME=${DB_NAME:-"p2p_platform"}
+DB_NAME=${DB_NAME:-"okx_platform"}
 SCHEMA_FILE="packages/api/src/database/migrations"
 
 echo -e "${BLUE}🚀 Setting up P2P Crypto Trading Platform Database...${NC}"
